@@ -22,8 +22,9 @@ variables:
   dockerfilePath: '$(Build.SourcesDirectory)/ui/Dockerfile'  
   tag: '$(Build.BuildId)'
 
-steps:
+steps:  
   - script: yarn lint
+    workingDirectory: ui
   - task: DockerInstaller@0
     inputs:
       dockerVersion: '17.09.0-ce'
