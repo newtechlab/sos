@@ -6,7 +6,8 @@
 trigger:
   branches:
     include:
-    - '*'
+    - 'master'
+    - 'add-linter'
   paths:
     include:
     - ui
@@ -22,15 +23,11 @@ variables:
   tag: '$(Build.BuildId)'
 
 steps:
-  - script: |
-      yarn lint
-    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+  - script: yarn lint
   - task: DockerInstaller@0
     inputs:
       dockerVersion: '17.09.0-ce'
-    condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
   - task: Docker@2
-    condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
     inputs:
       containerRegistry: 'soscontainers'
       repository: 'sosui'
@@ -41,7 +38,6 @@ steps:
         latest    
 
   - task: KubernetesManifest@0
-    condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
     displayName: Deploy
     inputs:
       kubernetesServiceConnection: soskube
