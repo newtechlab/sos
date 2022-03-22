@@ -23,7 +23,9 @@ variables:
   tag: '$(Build.BuildId)'
 
 steps:  
-  - script: yarn lint
+  - script: |
+      yarn install
+      yarn lint
     workingDirectory: ui
   - task: DockerInstaller@0
     inputs:
