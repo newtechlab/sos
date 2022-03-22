@@ -31,3 +31,16 @@ steps:
       repository: 'sosui'
       command: 'buildAndPush'
       Dockerfile: '$(dockerfilePath)'
+      tags: |
+        $(tag)
+        latest    
+
+  - task: KubernetesManifest@0
+    displayName: Deploy
+    inputs:
+      kubernetesServiceConnection: soskube
+      namespace: sos
+      manifests: |
+        ui/sosui.yml
+      containers: |
+        soscontainers.azurecr.io/sosui:$(tag)
