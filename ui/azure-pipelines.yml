@@ -14,11 +14,21 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+variables:
+  # Container registry service connection established during pipeline creation
+  dockerRegistryServiceConnection: 'c22a0e0e-2499-48a3-99e1-64ae0ec0fa17'
+  imageRepository: 'sos'
+  dockerfilePath: '$(Build.SourcesDirectory)/ui/Dockerfile'  
+  tag: '$(Build.BuildId)'  
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+steps:
+  - task: Docker@2
+    displayName: Build and push an image to container registry
+    inputs:
+      command: buildAndPush
+      repository: $(imageRepository)
+      dockerfile: $(dockerfilePath)
+      containerRegistry: $(dockerRegistryServiceConnection)
+      tags: |
+        $(tag)
+        latest
