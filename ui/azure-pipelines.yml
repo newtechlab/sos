@@ -4,10 +4,12 @@
 # https://aka.ms/yaml
 
 trigger:
-- master
-paths:
-  include:
-  - ui
+  branches:
+    include:
+    - master
+  paths:
+    include:
+    - ui
 
 pool:
   vmImage: ubuntu-latest
