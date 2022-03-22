@@ -27,3 +27,13 @@ steps:
     repository: 'sosapi'
     command: 'buildAndPush'
     Dockerfile: '**/Dockerfile'
+
+- task: KubernetesManifest@0
+  displayName: Deploy
+  inputs:
+    kubernetesServiceConnection: soskube
+    namespace: sos
+    manifests: |
+      api/sosapi.yml
+    containers: |
+      soscontainers.azurecr.io/sosapi:$(tag)    
