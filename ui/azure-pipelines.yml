@@ -7,7 +7,6 @@ trigger:
   branches:
     include:
     - 'master'
-    - 'add-linter'
   paths:
     include:
     - ui
@@ -27,6 +26,7 @@ steps:
       yarn install
       yarn lint
     workingDirectory: ui
+    displayName: Linter
   - task: DockerInstaller@0
     inputs:
       dockerVersion: '17.09.0-ce'
