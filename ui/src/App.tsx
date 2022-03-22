@@ -8,7 +8,7 @@ import { useState } from 'react';
 import UserDetails from './components/UserDetails';
 
 function App() {
-  const [currentStep, setCurrentStep] = useState<number>(2);
+  const [currentStep] = useState<number>(2);
   const [userDetails, setUserDetails] = useState<string|undefined>(undefined);
   return (
     <div className="App">
