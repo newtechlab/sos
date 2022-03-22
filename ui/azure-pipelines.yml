@@ -22,13 +22,12 @@ variables:
   tag: '$(Build.BuildId)'  
 
 steps:
-  - task: Docker@2
-    displayName: Build and push an image to container registry
+  - task: DockerInstaller@0
     inputs:
-      command: buildAndPush
-      repository: $(imageRepository)
-      dockerfile: $(dockerfilePath)
-      containerRegistry: $(dockerRegistryServiceConnection)
-      tags: |
-        $(tag)
-        latest
+      dockerVersion: '17.09.0-ce'
+  - task: Docker@2
+    inputs:
+      containerRegistry: 'soscontainers'
+      repository: 'sosui'
+      command: 'buildAndPush'
+      Dockerfile: '$(dockerfilePath)'
