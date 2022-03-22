@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sosui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sosui
+  template:
+    metadata:
+      labels:
+        app: sosui
+    spec:
+      containers:
+      - name: sosui
+        image: soscontainers.azurecr.io/sosui:7919
+        ports:
+        - containerPort: 80
+        env:
+        - name: TITLE
+          value: "Welcome to Azure Kubernetes Service (AKS)"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sosui
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+  selector:
+    app: sosui
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sosui
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    cert-manager.io/cluster-issuer: letsencrypt-production-do
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: "sosui.anrize.co"
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: sosui
+            port:
+              number: 80
+  tls:
+    - hosts:      
+        - sosui.anrize.co      
+      secretName: sosui
