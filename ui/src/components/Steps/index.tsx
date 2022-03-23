@@ -1,39 +1,33 @@
-import { useState } from "react";
-import { Step } from "semantic-ui-react";
+import { Icon, Step } from "semantic-ui-react";
 
-interface StepsProps {
-  currentStep: number;
+export interface StepDefinition {
+    id: number;
+    active: boolean;
+    completed: boolean;
+    title: string;
+    description: string;
 }
 
 
-export default function Steps({ currentStep }: StepsProps) {
+export interface StepsProps {
+  steps: Array<StepDefinition>;
+}
 
-    return <Step.Group ordered>
-    <Step completed>
-      <Step.Content>
-        <Step.Title>Income</Step.Title>
-        <Step.Description>Choose your shipping options</Step.Description>
-      </Step.Content>
-    </Step>
-
-    <Step completed>
-      <Step.Content>
-        <Step.Title>Billing</Step.Title>
-        <Step.Description>Enter billing information</Step.Description>
-      </Step.Content>
-    </Step>
-
-    <Step active={currentStep===2}>
-      <Step.Content>
-        <Step.Title>Confirm Order</Step.Title>
-      </Step.Content>
-    </Step>
-
-    <Step>
-      <Step.Content>
-        <Step.Title>Fourth one</Step.Title>
-      </Step.Content>
-    </Step>
+export default function Steps(props: StepsProps) {
+    const { steps } = props
+    const ActiveIcon = "arrow alternate circle down";
+    const CompleteIcon = "check circle";
+    return <Step.Group>
+        { steps.map((step) => {
+            return <Step key={step.id} active={step.active} completed={step.completed}>
+                {  step.active && <Icon name={ActiveIcon} color="green" /> }
+                {  step.completed && <Icon name={CompleteIcon} color="green" /> } 
+                <Step.Content>
+                <Step.Title>{ step.title }</Step.Title>
+                <Step.Description> { step.description }</Step.Description>
+                </Step.Content>
+            </Step>
+        })}
   </Step.Group>
 }
 
