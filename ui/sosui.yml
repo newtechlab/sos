@@ -38,11 +38,11 @@ metadata:
   name: sosui
   annotations:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
-    cert-manager.io/cluster-issuer: letsencrypt-production-do
+    cert-manager.io/cluster-issuer: letsencrypt-production-azure
 spec:
   ingressClassName: nginx
   rules:
-  - host: "sosui.anrize.co"
+  - host: "sosui.spoint.me"
     http:
       paths:
       - pathType: Prefix
@@ -54,5 +54,5 @@ spec:
               number: 80
   tls:
     - hosts:      
-        - sosui.anrize.co      
+        - sosui.spoint.me
       secretName: sosui
