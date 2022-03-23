@@ -6,7 +6,7 @@
 trigger:
   branches:
     include:
-    - master
+    - 'master'
   paths:
     include:
     - ui
@@ -19,9 +19,14 @@ variables:
   dockerRegistryServiceConnection: 'c22a0e0e-2499-48a3-99e1-64ae0ec0fa17'
   imageRepository: 'sos'
   dockerfilePath: '$(Build.SourcesDirectory)/ui/Dockerfile'  
-  tag: '$(Build.BuildId)'  
+  tag: '$(Build.BuildId)'
 
-steps:
+steps:  
+  - script: |
+      yarn install
+      yarn lint
+    workingDirectory: ui
+    displayName: Linter
   - task: DockerInstaller@0
     inputs:
       dockerVersion: '17.09.0-ce'
@@ -31,3 +36,16 @@ steps:
       repository: 'sosui'
       command: 'buildAndPush'
       Dockerfile: '$(dockerfilePath)'
+      tags: |
+        $(tag)
+        latest    
+
+  - task: KubernetesManifest@0
+    displayName: Deploy
+    inputs:
+      kubernetesServiceConnection: soskube
+      namespace: sos
+      manifests: |
+        ui/sosui.yml
+      containers: |
+        soscontainers.azurecr.io/sosui:$(tag)
