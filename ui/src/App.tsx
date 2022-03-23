@@ -9,34 +9,24 @@ import UserDetails from './components/UserDetails';
 
 
 export interface FamilyMember {
+  id: string;
   age: number
 }
 
-export interface User {
-  familyMembers: Array <FamilyMember>;
-}
-
-
 function App() {
   const [currentStep, setCurrentStep] = useState<number>(2);
-  const [userDetails, setUserDetails] = useState<User|undefined>(undefined);
+  const [familyMembers, setFamilyMembers] = useState<Array <FamilyMember>>([]);
 
   const purpleMonkeyDishWasher = (familyMember : FamilyMember) => {
-    const fm = new Array<FamilyMember>();
-    fm.push(familyMember)
-    const u: User = {
-      familyMembers: fm
-    }
-    setUserDetails (u)
+    setFamilyMembers(familyMembers.concat(familyMember));
   }
-
 
   return (
     <div className="App">
       <Steps currentStep={currentStep} />
-      <h1>Hello, {userDetails}</h1>
+      <h1>Hello There</h1>
       <Routes>
-        <Route path="/" element={<UserDetails user={userDetails} addFamilyMember = {purpleMonkeyDishWasher} setUserDetails={setUserDetails}/>} />
+        <Route path="/" element={<UserDetails familyMembers={familyMembers} addFamilyMember = {purpleMonkeyDishWasher}/>} />
         <Route path="about" element={<About />} />
       </Routes>
     </div>
