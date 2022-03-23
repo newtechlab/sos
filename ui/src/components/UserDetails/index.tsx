@@ -1,14 +1,31 @@
-import { Button } from "semantic-ui-react";
+import { useState } from "react";
+import { Button, Card, Container } from "semantic-ui-react";
+import { FamilyMember } from "../../App";
+import AddFamilyMemberModal from "../AddFamilyMemberModal";
+import FamilyMemberCard from "../FamilyMemberCard";
 
 export interface UserDetailsProps {
-  setUserDetails: (_: string) => void;
+  familyMembers: Array<FamilyMember>;
+  addFamilyMember: (_: FamilyMember) => void;
 }
-
 
 export default function UserDetails(props: UserDetailsProps) {
-  const {setUserDetails} = props
-    return <>
-    <Button onClick={() => {setUserDetails("Foobar")}}>Update</Button>
-    </>
-}
+  const [addFamilyModalOpen, setAddFamilyModalOpen] = useState<boolean>(false);
+  const {addFamilyMember, familyMembers} = props
+    return <Container>
+      <Card.Group>
+        { familyMembers.map((fm) => {
+          return <FamilyMemberCard />
+        }) }
+      </Card.Group>
 
+      { addFamilyModalOpen && <AddFamilyMemberModal 
+        addFamilyMember={addFamilyMember} 
+        open={addFamilyModalOpen} 
+        setOpen={setAddFamilyModalOpen} /> }
+
+      <Button onClick={() => {
+        setAddFamilyModalOpen(true);
+      }}>Add Family Member</Button>
+    </Container>
+}
