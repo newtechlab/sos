@@ -19,9 +19,9 @@ export default function Steps(props: StepsProps) {
     const CompleteIcon = "check circle";
     return <Step.Group>
         { steps.map((step) => {
-            return <Step key={step.id} active={step.active} completed={step.completed}>
-                {  step.active && <Icon name={ActiveIcon} color="green" /> }
-                {  step.completed && <Icon name={CompleteIcon} color="green" /> } 
+            return <Step key={step.id} active={step.active}>
+                {  step.active && <Icon name={ActiveIcon} color="teal" /> }
+                {  step.completed && <Icon name={CompleteIcon} color="teal" /> } 
                 <Step.Content>
                 <Step.Title>{ step.title }</Step.Title>
                 <Step.Description> { step.description }</Step.Description>

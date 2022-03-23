@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import About from './components/About';
 import _ from 'lodash';
 
+import { useNavigate } from 'react-router-dom';
 import 'semantic-ui-css/semantic.min.css'
 import Steps, { StepDefinition } from './components/Steps';
 import { useState } from 'react';
@@ -20,6 +21,7 @@ interface ReduceType {
 }
 
 function App() {
+  const navigate = useNavigate();
   const [steps, setSteps] = useState<Array<StepDefinition>>(StepsInitialState);
   const [familyMembers, setFamilyMembers] = useState<Array <FamilyMember>>([]);
 
@@ -47,6 +49,7 @@ function App() {
 
     const newSteps: Array<StepDefinition> = _.reduce( steps, callbackFn, new Array<StepDefinition>() )
     setSteps(newSteps);
+    navigate('penger-inn');
   }
 
   return (
@@ -61,7 +64,7 @@ function App() {
             addFamilyMember = {purpleMonkeyDishWasher}
             completeStep={completeStep}
           />} />
-        <Route path="about" element={<About />} />
+        <Route path="/penger-inn" element={<About />} />
       </Routes>
     </div>
   );
