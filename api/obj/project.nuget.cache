@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "7C3N/75S1DKeyEaZ6Mx0WP3kCm3t+e+lNy7IDyvgmUR+Qshvrxl8uQACuy+q1qYV/KIBHWO2QAUpnUiz+7QJKw==",
+  "success": true,
+  "projectFilePath": "/Users/espensandelarsen/code/SOS/api/api.csproj",
+  "expectedPackageFiles": [
+    "/Users/espensandelarsen/.nuget/packages/microsoft.extensions.apidescription.server/3.0.0/microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
+    "/Users/espensandelarsen/.nuget/packages/microsoft.openapi/1.2.3/microsoft.openapi.1.2.3.nupkg.sha512",
+    "/Users/espensandelarsen/.nuget/packages/swashbuckle.aspnetcore/6.2.3/swashbuckle.aspnetcore.6.2.3.nupkg.sha512",
+    "/Users/espensandelarsen/.nuget/packages/swashbuckle.aspnetcore.swagger/6.2.3/swashbuckle.aspnetcore.swagger.6.2.3.nupkg.sha512",
+    "/Users/espensandelarsen/.nuget/packages/swashbuckle.aspnetcore.swaggergen/6.2.3/swashbuckle.aspnetcore.swaggergen.6.2.3.nupkg.sha512",
+    "/Users/espensandelarsen/.nuget/packages/swashbuckle.aspnetcore.swaggerui/6.2.3/swashbuckle.aspnetcore.swaggerui.6.2.3.nupkg.sha512"
+  ],
+  "logs": []
+}

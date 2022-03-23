@@ -14,11 +14,29 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
+variables:
+  tag: '$(Build.BuildId)'  
+
 steps:
 - script: echo Hello, world!
   displayName: 'Run a one-line script'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+- task: DockerInstaller@0
+  inputs:
+    dockerVersion: '17.09.0-ce'
+- task: Docker@2
+  inputs:
+    containerRegistry: 'soscontainers'
+    repository: 'sosapi'
+    command: 'buildAndPush'
+    Dockerfile: '**/Dockerfile'
+
+- task: KubernetesManifest@0
+  displayName: Deploy
+  inputs:
+    kubernetesServiceConnection: soskube
+    namespace: sos
+    manifests: |
+      api/sosapi.yml
+    containers: |
+      soscontainers.azurecr.io/sosapi:$(tag)    
