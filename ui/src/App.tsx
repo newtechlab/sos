@@ -1,6 +1,5 @@
 import './App.css';
 import { Route, Routes } from 'react-router-dom';
-import About from './components/About';
 import _ from 'lodash';
 
 import { useNavigate } from 'react-router-dom';
@@ -9,10 +8,13 @@ import Steps, { StepDefinition } from './components/Steps';
 import { useState } from 'react';
 import UserDetails from './components/UserDetails';
 import { StepsInitialState } from './data/StepsInitialState';
+import MoneyIn from './components/MoneyIn';
+import MoneyOut from './components/MoneyOut';
 
 export interface FamilyMember {
   id: string;
-  age: number
+  name: string;
+  age: string
 }
 
 interface ReduceType {
@@ -20,13 +22,34 @@ interface ReduceType {
   newSteps: Array<StepDefinition>
 }
 
+export interface LedgerRow {
+  id: string,
+  dayOfMonth: number,
+  amount: number,
+  accountFrom: string;
+  accountTo: string;
+}
+
 function App() {
   const navigate = useNavigate();
   const [steps, setSteps] = useState<Array<StepDefinition>>(StepsInitialState);
-  const [familyMembers, setFamilyMembers] = useState<Array <FamilyMember>>([]);
+  const [familyMembers, setFamilyMembers] = useState<Array<FamilyMember>>([]);
+  const [ledger, setLedger] = useState<Array<LedgerRow>>([]);
 
   const purpleMonkeyDishWasher = (familyMember : FamilyMember) => {
     setFamilyMembers(familyMembers.concat(familyMember));
+  }
+
+  const addLedgerRow = (ledgerRow: LedgerRow) => {
+    setLedger(ledger.concat(ledgerRow))
+  }
+
+  const deleteLedgerRow = (id: string) => {
+    const filtered = ledger.filter((row) => {
+      row.id === id
+    })
+
+    setLedger(filtered);
   }
 
   const completeStep = (): void => {
@@ -56,7 +79,7 @@ function App() {
     <div className="App">
       <h1>Familieoversikt</h1>
       <Steps steps={steps} />
-      <h1>Hello There</h1>
+      {/* <h1>Hello There</h1> */}
       <Routes>
         <Route path="/" element={
           <UserDetails 
@@ -64,7 +87,8 @@ function App() {
             addFamilyMember = {purpleMonkeyDishWasher}
             completeStep={completeStep}
           />} />
-        <Route path="/penger-inn" element={<About />} />
+        <Route path="/penger-inn" element={<MoneyIn ledger={ledger} addLedgerRow={addLedgerRow} removeLedgerRow={deleteLedgerRow} />} />
+        <Route path="/penger-ut" element={<MoneyOut />} />
       </Routes>
     </div>
   );

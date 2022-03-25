@@ -16,7 +16,7 @@ export default function UserDetails(props: UserDetailsProps) {
     return <Container>
       <Card.Group>
         { familyMembers.map((fm) => {
-          return <FamilyMemberCard />
+          return <FamilyMemberCard familyMember={fm} />
         }) }
       </Card.Group>
 
