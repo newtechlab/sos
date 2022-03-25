@@ -11,18 +11,16 @@ import {
   import { Bar } from 'react-chartjs-2';
 import { chartLabels, chartOptions, graphDataInitialState } from "../../chart/ChartSettings";
 
-interface MoneyInProps {
+interface ResultatProps {
     ledger: Array<LedgerRow>
-    addLedgerRow: (_: LedgerRow) => void
     removeLedgerRow: (id: string) => void 
     completeStep: () => void
 }
 
-export default function MoneyIn(props: MoneyInProps) {
-    const [addMoneyInModalOpen, setAddMoneyInModalOpen] = useState<boolean>(false);
+export default function Resultat(props: ResultatProps) {
     const [sortedLedger, setSortedLedger] = useState<LedgerRow[]>([]);
     const [graphData, setGraphData] = useState<ChartData<"bar", number[], unknown>>(graphDataInitialState);
-    const { ledger, addLedgerRow, completeStep } = props;
+    const { ledger, completeStep } = props;
     
     useEffect(() => {
         const data = {
@@ -32,17 +30,12 @@ export default function MoneyIn(props: MoneyInProps) {
                 label: 'Penger Inn',
                 data: chartLabels.map((l) => sortedLedger.find((i) => i.dayOfMonth === l && i.accountTo === 'user')?.amount || 0),
                 backgroundColor: 'rgb(255, 99, 132)',
+                },
+              {
+                label: 'Penger Ut',
+                data: chartLabels.map((l) => sortedLedger.find((i) => i.dayOfMonth === l && i.accountTo !== 'user')?.amount || 0),
+                backgroundColor: 'rgb(75, 192, 192)',
               },
-            //   {
-            //     label: 'Dataset 2',
-            //     data: labels.map((l) => sortedLedger.find((i) => i.dayOfMonth === l)?.dayOfMonth || 0),
-            //     backgroundColor: 'rgb(75, 192, 192)',
-            //   },
-            //   {
-            //     label: 'Dataset 3',
-            //     data: labels.map((l) => sortedLedger.find((i) => i.dayOfMonth === l)?.dayOfMonth || 0),
-            //     backgroundColor: 'rgb(53, 162, 235)',
-            //   },
             ],
           };
 
@@ -56,21 +49,15 @@ export default function MoneyIn(props: MoneyInProps) {
 
     return <Container>
 
-        { addMoneyInModalOpen && <AddMoneyInModal open={addMoneyInModalOpen} setOpen={setAddMoneyInModalOpen} addLedgerRow={addLedgerRow}   /> }
-
-        <h1>Penger Inn</h1>
+        <h1>Resultat</h1>
 
         <StyledGraphContainer>
             <Bar options={chartOptions} data={graphData} />
         </StyledGraphContainer>
 
         <Button onClick={() => {
-            setAddMoneyInModalOpen(true);
-        }}>Add income</Button>
-
-        <Button onClick={() => {
             completeStep();
-        }}>Next</Button>
+        }}>Finish</Button>
 
         <Table>
             <Table.Header>
@@ -82,17 +69,11 @@ export default function MoneyIn(props: MoneyInProps) {
             </Table.Header>
             <Table.Body>
             { sortedLedger.map( (row) => {
-
-                if (row.accountTo === "user") {
-                    return <Table.Row key={row.id}>
-                        <Table.Cell>{row.accountFrom}</Table.Cell>
-                        <Table.Cell>{row.amount}</Table.Cell>
-                        <Table.Cell>{row.dayOfMonth}</Table.Cell>
-                        </Table.Row>
-                } else {
-                    return <></>
-                }
-
+                return <Table.Row key={row.id}>
+                    <Table.Cell>{row.accountFrom}</Table.Cell>
+                    <Table.Cell>{row.amount}</Table.Cell>
+                    <Table.Cell>{row.dayOfMonth}</Table.Cell>
+                    </Table.Row>
             })} 
             </Table.Body>
         </Table>

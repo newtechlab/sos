@@ -5,14 +5,14 @@ import { useState } from "react";
 import _ from "lodash";
 import { getDaysOfMonthDropdown } from "../../data/DaysOfMonth";
 
-interface AddMoneyInModalProps {
+interface AddMoneyOutModalProps {
     open: boolean;
     setOpen: (_: boolean) => void; 
     addLedgerRow: (_: LedgerRow) => void
 }
 
-export default function AddMoneyInModal(props: AddMoneyInModalProps) {
-    const [from, setFrom] = useState<string | undefined>(undefined);
+export default function AddMoneyInModal(props: AddMoneyOutModalProps) {
+    const [to, setTo] = useState<string | undefined>(undefined);
     const [amount, setAmount] = useState<number | undefined>(undefined);
     const [day, setDay] = useState<number | undefined>(undefined);
     const { open, setOpen, addLedgerRow } = props;
@@ -25,17 +25,17 @@ export default function AddMoneyInModal(props: AddMoneyInModalProps) {
     >
         <Modal.Header>Add money in</Modal.Header>
         <Modal.Content>      
-            Money that comes to you each month such as
+            Money that you pay each month
             <ul>
-                <li>Salary</li>
-                <li>Benefits</li>
-                <li>ect</li>
+                <li>Transport</li>
+                <li>Coffee</li>
+                <li>Shopping</li>
             </ul>
         </Modal.Content>
         <Modal.Actions>
             <Input 
-                placeholder="Salary" 
-                onChange={ (_, data) => { setFrom(data.value?.toString()) }} />
+                placeholder="Coffee" 
+                onChange={ (_, data) => { setTo(data.value?.toString()) }} />
             <Input
                 placeholder='Amount'
                 onChange={ (_, data) => { setAmount(parseInt(data.value?.toString() || "0", 10)) }  }
@@ -55,17 +55,17 @@ export default function AddMoneyInModal(props: AddMoneyInModalProps) {
                 content="Add"
                 positive
                 onClick={() => {
-                    if (from && amount && day) {
+                    if (to && amount && day) {
                         addLedgerRow({
                             id: uuidv4(), 
                             dayOfMonth: day,
                             amount: amount,
-                            accountFrom: from,
-                            accountTo: "user" 
+                            accountFrom: "user",
+                            accountTo: to
                         })
                         setOpen(false)
                     } else {
-                        console.log("missing var", from)
+                        console.log("missing var", to)
                         console.log("missing var", amount)
                         console.log("missing var", day)
                     }                   

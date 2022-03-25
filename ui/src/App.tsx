@@ -11,6 +11,17 @@ import { StepsInitialState } from './data/StepsInitialState';
 import MoneyIn from './components/MoneyIn';
 import MoneyOut from './components/MoneyOut';
 
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+import Resultat from './components/Resultat';
+
 export interface FamilyMember {
   id: string;
   name: string;
@@ -29,6 +40,15 @@ export interface LedgerRow {
   accountFrom: string;
   accountTo: string;
 }
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 function App() {
   const navigate = useNavigate();
@@ -72,7 +92,9 @@ function App() {
 
     const newSteps: Array<StepDefinition> = _.reduce( steps, callbackFn, new Array<StepDefinition>() )
     setSteps(newSteps);
-    navigate('penger-inn');
+
+    const currentStep = newSteps.find((s) => s.active === true )
+    navigate(currentStep?.path || "/");
   }
 
   return (
@@ -87,8 +109,24 @@ function App() {
             addFamilyMember = {purpleMonkeyDishWasher}
             completeStep={completeStep}
           />} />
-        <Route path="/penger-inn" element={<MoneyIn ledger={ledger} addLedgerRow={addLedgerRow} removeLedgerRow={deleteLedgerRow} />} />
-        <Route path="/penger-ut" element={<MoneyOut />} />
+        <Route path="/penger-inn" element={<MoneyIn 
+          ledger={ledger} 
+          addLedgerRow={addLedgerRow} 
+          removeLedgerRow={deleteLedgerRow} 
+          completeStep={completeStep}
+        />} 
+        />
+        <Route path="/penger-ut" element={<MoneyOut 
+          ledger={ledger} 
+          addLedgerRow={addLedgerRow} 
+          removeLedgerRow={deleteLedgerRow} 
+          completeStep={completeStep}
+        />} />
+        <Route path="/resultat" element={<Resultat 
+          ledger={ledger} 
+          removeLedgerRow={deleteLedgerRow} 
+          completeStep={completeStep}
+        />} />
       </Routes>
     </div>
   );

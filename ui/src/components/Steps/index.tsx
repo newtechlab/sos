@@ -6,6 +6,7 @@ export interface StepDefinition {
     completed: boolean;
     title: string;
     description: string;
+    path: string;
 }
 
 
