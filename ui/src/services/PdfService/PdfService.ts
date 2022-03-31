@@ -1,5 +1,5 @@
 
-import { grayscale, PDFDocument, StandardFonts, rgb, PDFName, PDFDict, PDFArray, PDFHexString, PDFString, PDFStream, PDFRawStream, decodePDFRawStream } from 'pdf-lib';
+import { PDFDocument, PDFName, PDFDict, PDFArray, PDFHexString, PDFString, PDFStream, PDFRawStream, decodePDFRawStream } from 'pdf-lib';
 
 export interface RawAttachment {
     filename: PDFHexString | PDFString,
