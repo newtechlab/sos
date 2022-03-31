@@ -9,7 +9,7 @@ import {
     ChartData,
   } from 'chart.js';
   import { Bar } from 'react-chartjs-2';
-import { chartLabels, chartOptions, graphDataInitialState } from "../../chart/ChartSettings";
+import { chartLabels, chartOptions, graphDataInitialState, PengerUtColour } from "../../chart/ChartSettings";
 import AddMoneyOutModal from "../AddMoneyOutModal";
 import { pengerUt, sortLedger } from "../../data/Ledger";
 
@@ -33,7 +33,7 @@ export default function MoneyOut(props: MoneyOutProps) {
               {
                 label: 'Penger Ut',
                 data: pengerUt(chartLabels, sortedLedger),
-                backgroundColor: 'rgb(75, 192, 192)',
+                backgroundColor: PengerUtColour,
               },
             ],
           };

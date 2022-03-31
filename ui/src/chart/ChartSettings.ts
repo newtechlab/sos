@@ -25,6 +25,9 @@ export const chartOptions = {
     },
   };
 
+  export const PengerUtColour = '#FDBB31';
+  export const PengerInnColour = '#81D35B';
+
   export const chartLabels = getDaysOfMonthNumbers();
 
   export const graphDataInitialState = {
