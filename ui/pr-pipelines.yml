@@ -10,5 +10,5 @@ pool:
 steps:  
   - script: |
       yarn install
-      yarn test
+      yarn test --watchAll=false
     workingDirectory: ui
