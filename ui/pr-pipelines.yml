@@ -7,10 +7,8 @@
 pool:
   vmImage: ubuntu-latest
 
-steps:
-- script: yarn install
-  displayName: 'Install dependencies'
-
-- script: |
-    yarn test
-  displayName: 'Run tests'
+steps:  
+  - script: |
+      yarn install
+      yarn test
+    workingDirectory: ui
