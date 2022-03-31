@@ -12,14 +12,14 @@ export const chartOptions = {
     scales: {
       x: {
         stacked: true,
-        gridLines: {
-            display:false
+        grid: {
+            display:false,
         }
       },
       y: {
         stacked: true,
-        gridLines: {
-            display:false
+        grid: {
+            display:false,
         }
       },
     },

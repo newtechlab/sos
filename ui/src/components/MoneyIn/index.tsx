@@ -10,6 +10,7 @@ import {
   } from 'chart.js';
   import { Bar } from 'react-chartjs-2';
 import { chartLabels, chartOptions, graphDataInitialState } from "../../chart/ChartSettings";
+import { pengerInn, sortLedger } from "../../data/Ledger";
 
 interface MoneyInProps {
     ledger: Array<LedgerRow>
@@ -30,19 +31,9 @@ export default function MoneyIn(props: MoneyInProps) {
             datasets: [
               {
                 label: 'Penger Inn',
-                data: chartLabels.map((l) => sortedLedger.find((i) => i.dayOfMonth === l && i.accountTo === 'user')?.amount || 0),
+                data: pengerInn(chartLabels, sortedLedger),
                 backgroundColor: 'rgb(255, 99, 132)',
               },
-            //   {
-            //     label: 'Dataset 2',
-            //     data: labels.map((l) => sortedLedger.find((i) => i.dayOfMonth === l)?.dayOfMonth || 0),
-            //     backgroundColor: 'rgb(75, 192, 192)',
-            //   },
-            //   {
-            //     label: 'Dataset 3',
-            //     data: labels.map((l) => sortedLedger.find((i) => i.dayOfMonth === l)?.dayOfMonth || 0),
-            //     backgroundColor: 'rgb(53, 162, 235)',
-            //   },
             ],
           };
 
@@ -50,7 +41,7 @@ export default function MoneyIn(props: MoneyInProps) {
       }, [sortedLedger]);
 
     useEffect(() => {
-        setSortedLedger(_.orderBy(ledger, ["dayOfMonth"], ["asc"]));
+        setSortedLedger(sortLedger(ledger));
       }, [ledger]);
 
 

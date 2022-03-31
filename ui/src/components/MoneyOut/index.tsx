@@ -11,6 +11,7 @@ import {
   import { Bar } from 'react-chartjs-2';
 import { chartLabels, chartOptions, graphDataInitialState } from "../../chart/ChartSettings";
 import AddMoneyOutModal from "../AddMoneyOutModal";
+import { pengerUt, sortLedger } from "../../data/Ledger";
 
 interface MoneyOutProps {
     ledger: Array<LedgerRow>
@@ -31,14 +32,9 @@ export default function MoneyOut(props: MoneyOutProps) {
             datasets: [
               {
                 label: 'Penger Ut',
-                data: chartLabels.map((l) => sortedLedger.find((i) => i.dayOfMonth === l && i.accountTo !== 'user')?.amount || 0),
+                data: pengerUt(chartLabels, sortedLedger),
                 backgroundColor: 'rgb(75, 192, 192)',
               },
-            //   {
-            //     label: 'Dataset 3',
-            //     data: labels.map((l) => sortedLedger.find((i) => i.dayOfMonth === l)?.dayOfMonth || 0),
-            //     backgroundColor: 'rgb(53, 162, 235)',
-            //   },
             ],
           };
 
@@ -46,7 +42,7 @@ export default function MoneyOut(props: MoneyOutProps) {
       }, [sortedLedger]);
 
     useEffect(() => {
-        setSortedLedger(_.orderBy(ledger, ["dayOfMonth"], ["asc"]));
+        setSortedLedger(sortLedger(ledger));
       }, [ledger]);
 
 
