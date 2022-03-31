@@ -10,6 +10,7 @@ import {
   } from 'chart.js';
   import { Bar } from 'react-chartjs-2';
 import { chartLabels, chartOptions, graphDataInitialState } from "../../chart/ChartSettings";
+import { pengerInn, pengerUt, sortLedger } from "../../data/Ledger";
 
 interface ResultatProps {
     ledger: Array<LedgerRow>
@@ -28,12 +29,12 @@ export default function Resultat(props: ResultatProps) {
             datasets: [
               {
                 label: 'Penger Inn',
-                data: chartLabels.map((l) => sortedLedger.find((i) => i.dayOfMonth === l && i.accountTo === 'user')?.amount || 0),
+                data: pengerInn(chartLabels, sortedLedger),
                 backgroundColor: 'rgb(255, 99, 132)',
                 },
               {
                 label: 'Penger Ut',
-                data: chartLabels.map((l) => sortedLedger.find((i) => i.dayOfMonth === l && i.accountTo !== 'user')?.amount || 0),
+                data: pengerUt(chartLabels, sortedLedger),
                 backgroundColor: 'rgb(75, 192, 192)',
               },
             ],
@@ -43,7 +44,7 @@ export default function Resultat(props: ResultatProps) {
       }, [sortedLedger]);
 
     useEffect(() => {
-        setSortedLedger(_.orderBy(ledger, ["dayOfMonth"], ["asc"]));
+        setSortedLedger(sortLedger(ledger));
       }, [ledger]);
 
 
