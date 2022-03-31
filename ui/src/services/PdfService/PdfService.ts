@@ -5,9 +5,23 @@ export interface RawAttachment {
     filename: PDFHexString | PDFString,
     fileSpec: PDFDict
 }
-export interface Attachment {
+interface Attachment {
     name: string,
     data: Uint8Array
+}
+export class DecodableAttachment implements Attachment {
+    name: string;
+    data: Uint8Array;
+
+    constructor(attachment: Attachment) {
+            this.name = attachment.name;
+            this.data = attachment.data;
+    }
+    public decodeAttachment() : string {
+        const decoder = new TextDecoder();
+        return decoder.decode(this.data);
+    }
+
 }
 class PdfHandler {
     buffer: ArrayBuffer;
@@ -29,22 +43,20 @@ class PdfHandler {
         return raw;
     }
     
-    public async getAttachments(doc: PDFDocument): Promise<Attachment[]> {
+    public async getAttachments(): Promise<DecodableAttachment[]> {
+        const doc = await PDFDocument.load(this.buffer);
         const raw = await this.getRawAttachments(doc);
         return raw.map((a) => {
             const stream = a.fileSpec
                 .lookup(PDFName.of("EF"), PDFDict)
                 .lookup(PDFName.of("F"), PDFStream) as PDFRawStream;
-            return {
+            return new DecodableAttachment({
                 name: a.filename.decodeText(),
                 data: decodePDFRawStream(stream).decode()
-            };
+            });
         });
     }
-    public decodeAttachment(attachment: Attachment) : string {
-        const decoder = new TextDecoder();
-        return decoder.decode(attachment.data);
-    }
+    
 }
 
 export default PdfHandler;
