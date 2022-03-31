@@ -7,15 +7,16 @@ import FamilyMemberCard from "../FamilyMemberCard";
 export interface UserDetailsProps {
   familyMembers: Array<FamilyMember>;
   addFamilyMember: (_: FamilyMember) => void;
+  completeStep: () => void
 }
 
 export default function UserDetails(props: UserDetailsProps) {
   const [addFamilyModalOpen, setAddFamilyModalOpen] = useState<boolean>(false);
-  const {addFamilyMember, familyMembers} = props
+  const {addFamilyMember, familyMembers, completeStep} = props
     return <Container>
       <Card.Group>
         { familyMembers.map((fm) => {
-          return <FamilyMemberCard />
+          return <FamilyMemberCard familyMember={fm} />
         }) }
       </Card.Group>
 
@@ -27,5 +28,10 @@ export default function UserDetails(props: UserDetailsProps) {
       <Button onClick={() => {
         setAddFamilyModalOpen(true);
       }}>Add Family Member</Button>
+
+      <Button onClick={() => {
+        completeStep();
+      }}>Next</Button>
+
     </Container>
 }
