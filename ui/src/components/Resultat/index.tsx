@@ -1,6 +1,6 @@
 import _ from "lodash";
 import { useEffect, useState } from "react";
-import { Button, Container, Table } from "semantic-ui-react";
+import { Button, Container, Progress, Table } from "semantic-ui-react";
 import { LedgerRow } from "../../App"
 import AddMoneyInModal from "../AddMoneyInModal";
 import styled from "styled-components";
@@ -9,8 +9,8 @@ import {
     ChartData,
   } from 'chart.js';
   import { Bar } from 'react-chartjs-2';
-import { chartLabels, chartOptions, graphDataInitialState } from "../../chart/ChartSettings";
-import { pengerInn, pengerUt, sortLedger } from "../../data/Ledger";
+import { chartLabels, chartOptions, graphDataInitialState, PengerInnColour, PengerUtColour } from "../../chart/ChartSettings";
+import { pengerInn, pengerInnTotal, pengerUt, pengerUtTotal, sortLedger } from "../../data/Ledger";
 
 interface ResultatProps {
     ledger: Array<LedgerRow>
@@ -20,6 +20,10 @@ interface ResultatProps {
 
 export default function Resultat(props: ResultatProps) {
     const [sortedLedger, setSortedLedger] = useState<LedgerRow[]>([]);
+    const [inTotal, setInTotal] = useState<number>(0);
+    const [inPercent, setInPercent] = useState<number>(0);
+    const [outTotal, setOutTotal] = useState<number>(0);
+    const [outPercent, setOutPercent] = useState<number>(0);
     const [graphData, setGraphData] = useState<ChartData<"bar", number[], unknown>>(graphDataInitialState);
     const { ledger, completeStep } = props;
     
@@ -30,23 +34,32 @@ export default function Resultat(props: ResultatProps) {
               {
                 label: 'Penger Inn',
                 data: pengerInn(chartLabels, sortedLedger),
-                backgroundColor: 'rgb(255, 99, 132)',
+                backgroundColor: PengerInnColour,
                 },
               {
                 label: 'Penger Ut',
                 data: pengerUt(chartLabels, sortedLedger),
-                backgroundColor: 'rgb(75, 192, 192)',
+                backgroundColor: PengerUtColour,
               },
             ],
           };
 
           setGraphData(data);
+
+          const totalIn = pengerInnTotal(chartLabels, sortedLedger)  
+          setInTotal(totalIn);
+          const totalOut = pengerUtTotal(chartLabels, sortedLedger)
+          setOutTotal(totalOut)
+
+          const inPercent = totalIn / (totalIn + totalOut) * 100;
+          const outPercent = totalOut / (totalIn + totalOut) * 100;
+          setInPercent(inPercent);
+          setOutPercent(outPercent);
       }, [sortedLedger]);
 
     useEffect(() => {
         setSortedLedger(sortLedger(ledger));
-      }, [ledger]);
-
+      }, [ledger]);  
 
     return <Container>
 
@@ -55,6 +68,19 @@ export default function Resultat(props: ResultatProps) {
         <StyledGraphContainer>
             <Bar options={chartOptions} data={graphData} />
         </StyledGraphContainer>
+
+        <StyledComparisonContainer>
+            <div>
+                <StyledBarTotal>{inTotal}kr</StyledBarTotal>
+                <h3>Penger Inn</h3>
+                <Progress size='small' percent={inPercent} color='green' />
+            </div>
+            <div>
+                <StyledBarTotal>{outTotal}kr</StyledBarTotal>
+                <h3>Penger Ut</h3>
+                <Progress size='small' percent={outPercent} color='yellow' />
+            </div>
+        </StyledComparisonContainer>
 
         <Button onClick={() => {
             completeStep();
@@ -81,6 +107,17 @@ export default function Resultat(props: ResultatProps) {
     </Container>
 }
 
+const StyledBarTotal = styled.h3`
+    position: relative;
+    float: right;
+`
+
 const StyledGraphContainer = styled.div`
     height: 100px;
 `
+
+const StyledComparisonContainer = styled.div`
+    padding: 50px;
+    text-align: left;
+`
+
