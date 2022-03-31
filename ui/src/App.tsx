@@ -1,13 +1,12 @@
 import './App.css';
 import { Route, Routes } from 'react-router-dom';
-import _ from 'lodash';
 
 import { useNavigate } from 'react-router-dom';
 import 'semantic-ui-css/semantic.min.css'
-import Steps, { StepDefinition } from './components/Steps';
+import Steps, { StepsState } from './components/Steps';
 import { useState } from 'react';
 import UserDetails from './components/UserDetails';
-import { StepsInitialState } from './data/StepsInitialState';
+import { InitialSteps } from './data/StepsInitialState';
 import MoneyIn from './components/MoneyIn';
 import MoneyOut from './components/MoneyOut';
 
@@ -21,7 +20,6 @@ import {
   Legend,
 } from 'chart.js';
 import Resultat from './components/Resultat';
-import { stepReducer } from './data/StepReducer';
 
 export interface FamilyMember {
   id: string;
@@ -48,7 +46,7 @@ ChartJS.register(
 
 function App() {
   const navigate = useNavigate();
-  const [steps, setSteps] = useState<Array<StepDefinition>>(StepsInitialState);
+  const [steps, setSteps] = useState<StepsState>(InitialSteps);
   const [familyMembers, setFamilyMembers] = useState<Array<FamilyMember>>([]);
   const [ledger, setLedger] = useState<Array<LedgerRow>>([]);
 
@@ -69,10 +67,20 @@ function App() {
   }
 
   const completeStep = (): void => {
-    const newSteps: Array<StepDefinition> = _.reduce( steps, stepReducer, new Array<StepDefinition>() )
-    setSteps(newSteps);
+    const nextActiveId = steps.activeStepId + 1;
+    const newSteps = steps.steps.map((s) => {
+      const completed = s.id === steps.activeStepId || s.completed
+      return {
+        ...s,
+        completed: completed
+      }
+    })
+    setSteps({
+      activeStepId: nextActiveId,
+      steps: newSteps
+    });
 
-    const currentStep = newSteps.find((s) => s.active === true )
+    const currentStep = steps.steps[nextActiveId];
     navigate(currentStep?.path || "/");
   }
 
