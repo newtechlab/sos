@@ -11,6 +11,7 @@ import {
   import { Bar } from 'react-chartjs-2';
 import { chartLabels, chartOptions, graphDataInitialState, PengerInnColour, PengerUtColour } from "../../chart/ChartSettings";
 import { pengerInn, pengerInnTotal, pengerUt, pengerUtTotal, sortLedger } from "../../data/Ledger";
+import { Slider } from "../Slider";
 
 interface ResultatProps {
     ledger: Array<LedgerRow>
@@ -68,6 +69,8 @@ export default function Resultat(props: ResultatProps) {
         <StyledGraphContainer>
             <Bar options={chartOptions} data={graphData} />
         </StyledGraphContainer>
+
+        <Slider />
 
         <StyledComparisonContainer>
             <div>
