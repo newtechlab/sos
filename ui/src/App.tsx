@@ -78,19 +78,7 @@ function App() {
       newSteps: []
     };
 
-    const callbackFn = (accumulation: Array<StepDefinition>, current: StepDefinition): Array<StepDefinition> => {
-      const prevItem: StepDefinition | undefined = (accumulation && accumulation.length > 0) ? accumulation[accumulation.length-1] : undefined
-      const prevItemCompleted = prevItem ? prevItem.completed : false;
-      const thisIsCompleted = current.active || current.completed;
-      const newStep: StepDefinition = {
-        ...current,
-        completed: thisIsCompleted,
-        active: prevItemCompleted && !thisIsCompleted
-      } 
-      return accumulation.concat(newStep);
-    }
-
-    const newSteps: Array<StepDefinition> = _.reduce( steps, callbackFn, new Array<StepDefinition>() )
+    const newSteps: Array<StepDefinition> = _.reduce( steps, stepReducer, new Array<StepDefinition>() )
     setSteps(newSteps);
 
     const currentStep = newSteps.find((s) => s.active === true )
