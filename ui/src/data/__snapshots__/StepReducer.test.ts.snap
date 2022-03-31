@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`step reducer to mark next step as complete 1`] = `
+Array [
+  Object {
+    "active": false,
+    "completed": true,
+    "description": "description 0",
+    "id": 0,
+    "path": "foo 0",
+    "title": "title 0",
+  },
+  Object {
+    "active": true,
+    "completed": false,
+    "description": "description 1",
+    "id": 1,
+    "path": "foo 1",
+    "title": "title 1",
+  },
+]
+`;
+
+exports[`step reducer to work with one step 1`] = `
+Array [
+  Object {
+    "active": false,
+    "completed": false,
+    "description": "description",
+    "id": 0,
+    "path": "foo",
+    "title": "title",
+  },
+]
+`;
