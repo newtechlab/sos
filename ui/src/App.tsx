@@ -21,16 +21,12 @@ import {
   Legend,
 } from 'chart.js';
 import Resultat from './components/Resultat';
+import { stepReducer } from './data/StepReducer';
 
 export interface FamilyMember {
   id: string;
   name: string;
   age: string
-}
-
-interface ReduceType {
-  previouslyActiveStep: number,
-  newSteps: Array<StepDefinition>
 }
 
 export interface LedgerRow {
@@ -73,11 +69,6 @@ function App() {
   }
 
   const completeStep = (): void => {
-    const s: ReduceType = {
-      previouslyActiveStep: -1,
-      newSteps: []
-    };
-
     const newSteps: Array<StepDefinition> = _.reduce( steps, stepReducer, new Array<StepDefinition>() )
     setSteps(newSteps);
 
