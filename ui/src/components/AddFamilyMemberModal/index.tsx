@@ -1,4 +1,4 @@
-import { Button, Card, Dropdown, Header, Icon, Image, Input, Modal } from "semantic-ui-react";
+import { Button, Dropdown, Image, Input, Modal } from "semantic-ui-react";
 import { FamilyMember } from "../../App";
 import family from './family.png';
 import { v4 as uuidv4 } from 'uuid';
