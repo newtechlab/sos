@@ -1,8 +1,6 @@
-import _ from "lodash";
 import { useEffect, useState } from "react";
 import { Button, Container, Table } from "semantic-ui-react";
 import { LedgerRow } from "../../App"
-import AddMoneyInModal from "../AddMoneyInModal";
 import styled from "styled-components";
 
 import {

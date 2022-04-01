@@ -1,4 +1,3 @@
-import _ from "lodash";
 import { useEffect, useState } from "react";
 import { Button, Container, Table } from "semantic-ui-react";
 import { LedgerRow } from "../../App"

@@ -2,7 +2,6 @@ import { Button, Dropdown, Input, Modal } from "semantic-ui-react";
 import { LedgerRow } from "../../App";
 import { v4 as uuidv4 } from 'uuid';
 import { useState } from "react";
-import _ from "lodash";
 import { getDaysOfMonthDropdown } from "../../data/DaysOfMonth";
 
 interface AddMoneyInModalProps {
