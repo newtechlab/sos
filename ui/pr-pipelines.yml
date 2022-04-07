@@ -11,6 +11,10 @@ steps:
   - script: |
       yarn install
       yarn lint
-      yarn test --watchAll=false --coverage
+      yarn test --watchAll=false --reporters=default --reporters=jest-junit
       yarn build
     workingDirectory: ui
+
+  - task: PublishTestResults@2
+    inputs:    
+      testResultsFiles: '**/junit.xml'
