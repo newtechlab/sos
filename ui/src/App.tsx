@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 
 import { useNavigate } from 'react-router-dom';
 import 'semantic-ui-css/semantic.min.css'
-import Steps, { StepsState } from './components/Steps';
+import Steps, { StepDefinition, StepGroupType, StepsState } from './components/Steps';
 import { useState } from 'react';
 import UserDetails from './components/UserDetails';
 import { InitialSteps } from './data/StepsInitialState';
@@ -21,6 +21,8 @@ import {
 } from 'chart.js';
 import Resultat from './components/Resultat';
 import styled from 'styled-components';
+import _ from 'lodash';
+import { progressStep } from './data/StepProgressor';
 
 export interface FamilyMember {
   id: string;
@@ -67,22 +69,10 @@ function App() {
     setLedger(filtered);
   }
 
-  const completeStep = (): void => {
-    const nextActiveId = steps.activeStepId + 1;
-    const newSteps = steps.steps.map((s) => {
-      const completed = s.id === steps.activeStepId || s.completed
-      return {
-        ...s,
-        completed: completed
-      }
-    })
-    setSteps({
-      activeStepId: nextActiveId,
-      steps: newSteps
-    });
-
-    const currentStep = steps.steps[nextActiveId];
-    navigate(currentStep?.path || "/");
+  const completeStep = () => {
+    const newState = progressStep(steps)
+    setSteps(newState);
+    navigate(newState.steps[newState.activeStepId]?.path || "/");
   }
 
   return (
