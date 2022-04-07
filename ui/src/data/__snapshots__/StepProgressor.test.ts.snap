@@ -1,0 +1,78 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Progresses a step 1`] = `
+Object {
+  "activeStepId": 1,
+  "completedGroups": Set {
+    0,
+  },
+  "stepGroups": Map {
+    0 => Object {
+      "description": "Oversikt over familen",
+      "title": "Familie",
+    },
+    1 => Object {
+      "description": "Lønn og andre støtteordninger",
+      "title": "Penger inn",
+    },
+    2 => Object {
+      "description": "Oversikt over familen",
+      "title": "Penger ut",
+    },
+    3 => Object {
+      "description": "Tiltak og råd ",
+      "title": "Resultat 1",
+    },
+  },
+  "steps": Array [
+    Object {
+      "completed": true,
+      "group": 0,
+      "heading": "erwfkjwefkjwer",
+      "id": 0,
+      "path": "foo 0",
+    },
+  ],
+}
+`;
+
+exports[`Progresses a step when there are two items in the same group 1`] = `
+Object {
+  "activeStepId": 1,
+  "completedGroups": Set {},
+  "stepGroups": Map {
+    0 => Object {
+      "description": "Oversikt over familen",
+      "title": "Familie",
+    },
+    1 => Object {
+      "description": "Lønn og andre støtteordninger",
+      "title": "Penger inn",
+    },
+    2 => Object {
+      "description": "Oversikt over familen",
+      "title": "Penger ut",
+    },
+    3 => Object {
+      "description": "Tiltak og råd ",
+      "title": "Resultat 1",
+    },
+  },
+  "steps": Array [
+    Object {
+      "completed": true,
+      "group": 0,
+      "heading": "erwfkjwefkjwer",
+      "id": 0,
+      "path": "foo 0",
+    },
+    Object {
+      "completed": false,
+      "group": 0,
+      "heading": "erwfkjwefkjwer",
+      "id": 1,
+      "path": "foo 1",
+    },
+  ],
+}
+`;

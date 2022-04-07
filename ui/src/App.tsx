@@ -20,6 +20,10 @@ import {
   Legend,
 } from 'chart.js';
 import Resultat from './components/Resultat';
+import styled from 'styled-components';
+import { progressStep } from './data/StepProgressor';
+import ResultatInteract from './components/ResultatInteract';
+import { Container } from 'semantic-ui-react';
 
 export interface FamilyMember {
   id: string;
@@ -66,57 +70,84 @@ function App() {
     setLedger(filtered);
   }
 
-  const completeStep = (): void => {
-    const nextActiveId = steps.activeStepId + 1;
-    const newSteps = steps.steps.map((s) => {
-      const completed = s.id === steps.activeStepId || s.completed
-      return {
-        ...s,
-        completed: completed
-      }
-    })
-    setSteps({
-      activeStepId: nextActiveId,
-      steps: newSteps
-    });
-
-    const currentStep = steps.steps[nextActiveId];
-    navigate(currentStep?.path || "/");
+  const completeStep = () => {
+    const newState = progressStep(steps)
+    setSteps(newState);
+    navigate(newState.steps[newState.activeStepId]?.path || "/");
   }
 
+  const activeStep = steps.steps.find((s) => s.id === steps.activeStepId)
+
   return (
-    <div className="App">
-      <h1>Familieoversikt</h1>
-      <Steps steps={steps} />
+    <StyledRootDiv className="App">
+      
+      <StyledHeaderDiv>
+        <Container>
+          <h1>{ activeStep?.heading}</h1>
+          { activeStep && activeStep?.description && <p> { activeStep?.description } </p> } 
+          <Steps steps={steps} />
+        </Container>
+      </StyledHeaderDiv>
+
       {/* <h1>Hello There</h1> */}
-      <Routes>
-        <Route path="/" element={
-          <UserDetails 
-            familyMembers={familyMembers} 
-            addFamilyMember = {purpleMonkeyDishWasher}
+      <StyledBodyDiv>
+        <Routes>
+          <Route path="/" element={
+            <UserDetails 
+              familyMembers={familyMembers} 
+              addFamilyMember = {purpleMonkeyDishWasher}
+              completeStep={completeStep}
+            />} />
+          <Route path="/penger-inn" element={<MoneyIn 
+            ledger={ledger} 
+            addLedgerRow={addLedgerRow} 
+            removeLedgerRow={deleteLedgerRow} 
+            completeStep={completeStep}
+          />} 
+          />
+          <Route path="/penger-ut" element={<MoneyOut 
+            ledger={ledger} 
+            addLedgerRow={addLedgerRow} 
+            removeLedgerRow={deleteLedgerRow} 
             completeStep={completeStep}
           />} />
-        <Route path="/penger-inn" element={<MoneyIn 
-          ledger={ledger} 
-          addLedgerRow={addLedgerRow} 
-          removeLedgerRow={deleteLedgerRow} 
-          completeStep={completeStep}
-        />} 
-        />
-        <Route path="/penger-ut" element={<MoneyOut 
-          ledger={ledger} 
-          addLedgerRow={addLedgerRow} 
-          removeLedgerRow={deleteLedgerRow} 
-          completeStep={completeStep}
-        />} />
-        <Route path="/resultat" element={<Resultat 
-          ledger={ledger} 
-          removeLedgerRow={deleteLedgerRow} 
-          completeStep={completeStep}
-        />} />
-      </Routes>
-    </div>
+          <Route path="/resultat1" element={<ResultatInteract 
+            ledger={ledger} 
+            removeLedgerRow={deleteLedgerRow} 
+            completeStep={completeStep}
+          />} />
+          <Route path="/resultat2" element={<Resultat 
+            ledger={ledger} 
+            removeLedgerRow={deleteLedgerRow} 
+            completeStep={completeStep}
+          />} />
+        </Routes>
+      </StyledBodyDiv>
+    </StyledRootDiv>
   );
 }
+
+const StyledRootDiv = styled.div`
+    div, p, h1, h2, h3, h4, button, table {
+      font-family: Montserrat !important;
+      font-weight: 300;
+    }
+    background-color: #F1F8F8;
+    height: 100%;
+    min-height: 100vh;
+`
+
+const StyledBodyDiv = styled.div`
+    text-align: left;
+    padding-top: 40px;
+    padding-bottom: 40px;
+`
+
+const StyledHeaderDiv = styled.div`
+    text-align: left;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    background-color: #FFF !important;
+`
 
 export default App;

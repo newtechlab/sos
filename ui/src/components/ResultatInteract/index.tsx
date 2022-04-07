@@ -11,14 +11,17 @@ import { chartLabels, chartOptions, graphDataInitialState, PengerInnColour, Peng
 import { pengerInn, pengerInnTotal, pengerUt, pengerUtTotal, sortLedger } from "../../data/Ledger";
 import { Slider } from "../Slider";
 import { StyledBoxSection } from "../StyledBoxSection";
+import NextButton from "../NextButton";
+import MoneyInList from "../MoneyInList";
+import MoneyOutList from "../MoneyOutList";
 
-interface ResultatProps {
+interface ResultatInteractProps {
     ledger: Array<LedgerRow>
     removeLedgerRow: (id: string) => void 
     completeStep: () => void
 }
 
-export default function Resultat(props: ResultatProps) {
+export default function ResultatInteract(props: ResultatInteractProps) {
     const [sortedLedger, setSortedLedger] = useState<LedgerRow[]>([]);
     const [inTotal, setInTotal] = useState<number>(0);
     const [inPercent, setInPercent] = useState<number>(0);
@@ -27,18 +30,20 @@ export default function Resultat(props: ResultatProps) {
     const [graphData, setGraphData] = useState<ChartData<"bar", number[], unknown>>(graphDataInitialState);
     const { ledger, completeStep } = props;
     
+    const labels = [ "Pender Inn", "Penger Ut" ]
+
     useEffect(() => {
         const data = {
-            labels: chartLabels,
+            labels: labels,
             datasets: [
               {
                 label: 'Penger Inn',
-                data: pengerInn(chartLabels, sortedLedger),
+                data: [inTotal],
                 backgroundColor: PengerInnColour,
                 },
               {
                 label: 'Penger Ut',
-                data: pengerUt(chartLabels, sortedLedger),
+                data: [outTotal],
                 backgroundColor: PengerUtColour,
               },
             ],
@@ -63,53 +68,63 @@ export default function Resultat(props: ResultatProps) {
 
     return <Container>
 
-        <StyledBoxSection> 
-            <h1>Resultat</h1>
+        <StyledBoxSection>
+            <h1>Balanseoversikt</h1>
+        </StyledBoxSection>
+
+        <StyledBoxSection>
+            <h1>Pengebruk</h1>
 
             <StyledGraphContainer>
                 <Bar options={chartOptions} data={graphData} />
             </StyledGraphContainer>
 
-            <Slider />
+            <div>
+                Over or under section
+            </div>
 
-            <StyledComparisonContainer>
-                <div>
-                    <StyledBarTotal>{inTotal}kr</StyledBarTotal>
-                    <h3>Penger Inn</h3>
-                    <Progress size='small' percent={inPercent} color='green' />
-                </div>
-                <div>
-                    <StyledBarTotal>{outTotal}kr</StyledBarTotal>
-                    <h3>Penger Ut</h3>
-                    <Progress size='small' percent={outPercent} color='yellow' />
-                </div>
-            </StyledComparisonContainer>
+            <PaddedSection>
+                <StyledRow>
+                    <StyledColumn>
+                        <h2>Løpende utgifter</h2>
+                        <MoneyInList />
+                    </StyledColumn>
+                    <StyledColumn>
+                        <h2>Kuttbare utgifter</h2>
+                        <MoneyOutList />
+                    </StyledColumn>
+                </StyledRow>
+            </PaddedSection>
 
-            <Button onClick={() => {
+            <NextButton completeStep={() => {
                 completeStep();
-            }}>Finish</Button>
+            }} />
 
-            <Table>
-                <Table.Header>
-                    <Table.Row>
-                        <Table.HeaderCell>Item</Table.HeaderCell>
-                        <Table.HeaderCell>Amount</Table.HeaderCell>
-                        <Table.HeaderCell>Day of month</Table.HeaderCell>
-                    </Table.Row>
-                </Table.Header>
-                <Table.Body>
-                { sortedLedger.map( (row) => {
-                    return <Table.Row key={row.id}>
-                        <Table.Cell>{row.accountFrom}</Table.Cell>
-                        <Table.Cell>{row.amount}</Table.Cell>
-                        <Table.Cell>{row.dayOfMonth}</Table.Cell>
-                        </Table.Row>
-                })} 
-                </Table.Body>
-            </Table>
         </StyledBoxSection>
+        
     </Container>
 }
+
+const PaddedSection = styled.div`
+    margin-top: 40px;
+    height: 500px;
+`
+
+const StyledRow = styled.div`
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 100%;
+`
+
+const StyledColumn = styled.div`
+    display: flex;
+    flex-direction: column;
+    flex-basis: 100%;
+    flex: 1;
+    padding: 10px;
+`
 
 const StyledBarTotal = styled.h3`
     position: relative;

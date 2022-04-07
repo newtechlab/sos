@@ -10,6 +10,7 @@ import {
 import { chartLabels, chartOptions, graphDataInitialState, PengerUtColour } from "../../chart/ChartSettings";
 import AddMoneyOutModal from "../AddMoneyOutModal";
 import { pengerUt, sortLedger } from "../../data/Ledger";
+import NextButton from "../NextButton";
 
 interface MoneyOutProps {
     ledger: Array<LedgerRow>
@@ -61,9 +62,7 @@ export default function MoneyOut(props: MoneyOutProps) {
             setAddMoneyOutModalOpen(true);
         }}>Add Outgoings</Button>
 
-        <Button onClick={() => {
-            completeStep();
-        }}>Next</Button>
+        <NextButton completeStep={() => completeStep()} />
 
         <Table>
             <Table.Header>
