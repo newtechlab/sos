@@ -20,6 +20,7 @@ import {
   Legend,
 } from 'chart.js';
 import Resultat from './components/Resultat';
+import styled from 'styled-components';
 
 export interface FamilyMember {
   id: string;
@@ -85,38 +86,62 @@ function App() {
   }
 
   return (
-    <div className="App">
-      <h1>Familieoversikt</h1>
-      <Steps steps={steps} />
+    <StyledRootDiv className="App">
+      
+      <StyledHeaderDiv>
+        <h1>Familieoversikt</h1>
+        <Steps steps={steps} />
+      </StyledHeaderDiv>
+
       {/* <h1>Hello There</h1> */}
-      <Routes>
-        <Route path="/" element={
-          <UserDetails 
-            familyMembers={familyMembers} 
-            addFamilyMember = {purpleMonkeyDishWasher}
+      <StyledBodyDiv>
+        <Routes>
+          <Route path="/" element={
+            <UserDetails 
+              familyMembers={familyMembers} 
+              addFamilyMember = {purpleMonkeyDishWasher}
+              completeStep={completeStep}
+            />} />
+          <Route path="/penger-inn" element={<MoneyIn 
+            ledger={ledger} 
+            addLedgerRow={addLedgerRow} 
+            removeLedgerRow={deleteLedgerRow} 
+            completeStep={completeStep}
+          />} 
+          />
+          <Route path="/penger-ut" element={<MoneyOut 
+            ledger={ledger} 
+            addLedgerRow={addLedgerRow} 
+            removeLedgerRow={deleteLedgerRow} 
             completeStep={completeStep}
           />} />
-        <Route path="/penger-inn" element={<MoneyIn 
-          ledger={ledger} 
-          addLedgerRow={addLedgerRow} 
-          removeLedgerRow={deleteLedgerRow} 
-          completeStep={completeStep}
-        />} 
-        />
-        <Route path="/penger-ut" element={<MoneyOut 
-          ledger={ledger} 
-          addLedgerRow={addLedgerRow} 
-          removeLedgerRow={deleteLedgerRow} 
-          completeStep={completeStep}
-        />} />
-        <Route path="/resultat" element={<Resultat 
-          ledger={ledger} 
-          removeLedgerRow={deleteLedgerRow} 
-          completeStep={completeStep}
-        />} />
-      </Routes>
-    </div>
+          <Route path="/resultat" element={<Resultat 
+            ledger={ledger} 
+            removeLedgerRow={deleteLedgerRow} 
+            completeStep={completeStep}
+          />} />
+        </Routes>
+      </StyledBodyDiv>
+    </StyledRootDiv>
   );
 }
+
+const StyledRootDiv = styled.div`
+    background-color: #F1F8F8;
+    height: 100%;
+    min-height: 100vh;
+`
+
+const StyledBodyDiv = styled.div`
+    text-align: left;
+    padding-top: 40px;
+    padding-bottom: 40px;
+`
+
+const StyledHeaderDiv = styled.div`
+    padding-top: 40px;
+    padding-bottom: 40px;
+    background-color: #FFF !important;
+`
 
 export default App;
