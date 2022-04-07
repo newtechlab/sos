@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 
 import { useNavigate } from 'react-router-dom';
 import 'semantic-ui-css/semantic.min.css'
-import Steps, { StepDefinition, StepGroupType, StepsState } from './components/Steps';
+import Steps, { StepsState } from './components/Steps';
 import { useState } from 'react';
 import UserDetails from './components/UserDetails';
 import { InitialSteps } from './data/StepsInitialState';
@@ -21,8 +21,9 @@ import {
 } from 'chart.js';
 import Resultat from './components/Resultat';
 import styled from 'styled-components';
-import _ from 'lodash';
 import { progressStep } from './data/StepProgressor';
+import ResultatInteract from './components/ResultatInteract';
+import { Container } from 'semantic-ui-react';
 
 export interface FamilyMember {
   id: string;
@@ -75,12 +76,17 @@ function App() {
     navigate(newState.steps[newState.activeStepId]?.path || "/");
   }
 
+  const activeStep = steps.steps.find((s) => s.id === steps.activeStepId)
+
   return (
     <StyledRootDiv className="App">
       
       <StyledHeaderDiv>
-        <h1>Familieoversikt</h1>
-        <Steps steps={steps} />
+        <Container>
+          <h1>{ activeStep?.heading}</h1>
+          { activeStep && activeStep?.description && <p> { activeStep?.description } </p> } 
+          <Steps steps={steps} />
+        </Container>
       </StyledHeaderDiv>
 
       {/* <h1>Hello There</h1> */}
@@ -105,7 +111,12 @@ function App() {
             removeLedgerRow={deleteLedgerRow} 
             completeStep={completeStep}
           />} />
-          <Route path="/resultat" element={<Resultat 
+          <Route path="/resultat1" element={<ResultatInteract 
+            ledger={ledger} 
+            removeLedgerRow={deleteLedgerRow} 
+            completeStep={completeStep}
+          />} />
+          <Route path="/resultat2" element={<Resultat 
             ledger={ledger} 
             removeLedgerRow={deleteLedgerRow} 
             completeStep={completeStep}
@@ -117,6 +128,10 @@ function App() {
 }
 
 const StyledRootDiv = styled.div`
+    div, p, h1, h2, h3, h4, button, table {
+      font-family: Montserrat !important;
+      font-weight: 300;
+    }
     background-color: #F1F8F8;
     height: 100%;
     min-height: 100vh;
@@ -129,6 +144,7 @@ const StyledBodyDiv = styled.div`
 `
 
 const StyledHeaderDiv = styled.div`
+    text-align: left;
     padding-top: 40px;
     padding-bottom: 40px;
     background-color: #FFF !important;

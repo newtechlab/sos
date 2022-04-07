@@ -28,6 +28,7 @@ Object {
     Object {
       "completed": true,
       "group": 0,
+      "heading": "erwfkjwefkjwer",
       "id": 0,
       "path": "foo 0",
     },
@@ -61,12 +62,14 @@ Object {
     Object {
       "completed": true,
       "group": 0,
+      "heading": "erwfkjwefkjwer",
       "id": 0,
       "path": "foo 0",
     },
     Object {
       "completed": false,
       "group": 0,
+      "heading": "erwfkjwefkjwer",
       "id": 1,
       "path": "foo 1",
     },

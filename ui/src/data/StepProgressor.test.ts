@@ -15,7 +15,8 @@ test('Progresses a step', () => {
       id: 0,
       group: StepGroupType.FAMILY,
       completed: false,
-      path: "foo 0"
+      path: "foo 0",
+      heading: "erwfkjwefkjwer"
     }]
   }
   const newState = progressStep(startState);
@@ -36,13 +37,15 @@ test('Progresses a step when there are two items in the same group', () => {
       id: 0,
       group: StepGroupType.FAMILY,
       completed: false,
-      path: "foo 0"
+      path: "foo 0",
+      heading: "erwfkjwefkjwer"
     },
     {
       id: 1,
       group: StepGroupType.FAMILY,
       completed: false,
-      path: "foo 1"
+      path: "foo 1",
+      heading: "erwfkjwefkjwer"
     }]
   }
   const newState = progressStep(startState);

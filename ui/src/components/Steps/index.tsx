@@ -25,6 +25,8 @@ export interface StepDefinition {
     group: StepGroupType;
     completed: boolean;
     path: string;
+    heading: string;
+    description?: string;
 }
 
 export interface StepsProps {
@@ -35,8 +37,9 @@ export default function Steps(props: StepsProps) {
     const { steps } = props
     const ActiveIcon = "arrow alternate circle down";
     const CompleteIcon = "check circle";
-    return <Step.Group>
-            { Array.from( steps.stepGroups ).map(([id, step]) => {
+    const stepsArray = Array.from( steps.stepGroups )
+    return <Step.Group widths={4}>
+            { stepsArray.map(([id, step]) => {
                 const isActive = steps.activeStepId === id;
                 return <Step key={id} active={isActive}>
                     {  isActive && <Icon name={ActiveIcon} color="teal" /> }
