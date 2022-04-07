@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button, Container, Progress, Table } from "semantic-ui-react";
-import { LedgerRow } from "../../App"
+import { FamilyMember, LedgerRow } from "../../App"
 import styled from "styled-components";
 
 import {
@@ -11,11 +11,43 @@ import { chartLabels, chartOptions, graphDataInitialState, PengerInnColour, Peng
 import { pengerInn, pengerInnTotal, pengerUt, pengerUtTotal, sortLedger } from "../../data/Ledger";
 import { Slider } from "../Slider";
 import { StyledBoxSection } from "../StyledBoxSection";
+import { PDFDocument } from "pdf-lib";
+import PdfHandler from "../../services/PdfService/PdfService";
 
 interface ResultatProps {
     ledger: Array<LedgerRow>
+    familyMembers: Array<FamilyMember>
     removeLedgerRow: (id: string) => void 
     completeStep: () => void
+}
+
+const createPdf = async (ledger: Array<LedgerRow>, familyMembers: Array<FamilyMember>) => {
+    const pdfDoc = await PDFDocument.create()
+    const objectToAttach = {
+        version: "0.0.1",
+        timestamp: Date.now(),
+        familyMembers: familyMembers,
+        ledger: ledger
+    }
+    const uint8array = new TextEncoder().encode(JSON.stringify(objectToAttach));
+    pdfDoc.attach(uint8array, "sos_state")
+    const page = pdfDoc.addPage()
+    page.drawText('Keep this document for next time')
+    const pdfBytes = await pdfDoc.save()
+    const blob=new Blob([pdfBytes], {type: "application/pdf"});// change resultByte to bytes
+
+    const pdfHandler = new PdfHandler(pdfBytes);
+    const attachments = await pdfHandler.getAttachments();
+    const attachmentsAsObject = attachments.map((a) => {
+         const decoded = new TextDecoder().decode(a.data);
+         return JSON.parse(decoded)
+    })
+    console.log("attachments", attachmentsAsObject);
+
+    const link=document.createElement('a');
+    link.href=window.URL.createObjectURL(blob);
+    link.download="myFileName.pdf";
+    link.click();
 }
 
 export default function Resultat(props: ResultatProps) {
@@ -25,7 +57,7 @@ export default function Resultat(props: ResultatProps) {
     const [outTotal, setOutTotal] = useState<number>(0);
     const [outPercent, setOutPercent] = useState<number>(0);
     const [graphData, setGraphData] = useState<ChartData<"bar", number[], unknown>>(graphDataInitialState);
-    const { ledger, completeStep } = props;
+    const { ledger, familyMembers, completeStep } = props;
     
     useEffect(() => {
         const data = {
@@ -85,10 +117,6 @@ export default function Resultat(props: ResultatProps) {
                 </div>
             </StyledComparisonContainer>
 
-            <Button onClick={() => {
-                completeStep();
-            }}>Finish</Button>
-
             <Table>
                 <Table.Header>
                     <Table.Row>
@@ -107,6 +135,12 @@ export default function Resultat(props: ResultatProps) {
                 })} 
                 </Table.Body>
             </Table>
+
+            <Button circular color="teal" onClick={() => {
+                createPdf(ledger, familyMembers);
+                completeStep();
+            }}>Finish and download report</Button>    
+
         </StyledBoxSection>
     </Container>
 }

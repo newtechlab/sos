@@ -1,6 +1,5 @@
 
 import { PDFDocument, PDFName, PDFDict, PDFArray, PDFHexString, PDFString, PDFStream, PDFRawStream, decodePDFRawStream } from 'pdf-lib';
-import { TextDecoder } from 'util';
 export interface RawAttachment {
     filename: PDFHexString | PDFString,
     fileSpec: PDFDict

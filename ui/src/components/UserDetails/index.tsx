@@ -22,9 +22,9 @@ export default function UserDetails(props: UserDetailsProps) {
 
       <Card.Group>
         { familyMembers.map((fm) => {
-          return <FamilyMemberCard familyMember={fm} />
+          return <FamilyMemberCard key={fm.id} familyMember={fm} />
         }) }
-        <AddFamilyMemberCard onClick={() => {setAddFamilyModalOpen(true)}} />
+        <AddFamilyMemberCard key="ADD_NEW_MEMBER" onClick={() => {setAddFamilyModalOpen(true)}} />
       </Card.Group>
 
       { addFamilyModalOpen && <AddFamilyMemberModal 

@@ -118,6 +118,7 @@ function App() {
           />} />
           <Route path="/resultat2" element={<Resultat 
             ledger={ledger} 
+            familyMembers={familyMembers}
             removeLedgerRow={deleteLedgerRow} 
             completeStep={completeStep}
           />} />
