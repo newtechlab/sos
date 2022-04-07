@@ -1,15 +1,29 @@
+import _ from "lodash";
 import { Icon, Step } from "semantic-ui-react";
 
 export interface StepsState {
     activeStepId:  number;
+    completedGroups: Set<StepGroupType>;
+    stepGroups: Map<StepGroupType, StepGroup>;
     steps: Array<StepDefinition>;
+}
+
+export enum StepGroupType {
+    FAMILY,
+    MONEY_IN,
+    MONEY_OUT,
+    RESULTS
+}
+
+export interface StepGroup {
+    title: string;
+    description: string;
 }
 
 export interface StepDefinition {
     id: number;
+    group: StepGroupType;
     completed: boolean;
-    title: string;
-    description: string;
     path: string;
 }
 
@@ -22,14 +36,14 @@ export default function Steps(props: StepsProps) {
     const ActiveIcon = "arrow alternate circle down";
     const CompleteIcon = "check circle";
     return <Step.Group>
-            { steps.steps.map((step) => {
-                const isActive = steps.activeStepId === step.id;
-                return <Step key={step.id} active={isActive}>
+            { Array.from( steps.stepGroups ).map(([id, step]) => {
+                const isActive = steps.activeStepId === id;
+                return <Step key={id} active={isActive}>
                     {  isActive && <Icon name={ActiveIcon} color="teal" /> }
-                    {  step.completed && <Icon name={CompleteIcon} color="teal" /> } 
+                    {  steps.completedGroups.has(id) && <Icon name={CompleteIcon} color="green" /> } 
                     <Step.Content>
-                    <Step.Title>{ step.title }</Step.Title>
-                    <Step.Description> { step.description }</Step.Description>
+                    <Step.Title>{ steps.stepGroups.get(id)?.title }</Step.Title>
+                    <Step.Description> { steps.stepGroups.get(id)?.description }</Step.Description>
                     </Step.Content>
                 </Step>
             })}

@@ -5,6 +5,7 @@ import { FamilyMember } from "../../App";
 import AddFamilyMemberCard from "../AddFamilyMemberCard";
 import AddFamilyMemberModal from "../AddFamilyMemberModal";
 import FamilyMemberCard from "../FamilyMemberCard";
+import NextButton from "../NextButton";
 
 export interface UserDetailsProps {
   familyMembers: Array<FamilyMember>;
@@ -37,9 +38,7 @@ export default function UserDetails(props: UserDetailsProps) {
           setAddFamilyModalOpen(true);
         }}>Add Family Member</Button> */}
 
-        <Button circular color="teal" onClick={() => {
-          completeStep();
-        }}>Neste</Button>
+        <NextButton completeStep={() => completeStep()} />  
 
       </StyledBControlsDiv>  
 

@@ -1,38 +1,65 @@
-import { StepDefinition, StepsState } from "../components/Steps";
+import { StepDefinition, StepGroup, StepGroupType, StepsState } from "../components/Steps";
 
 const StepsInitialState: Array<StepDefinition> = [
     {
         id: 0,
+        group: StepGroupType.FAMILY,
         completed: false,
-        title: "Familie",
-        description: "Oversikt over familen",
         path: "/"
     },
     {
         id: 1,
+        group: StepGroupType.MONEY_IN,
         completed: false,
-        title: "Penger inn",
-        description: "Lønn og andre støtteordninger",
         path: "penger-inn"
     },
     {
         id: 2,
+        group: StepGroupType.MONEY_OUT,
         completed: false,
-        title: "Penger ut",
-        description: "Utgifter og gjeld",
         path: "penger-ut"
     },
     {
         id: 3,
+        group: StepGroupType.RESULTS,
         completed: false,
-        title: "Resultat",
-        description: "Tiltak og råd ",
+        path: "resultat"
+    },
+    {
+        id: 4,
+        group: StepGroupType.RESULTS,
+        completed: false,
         path: "resultat"
     },
 ];
 
+
+
+const StepGroups = (): Map<StepGroupType, StepGroup> => {
+    const stepGroups: Map<StepGroupType, StepGroup> = new Map<StepGroupType, StepGroup>();
+    stepGroups.set(StepGroupType.FAMILY, {
+        title: "Familie",
+        description: "Oversikt over familen",
+    })
+    stepGroups.set(StepGroupType.MONEY_IN, {
+        title: "Penger inn",
+        description: "Lønn og andre støtteordninger",
+    })
+    stepGroups.set(StepGroupType.MONEY_OUT, {
+        title: "Penger ut",
+        description: "Oversikt over familen",
+    })
+    stepGroups.set(StepGroupType.RESULTS, {
+        title: "Resultat 1",
+        description: "Tiltak og råd ",
+    })
+    return stepGroups;
+}
+
 export const InitialSteps: StepsState = {
     activeStepId: 0,
-    steps: StepsInitialState
+    steps: StepsInitialState,
+    stepGroups: StepGroups(),
+    completedGroups: new Set<StepGroupType>()
 }
 

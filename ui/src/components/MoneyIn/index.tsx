@@ -10,6 +10,7 @@ import {
   import { Bar } from 'react-chartjs-2';
 import { chartLabels, chartOptions, graphDataInitialState } from "../../chart/ChartSettings";
 import { pengerInn, sortLedger } from "../../data/Ledger";
+import NextButton from "../NextButton";
 
 interface MoneyInProps {
     ledger: Array<LedgerRow>
@@ -58,9 +59,7 @@ export default function MoneyIn(props: MoneyInProps) {
             setAddMoneyInModalOpen(true);
         }}>Add income</Button>
 
-        <Button onClick={() => {
-            completeStep();
-        }}>Next</Button>
+        <NextButton completeStep={() => completeStep()} />
 
         <Table>
             <Table.Header>
