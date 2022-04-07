@@ -11,6 +11,6 @@ steps:
   - script: |
       yarn install
       yarn lint
-      yarn test --watchAll=false
+      yarn test --watchAll=false --coverage
       yarn build
     workingDirectory: ui
