@@ -1,38 +1,47 @@
 import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
+import { useNavigate } from "react-router-dom";
 import { Button, Container } from "semantic-ui-react";
 import styled from "styled-components";
+import { FamilyMember, LedgerRow } from "../../App";
 import PdfHandler from "../../services/PdfService/PdfService";
 import { StyledBoxSection } from "../StyledBoxSection";
 
+export interface HomProps {
+    setFamilyMembers: (_: Array<FamilyMember>) => void
+    setLedger: (_: Array<LedgerRow>) => void
+}
 
-export default function Home() {
+export default function Home(props: HomProps) {
+    const navigate = useNavigate();
+    const { setFamilyMembers, setLedger } = props; 
     const onDrop = useCallback(acceptedFiles => {
-        // Do something with the files
-        // alert("foobar");
-
-        console.log('files', acceptedFiles);
-
-        //Step 2: Read the file using file reader
         const fileReader = new FileReader();  
- 
         fileReader.onload =  async (event) => {
 
             if (event?.target?.readyState === FileReader.DONE) {
-                //Step 4:turn array buffer into typed array
                 const typedarray = new Uint8Array(event.target.result as ArrayBuffer);
-
-                //Step 5:pdfjs should be able to read this
                 const pdfHandler = new PdfHandler(typedarray);
                 const attachments = await pdfHandler.getAttachments();
                 const attachmentsAsObject = attachments.map((a) => {
                     const decoded = new TextDecoder().decode(a.data);
                     return JSON.parse(decoded)
                 })
-                console.log("attachments", attachmentsAsObject);
-            }                       
+                
+                attachmentsAsObject.map((attachment) => {
+                    if (attachment.familyMembers) {
+                        const fm = attachment.familyMembers as Array<FamilyMember>
+                        setFamilyMembers(fm);
+                    }
+
+                    if (attachment.ledger) {
+                        const ledger = attachment.ledger as Array<LedgerRow>
+                        setLedger(ledger)
+                    }
+                })
+            }   
+            navigate("/family");                    
         };
-        //Step 3:Read the file as ArrayBuffer
         fileReader.readAsArrayBuffer(acceptedFiles[0]);
 
       }, [])

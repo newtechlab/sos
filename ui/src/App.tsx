@@ -90,10 +90,9 @@ function App() {
         </Container>
       </StyledHeaderDiv>
 
-      {/* <h1>Hello There</h1> */}
       <StyledBodyDiv>
         <Routes>
-          <Route path="/" element={<Home/>} />
+          <Route path="/" element={<Home setFamilyMembers={setFamilyMembers} setLedger={setLedger} />} />
           <Route path="/family" element={
             <UserDetails 
               familyMembers={familyMembers} 
