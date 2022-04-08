@@ -5,7 +5,7 @@ const StepsInitialState: Array<StepDefinition> = [
         id: 0,
         group: StepGroupType.FAMILY,
         completed: false,
-        path: "/",
+        path: "/family",
         heading: "Familieoversikt",
         description: "Før vi starter ønsker vi å få en oversikt over familiesituasjonen din og litt grunnlegende innsikt."
     },
