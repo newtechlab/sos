@@ -24,6 +24,7 @@ import styled from 'styled-components';
 import { progressStep } from './data/StepProgressor';
 import ResultatInteract from './components/ResultatInteract';
 import { Container } from 'semantic-ui-react';
+import Home from './components/Home';
 
 export interface FamilyMember {
   id: string;
@@ -92,7 +93,8 @@ function App() {
       {/* <h1>Hello There</h1> */}
       <StyledBodyDiv>
         <Routes>
-          <Route path="/" element={
+          <Route path="/" element={<Home/>} />
+          <Route path="/family" element={
             <UserDetails 
               familyMembers={familyMembers} 
               addFamilyMember = {purpleMonkeyDishWasher}
