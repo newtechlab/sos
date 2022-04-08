@@ -1,5 +1,6 @@
 import PdfHandler, { DecodableAttachment } from "./PdfService";
 import {PDFDocument, PDFPage, rgb} from "pdf-lib";
+global.TextDecoder = require("util").TextDecoder;
 
 const attachmentName = "data.json";
 const testData = {
