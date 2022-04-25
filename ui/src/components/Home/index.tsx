@@ -12,6 +12,8 @@ export interface HomProps {
     setLedger: (_: Array<LedgerRow>) => void
 }
 
+export const firstStep = "/family";
+
 export default function Home(props: HomProps) {
     const navigate = useNavigate();
     const { setFamilyMembers, setLedger } = props; 
@@ -40,7 +42,7 @@ export default function Home(props: HomProps) {
                     }
                 })
             }   
-            navigate("/family");                    
+            navigate(firstStep);                    
         };
         fileReader.readAsArrayBuffer(acceptedFiles[0]);
 
@@ -59,7 +61,7 @@ export default function Home(props: HomProps) {
             }
             </div>
             
-            <Button>Start new</Button>
+            <Button onClick={() => {navigate(firstStep)}}>Start new</Button>
             
         </StyledBoxSection>
     </Container>
