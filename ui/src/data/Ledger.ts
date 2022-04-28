@@ -12,12 +12,12 @@ export const pengerInnTotal = (chartLabels: number[], ledger: Array<LedgerRow>):
 export const pengerUt = (chartLabels: number[], ledger: Array<LedgerRow>): Array<number> => {
     return chartLabels.map((l) => { 
         const amount = ledger.find((i) => i.dayOfMonth === l && i.accountTo !== 'user')?.amount || 0
-        return amount * -1;
+        return amount //* -1;
     })
 }
 
 export const pengerUtTotal = (chartLabels: number[], ledger: Array<LedgerRow>): number => {
-    return pengerUt(chartLabels, ledger).reduce((total, amount) => total + amount) * -1
+    return pengerUt(chartLabels, ledger).reduce((total, amount) => total + amount) // * -1
 }
 
 export const sortLedger = (ledger: Array<LedgerRow>) => {

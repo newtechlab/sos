@@ -14,9 +14,7 @@ import {
   PengerUtColour,
 } from "../../chart/ChartSettings";
 import {
-  pengerInn,
   pengerInnTotal,
-  pengerUt,
   pengerUtTotal,
   sortLedger,
 } from "../../data/Ledger";
@@ -81,25 +79,27 @@ export default function ResultatInteract(props: ResultatInteractProps) {
   }
 
   useEffect(() => {
+    computeInOutPercent();
+  }, [sortedLedger]);
+
+  useEffect(() => {
     const data = {
       labels: labels,
       datasets: [
         {
           label: "Penger Inn",
-          data: [inTotal],
+          data: [inTotal, 0],
           backgroundColor: PengerInnColour,
         },
         {
           label: "Penger Ut",
-          data: [outTotal],
+          data: [0, outTotal],
           backgroundColor: PengerUtColour,
         },
       ],
     };
-
     setGraphData(data);
-    computeInOutPercent();
-  }, [sortedLedger]);
+  }, [inTotal, outTotal]);
 
   useEffect(() => {
     setSortedLedger(sortLedger(ledger));
