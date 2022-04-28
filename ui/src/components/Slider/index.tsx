@@ -1,8 +1,14 @@
 import { useState } from "react";
 import styled from "styled-components";
 
-export const Slider = () => {
-  const [slider, setSlider] = useState<string>("0");
+interface SliderProps {
+  id: string;
+  onUpdateValue: (id: string, value: string) => void
+}
+
+export const Slider = (props: SliderProps) => {
+  const { id, onUpdateValue } = props
+  const [slider, setSlider] = useState<string>("100");
 
   return (
     <div className="slidecontainer">
@@ -14,8 +20,8 @@ export const Slider = () => {
         className="slider"
         id="myRange"
         onChange={(e) => {
-          console.log("e", e);
           setSlider(e.target.value);
+          onUpdateValue(id, e.target.value)
         }}
       />
     </div>

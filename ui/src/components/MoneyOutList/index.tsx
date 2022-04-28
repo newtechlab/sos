@@ -1,14 +1,14 @@
 import styled from "styled-components";
 import { Slider } from "../Slider";
 import { LedgerRow } from "../../App";
-import { v4 as uuidv4 } from "uuid";
 
 export interface MoneyOutListProps {
   moneyOut: LedgerRow[];
+  onUpdateValue: (id: string, value: string) => void
 }
 
 export function MoneyOutList(props: MoneyOutListProps) {
-  const { moneyOut } = props;
+  const { moneyOut, onUpdateValue } = props;
 
   if (moneyOut.length === 0) {
     return <div>Please add some items to you expenses first</div>;
@@ -23,7 +23,7 @@ export function MoneyOutList(props: MoneyOutListProps) {
               <AmountDiv>{row.amount}</AmountDiv>
               <TitleDiv>{row.accountTo}</TitleDiv>
               <SliderDiv>
-                <Slider />
+                <Slider id={row.id} onUpdateValue={onUpdateValue} />
               </SliderDiv>
             </MoneyOutItemBox>
           </div>

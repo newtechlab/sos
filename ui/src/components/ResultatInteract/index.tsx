@@ -32,8 +32,17 @@ interface ResultatInteractProps {
   completeStep: () => void;
 }
 
+interface Adjustments {
+  ledgerRowId: string;
+  adjustment: string;
+}
+
+type LedgerRowId = string;
+type AdjustmentAmountPercent = string;
+
 export default function ResultatInteract(props: ResultatInteractProps) {
   const [sortedLedger, setSortedLedger] = useState<LedgerRow[]>([]);
+  const [adjustments, setAdjustments] = useState<Map<LedgerRowId, AdjustmentAmountPercent>>(new Map<LedgerRowId, AdjustmentAmountPercent>());
   const [moneyOut, setMoneyOut] = useState<LedgerRow[]>([]);
   const [inTotal, setInTotal] = useState<number>(0);
   const [inPercent, setInPercent] = useState<number>(0);
@@ -45,6 +54,31 @@ export default function ResultatInteract(props: ResultatInteractProps) {
   const { ledger, completeStep } = props;
 
   const labels = ["Penger Inn", "Penger Ut"];
+
+  const computeInOutPercent = () => {
+
+    const adjustedLedger = sortedLedger.map((row) => {
+      if (adjustments.has(row.id)) {
+        const adjustment = parseInt(adjustments.get(row.id) || "100")
+        return {
+          ...row,
+          amount: row.amount / 100 * adjustment
+        }
+      }else {
+        return row
+      }
+    })
+
+    const totalIn = pengerInnTotal(chartLabels, adjustedLedger);
+    setInTotal(totalIn);
+    const totalOut = pengerUtTotal(chartLabels, adjustedLedger);
+    setOutTotal(totalOut);
+
+    const inPercent = (totalIn / (totalIn + totalOut)) * 100;
+    const outPercent = (totalOut / (totalIn + totalOut)) * 100;
+    setInPercent(inPercent);
+    setOutPercent(outPercent);
+  }
 
   useEffect(() => {
     const data = {
@@ -64,16 +98,7 @@ export default function ResultatInteract(props: ResultatInteractProps) {
     };
 
     setGraphData(data);
-
-    const totalIn = pengerInnTotal(chartLabels, sortedLedger);
-    setInTotal(totalIn);
-    const totalOut = pengerUtTotal(chartLabels, sortedLedger);
-    setOutTotal(totalOut);
-
-    const inPercent = (totalIn / (totalIn + totalOut)) * 100;
-    const outPercent = (totalOut / (totalIn + totalOut)) * 100;
-    setInPercent(inPercent);
-    setOutPercent(outPercent);
+    computeInOutPercent();
   }, [sortedLedger]);
 
   useEffect(() => {
@@ -86,6 +111,11 @@ export default function ResultatInteract(props: ResultatInteractProps) {
     });
     setMoneyOut(mOut);
   }, [sortedLedger]);
+
+  const onUpdateSlider = (id: string, value: string) => {    
+    setAdjustments(adjustments.set(id, value))
+    computeInOutPercent();
+  }
 
   return (
     <Container>
@@ -106,10 +136,23 @@ export default function ResultatInteract(props: ResultatInteractProps) {
           <StyledRow>
             <StyledColumn>
               <h2>Løpende utgifter</h2>
-              <MoneyOutList moneyOut={moneyOut} />
+              <MoneyOutList moneyOut={moneyOut} onUpdateValue={onUpdateSlider} />
             </StyledColumn>
           </StyledRow>
         </PaddedSection>
+
+        <StyledComparisonContainer>
+            <div>
+                <StyledBarTotal>outgoings: {outTotal}kr</StyledBarTotal>
+                <h3>Spending Percentage</h3>
+                <Progress size='small' percent={outPercent} color='red' />
+            </div>
+            <div>
+                <StyledBarTotal>income: {inTotal}kr</StyledBarTotal>
+                <h3>Income Percentage</h3>
+                <Progress size='small' percent={inPercent} color='green' />
+            </div>
+        </StyledComparisonContainer>
 
         <NextButton
           completeStep={() => {
@@ -123,7 +166,6 @@ export default function ResultatInteract(props: ResultatInteractProps) {
 
 const PaddedSection = styled.div`
   margin-top: 40px;
-  height: 500px;
 `;
 
 const StyledRow = styled.div`
