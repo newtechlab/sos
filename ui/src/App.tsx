@@ -116,84 +116,86 @@ function App() {
 
   return (
     <StyledRootDiv className="App">
-      <StyledHeaderDiv>
-        <Container>
-          <h1>{activeStep?.heading}</h1>
-          {activeStep && activeStep?.description && (
-            <p> {activeStep?.description} </p>
-          )}
-          <Steps steps={steps} />
-        </Container>
-      </StyledHeaderDiv>
+      <StyledOverridesDiv>
+        <StyledHeaderDiv>
+          <Container>
+            <h1>{activeStep?.heading}</h1>
+            {activeStep && activeStep?.description && (
+              <p> {activeStep?.description} </p>
+            )}
+            <Steps steps={steps} />
+          </Container>
+        </StyledHeaderDiv>
 
-      <StyledBodyDiv>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <Home setFamilyMembers={setFamilyMembers} setLedger={setLedger} />
-            }
-          />
-          <Route
-            path="/family"
-            element={
-              <UserDetails
-                familyMembers={familyMembers}
-                addFamilyMember={purpleMonkeyDishWasher}
-                completeStep={completeStep}
-              />
-            }
-          />
-          <Route
-            path="/penger-inn"
-            element={
-              <MoneyIn
-                ledger={ledger}
-                addLedgerRow={addLedgerRow}
-                removeLedgerRow={deleteLedgerRow}
-                completeStep={completeStep}
-              />
-            }
-          />
-          <Route
-            path="/penger-ut"
-            element={
-              <MoneyOut
-                ledger={ledger}
-                addLedgerRow={addLedgerRow}
-                removeLedgerRow={deleteLedgerRow}
-                completeStep={completeStep}
-              />
-            }
-          />
-          <Route
-            path="/resultat1"
-            element={
-              <ResultatInteract
-                ledger={ledger}
-                removeLedgerRow={deleteLedgerRow}
-                completeStep={completeStep}
-              />
-            }
-          />
-          <Route
-            path="/resultat2"
-            element={
-              <Resultat
-                ledger={ledger}
-                familyMembers={familyMembers}
-                removeLedgerRow={deleteLedgerRow}
-                completeStep={completeStep}
-              />
-            }
-          />
-        </Routes>
-      </StyledBodyDiv>
+        <StyledBodyDiv>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <Home setFamilyMembers={setFamilyMembers} setLedger={setLedger} />
+              }
+            />
+            <Route
+              path="/family"
+              element={
+                <UserDetails
+                  familyMembers={familyMembers}
+                  addFamilyMember={purpleMonkeyDishWasher}
+                  completeStep={completeStep}
+                />
+              }
+            />
+            <Route
+              path="/penger-inn"
+              element={
+                <MoneyIn
+                  ledger={ledger}
+                  addLedgerRow={addLedgerRow}
+                  removeLedgerRow={deleteLedgerRow}
+                  completeStep={completeStep}
+                />
+              }
+            />
+            <Route
+              path="/penger-ut"
+              element={
+                <MoneyOut
+                  ledger={ledger}
+                  addLedgerRow={addLedgerRow}
+                  removeLedgerRow={deleteLedgerRow}
+                  completeStep={completeStep}
+                />
+              }
+            />
+            <Route
+              path="/resultat1"
+              element={
+                <ResultatInteract
+                  ledger={ledger}
+                  removeLedgerRow={deleteLedgerRow}
+                  completeStep={completeStep}
+                />
+              }
+            />
+            <Route
+              path="/resultat2"
+              element={
+                <Resultat
+                  ledger={ledger}
+                  familyMembers={familyMembers}
+                  removeLedgerRow={deleteLedgerRow}
+                  completeStep={completeStep}
+                />
+              }
+            />
+          </Routes>
+        </StyledBodyDiv>
+      </StyledOverridesDiv>
     </StyledRootDiv>
   );
 }
 
-const StyledRootDiv = styled.div`
+export const StyledOverridesDiv = styled.div`
   div,
   p,
   h1,
@@ -205,6 +207,9 @@ const StyledRootDiv = styled.div`
     font-family: Montserrat !important;
     font-weight: 300;
   }
+`;
+
+export const StyledRootDiv = styled.div`
   background-color: #f1f8f8;
   height: 100%;
   min-height: 100vh;
