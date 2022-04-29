@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Container, Table } from "semantic-ui-react";
+import { Button, Container, Icon, Table } from "semantic-ui-react";
 import { LedgerRow } from "../../App"
 import styled from "styled-components";
 
@@ -11,6 +11,8 @@ import { chartLabels, chartOptions, graphDataInitialState, PengerUtColour } from
 import AddMoneyOutModal from "../AddMoneyOutModal";
 import { pengerUt, sortLedger } from "../../data/Ledger";
 import NextButton from "../NextButton";
+import BackForwardControls from "../BackForwardControls";
+import { StyledBoxSection } from "../StyledBoxSection";
 
 interface MoneyOutProps {
     ledger: Array<LedgerRow>
@@ -52,42 +54,51 @@ export default function MoneyOut(props: MoneyOutProps) {
             setOpen={setAddMoneyOutModalOpen} 
             addLedgerRow={addLedgerRow}   /> }
 
-        <h1>Penger Ut</h1>
+        <h1>Lønn og andre støtteordninger</h1>    
+        <StyledBoxSection>
+            
+            { sortedLedger.length > 0 ? <Table>
+                <Table.Header>
+                    <Table.Row>
+                        <Table.HeaderCell>Item</Table.HeaderCell>
+                        <Table.HeaderCell>Amount</Table.HeaderCell>
+                        <Table.HeaderCell>Day of month</Table.HeaderCell>
+                    </Table.Row>
+                </Table.Header>
+                <Table.Body>
+                { sortedLedger.map( (row) => {
 
-        <StyledGraphContainer>
+                    if (row.accountTo !== "user") {
+                        return <Table.Row key={row.id}>
+                            <Table.Cell>{row.accountFrom}</Table.Cell>
+                            <Table.Cell>{row.amount}</Table.Cell>
+                            <Table.Cell>{row.dayOfMonth}</Table.Cell>
+                            </Table.Row>
+                    } else {
+                        return <></>
+                    }
+
+                })} 
+                </Table.Body>
+            </Table> : <></> }
+
+            <Button circular color="blue" onClick={() => {
+                setAddMoneyOutModalOpen(true);
+            }}><Icon name='plus' />Legg til inntekt</Button>
+
+        </StyledBoxSection>
+
+        {/* <StyledGraphContainer>
             <Bar options={chartOptions} data={graphData} />
-        </StyledGraphContainer>
+        </StyledGraphContainer> */}
 
-        <Button onClick={() => {
-            setAddMoneyOutModalOpen(true);
-        }}>Add Outgoings</Button>
+    
+        {/* <NextButton completeStep={() => completeStep()} /> */}
 
-        <NextButton completeStep={() => completeStep()} />
+        
 
-        <Table>
-            <Table.Header>
-                <Table.Row>
-                    <Table.HeaderCell>Item</Table.HeaderCell>
-                    <Table.HeaderCell>Amount</Table.HeaderCell>
-                    <Table.HeaderCell>Day of month</Table.HeaderCell>
-                </Table.Row>
-            </Table.Header>
-            <Table.Body>
-            { sortedLedger.map( (row) => {
+        <BackForwardControls goBack={() => console.log("foo")} completeStep={completeStep} />   
 
-                if (row.accountTo !== "user") {
-                    return <Table.Row key={row.id}>
-                        <Table.Cell>{row.accountFrom}</Table.Cell>
-                        <Table.Cell>{row.amount}</Table.Cell>
-                        <Table.Cell>{row.dayOfMonth}</Table.Cell>
-                        </Table.Row>
-                } else {
-                    return <></>
-                }
-
-            })} 
-            </Table.Body>
-        </Table>
     </Container>
 }
 
