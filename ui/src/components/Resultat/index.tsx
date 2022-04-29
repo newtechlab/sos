@@ -35,7 +35,7 @@ const createPdf = async (ledger: Array<LedgerRow>, familyMembers: Array<FamilyMe
     const FrontPageImage = await pdfDoc.embedPng(FrontPageBytes)
     const FrontPageDims = FrontPageImage.scale(0.5)
     page.drawImage(FrontPageImage, {
-        x: 25,
+        x: 100,
         y: 300,
         width: FrontPageDims.width,
         height: FrontPageDims.height,
