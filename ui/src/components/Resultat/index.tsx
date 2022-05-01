@@ -31,6 +31,18 @@ const createPdf = async (ledger: Array<LedgerRow>, familyMembers: Array<FamilyMe
     const uint8array = new TextEncoder().encode(JSON.stringify(objectToAttach));
     pdfDoc.attach(uint8array, "sos_state")
     const page = pdfDoc.addPage()
+    const FrontPageBytes = await fetch('frontpage.png').then(res => res.arrayBuffer())
+    const FrontPageImage = await pdfDoc.embedPng(FrontPageBytes)
+    const FrontPageDims = FrontPageImage.scale(0.5)
+    page.drawImage(FrontPageImage, {
+        x: 100,
+        y: 300,
+        width: FrontPageDims.width,
+        height: FrontPageDims.height,
+        // rotate: degrees(30),
+        // opacity: 0.75,
+      })
+
     page.drawText('Keep this document for next time')
     const pdfBytes = await pdfDoc.save()
     const blob=new Blob([pdfBytes], {type: "application/pdf"});// change resultByte to bytes
