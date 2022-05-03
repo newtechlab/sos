@@ -54,12 +54,12 @@ export default function Home(props: HomProps) {
         <Image size="large" src={frontpage_family} wrapped />
         <Styledtitle>Økonomiveilederen</Styledtitle>
 
-        <p>
+        <StyledParagraph>
           Velkommen til økonomiveilederen! Målet med dette verktøyet er å gi deg
           bedre oversikt over din pengebruk. Ved å få bedre oversikt, tror vi at
           det blir enklere å ta nødvendige grep for å få en trygg økonomi og en
           enklere hverdag.{" "}
-        </p>
+        </StyledParagraph>
 
         <StyledNBParagraph>
           <StyledIcon>
@@ -73,9 +73,7 @@ export default function Home(props: HomProps) {
         <StyledSpace {...getRootProps()}>
           <input {...getInputProps()} />
           {isDragActive ? (
-            <StyledDragParagraph>
-              Drag a previous session here ...
-            </StyledDragParagraph>
+            <StyledDragParagraphActive>Slipp fil</StyledDragParagraphActive>
           ) : (
             <StyledDragParagraph>
               <Icon name="cloud upload" color="blue" /> Dra og slipp PDF eller
@@ -109,6 +107,12 @@ const StyledDragParagraph = styled.p`
   padding: 3em;
   border-radius: 3px;
 `;
+const StyledDragParagraphActive = styled.p`
+  background-color: #f1f8f8 !important;
+  border: 2px solid #3d8eb1;
+  padding: 3em;
+  border-radius: 3px;
+`;
 
 const Styledtitle = styled.h1`
   font-weight: bold !important;
@@ -119,6 +123,7 @@ const StyledNBParagraph = styled.p`
   padding: 0.5em;
   text-align: left;
   border-radius: 3px;
+  margin-bottom: 2em;
 `;
 const StyledIcon = styled.p`
   background-color: #f1f8f8 !important;
@@ -128,4 +133,8 @@ const StyledIcon = styled.p`
   font-size: 17px;
   border-radius: 2px;
   float: left;
+`;
+
+const StyledParagraph = styled.p`
+  margin-bottom: 3em;
 `;
