@@ -1,14 +1,17 @@
 import styled from "styled-components";
 import { Slider } from "../Slider";
 import { LedgerRow } from "../../App";
+import { AdjustmentAmountPercent } from "../ResultatInteract";
+import { Grid, Icon } from "semantic-ui-react";
 
 export interface MoneyOutListProps {
   moneyOut: LedgerRow[];
+  adjustments: Map<string, AdjustmentAmountPercent>;
   onUpdateValue: (id: string, value: string) => void
 }
 
 export function MoneyOutList(props: MoneyOutListProps) {
-  const { moneyOut, onUpdateValue } = props;
+  const { moneyOut, onUpdateValue, adjustments } = props;
 
   if (moneyOut.length === 0) {
     return <div>Please add some items to you expenses first</div>;
@@ -17,13 +20,16 @@ export function MoneyOutList(props: MoneyOutListProps) {
   return (
     <OuterBox>
       {moneyOut.map((row) => {
+
+        const adjustment = parseInt(adjustments.get(row.id) || "100")
+
         return (
           <div>
             <MoneyOutItemBox>
-              <AmountDiv>{row.amount}</AmountDiv>
+              <AmountDiv>{ Math.round(row.amount / 100 * adjustment ) }</AmountDiv>
               <TitleDiv>{row.accountTo}</TitleDiv>
               <SliderDiv>
-                <Slider id={row.id} onUpdateValue={onUpdateValue} />
+                <Slider id={row.id} onUpdateValue={onUpdateValue} maxPercent={"120"} />
               </SliderDiv>
             </MoneyOutItemBox>
           </div>

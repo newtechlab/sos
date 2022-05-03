@@ -36,10 +36,12 @@ interface Adjustments {
 }
 
 type LedgerRowId = string;
-type AdjustmentAmountPercent = string;
+export type AdjustmentAmountPercent = string;
 
 export default function ResultatInteract(props: ResultatInteractProps) {
   const [sortedLedger, setSortedLedger] = useState<LedgerRow[]>([]);
+  const [goal, setGoal] = useState<number>(3000);
+  const [goalMonths, setGoalMonths] = useState<number>(0);
   const [adjustments, setAdjustments] = useState<Map<LedgerRowId, AdjustmentAmountPercent>>(new Map<LedgerRowId, AdjustmentAmountPercent>());
   const [moneyOut, setMoneyOut] = useState<LedgerRow[]>([]);
   const [inTotal, setInTotal] = useState<number>(0);
@@ -60,7 +62,7 @@ export default function ResultatInteract(props: ResultatInteractProps) {
         const adjustment = parseInt(adjustments.get(row.id) || "100")
         return {
           ...row,
-          amount: row.amount / 100 * adjustment
+          amount: Math.round(row.amount / 100 * adjustment)
         }
       }else {
         return row
@@ -81,6 +83,10 @@ export default function ResultatInteract(props: ResultatInteractProps) {
   useEffect(() => {
     computeInOutPercent();
   }, [sortedLedger]);
+
+  useEffect(() => {
+    setGoalMonths(Math.round(goal / (inTotal - outTotal)));
+  }, [inTotal, outTotal]);
 
   useEffect(() => {
     const data = {
@@ -136,7 +142,7 @@ export default function ResultatInteract(props: ResultatInteractProps) {
           <StyledRow>
             <StyledColumn>
               <h2>Løpende utgifter</h2>
-              <MoneyOutList moneyOut={moneyOut} onUpdateValue={onUpdateSlider} />
+              <MoneyOutList moneyOut={moneyOut} onUpdateValue={onUpdateSlider} adjustments={adjustments} />
             </StyledColumn>
           </StyledRow>
         </PaddedSection>
@@ -148,9 +154,13 @@ export default function ResultatInteract(props: ResultatInteractProps) {
                 <Progress size='small' percent={outPercent} color='red' />
             </div>
             <div>
-                <StyledBarTotal>income: {inTotal}kr</StyledBarTotal>
+                <StyledBarTotal>you are saving: {inTotal - outTotal}kr</StyledBarTotal>
                 <h3>Income Percentage</h3>
                 <Progress size='small' percent={inPercent} color='green' />
+            </div>
+            <div>
+                <h3>Goal, but me a pony</h3>
+                { goalMonths < 0 ? <p>You need to make more savings to achieve your goal</p> : <p>You will achieve your goal in {goalMonths} months</p> }
             </div>
         </StyledComparisonContainer>
 
