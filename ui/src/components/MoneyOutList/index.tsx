@@ -24,7 +24,7 @@ export function MoneyOutList(props: MoneyOutListProps) {
         const adjustment = parseInt(adjustments.get(row.id) || "100")
 
         return (
-          <div>
+          <div key={`moneyout_${row.id}`}>
             <MoneyOutItemBox>
               <AmountDiv>{ Math.round(row.amount / 100 * adjustment ) }</AmountDiv>
               <TitleDiv>{row.accountTo}</TitleDiv>
