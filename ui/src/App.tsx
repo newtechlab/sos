@@ -4,12 +4,11 @@ import { Route, Routes } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import "semantic-ui-css/semantic.min.css";
 import Steps, { StepsState } from "./components/Steps";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import UserDetails from "./components/UserDetails";
 import { InitialSteps } from "./data/StepsInitialState";
 import MoneyIn from "./components/MoneyIn";
 import MoneyOut from "./components/MoneyOut";
-import { v4 as uuidv4 } from "uuid";
 
 import {
   Chart as ChartJS,
@@ -72,39 +71,39 @@ function App() {
     setLedger(filtered);
   };
 
-  // This is kept as it is useful for local testing  
-  useEffect(() => {
-    setLedger([
-      {
-        id: uuidv4(),
-        dayOfMonth: 1,
-        amount: 1000,
-        accountFrom: "salary",
-        accountTo: "user",
-      },
-      {
-        id: uuidv4(),
-        dayOfMonth: 10,
-        amount: 100,
-        accountFrom: "user",
-        accountTo: "netflix",
-      },
-      {
-        id: uuidv4(),
-        dayOfMonth: 1,
-        amount: 1000,
-        accountFrom: "user",
-        accountTo: "coffee",
-      },
-      {
-        id: uuidv4(),
-        dayOfMonth: 15,
-        amount: 167,
-        accountFrom: "user",
-        accountTo: "pony",
-      },
-    ]);
-  }, []);
+  // // This is kept as it is useful for local testing  
+  // useEffect(() => {
+  //   setLedger([
+  //     {
+  //       id: uuidv4(),
+  //       dayOfMonth: 1,
+  //       amount: 1000,
+  //       accountFrom: "salary",
+  //       accountTo: "user",
+  //     },
+  //     {
+  //       id: uuidv4(),
+  //       dayOfMonth: 10,
+  //       amount: 100,
+  //       accountFrom: "user",
+  //       accountTo: "netflix",
+  //     },
+  //     {
+  //       id: uuidv4(),
+  //       dayOfMonth: 1,
+  //       amount: 1000,
+  //       accountFrom: "user",
+  //       accountTo: "coffee",
+  //     },
+  //     {
+  //       id: uuidv4(),
+  //       dayOfMonth: 15,
+  //       amount: 167,
+  //       accountFrom: "user",
+  //       accountTo: "pony",
+  //     },
+  //   ]);
+  // }, []);
 
   const completeStep = () => {
     const newState = progressStep(steps);
