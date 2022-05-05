@@ -1,5 +1,5 @@
 import { Button, Container, Grid, Input, Modal } from "semantic-ui-react";
-import { LedgerRow, StyledOverridesDiv } from "../../App";
+import { LedgerRow, StyledOverridesDiv, TransactionCategory } from "../../App";
 import { v4 as uuidv4 } from 'uuid';
 import { useState } from "react";
 import DaySelector from "../DaySelector";
@@ -81,7 +81,8 @@ export default function AddMoneyInModal(props: AddMoneyInModalProps) {
                                                 dayOfMonth: day,
                                                 amount: amount,
                                                 accountFrom: from,
-                                                accountTo: "user" 
+                                                accountTo: "user",
+                                                category: TransactionCategory.Income
                                             })
                                             setOpen(false)
                                         } else {

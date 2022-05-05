@@ -1,16 +1,9 @@
 import { useEffect, useState } from "react";
 import { Button, Container, Icon, Table } from "semantic-ui-react";
 import { LedgerRow } from "../../App"
-import styled from "styled-components";
 
-import {
-    ChartData,
-  } from 'chart.js';
-  import { Bar } from 'react-chartjs-2';
-import { chartLabels, chartOptions, graphDataInitialState, PengerUtColour } from "../../chart/ChartSettings";
 import AddMoneyOutModal from "../AddMoneyOutModal";
-import { pengerUt, sortLedger } from "../../data/Ledger";
-import NextButton from "../NextButton";
+import { sortLedger } from "../../data/Ledger";
 import BackForwardControls from "../BackForwardControls";
 import { StyledBoxSection } from "../StyledBoxSection";
 
@@ -24,23 +17,23 @@ interface MoneyOutProps {
 export default function MoneyOut(props: MoneyOutProps) {
     const [addMoneyOutModalOpen, setAddMoneyOutModalOpen] = useState<boolean>(false);
     const [sortedLedger, setSortedLedger] = useState<LedgerRow[]>([]);
-    const [graphData, setGraphData] = useState<ChartData<"bar", number[], unknown>>(graphDataInitialState);
+    // const [graphData, setGraphData] = useState<ChartData<"bar", number[], unknown>>(graphDataInitialState);
     const { ledger, addLedgerRow, completeStep } = props;
     
-    useEffect(() => {
-        const data = {
-            labels: chartLabels,
-            datasets: [
-              {
-                label: 'Penger Ut',
-                data: pengerUt(chartLabels, sortedLedger),
-                backgroundColor: PengerUtColour,
-              },
-            ],
-          };
+    // useEffect(() => {
+    //     const data = {
+    //         labels: chartLabels,
+    //         datasets: [
+    //           {
+    //             label: 'Penger Ut',
+    //             data: pengerUt(chartLabels, sortedLedger),
+    //             backgroundColor: PengerUtColour,
+    //           },
+    //         ],
+    //       };
 
-          setGraphData(data);
-      }, [sortedLedger]);
+    //       setGraphData(data);
+    //   }, [sortedLedger]);
 
     useEffect(() => {
         setSortedLedger(sortLedger(ledger));
@@ -61,6 +54,7 @@ export default function MoneyOut(props: MoneyOutProps) {
                 <Table.Header>
                     <Table.Row>
                         <Table.HeaderCell>Item</Table.HeaderCell>
+                        <Table.HeaderCell>Category</Table.HeaderCell>
                         <Table.HeaderCell>Amount</Table.HeaderCell>
                         <Table.HeaderCell>Day of month</Table.HeaderCell>
                     </Table.Row>
@@ -70,12 +64,13 @@ export default function MoneyOut(props: MoneyOutProps) {
 
                     if (row.accountTo !== "user") {
                         return <Table.Row key={row.id}>
-                            <Table.Cell>{row.accountFrom}</Table.Cell>
+                            <Table.Cell>{row.accountTo}</Table.Cell>
+                            <Table.Cell>{row.category}</Table.Cell>
                             <Table.Cell>{row.amount}</Table.Cell>
                             <Table.Cell>{row.dayOfMonth}</Table.Cell>
                             </Table.Row>
                     } else {
-                        return <></>
+                        return null
                     }
 
                 })} 
@@ -102,6 +97,6 @@ export default function MoneyOut(props: MoneyOutProps) {
     </Container>
 }
 
-const StyledGraphContainer = styled.div`
-    height: 100px;
-`
+// const StyledGraphContainer = styled.div`
+//     height: 100px;
+// `

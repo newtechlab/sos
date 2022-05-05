@@ -9,6 +9,7 @@ import UserDetails from "./components/UserDetails";
 import { InitialSteps } from "./data/StepsInitialState";
 import MoneyIn from "./components/MoneyIn";
 import MoneyOut from "./components/MoneyOut";
+// import { v4 as uuidv4 } from "uuid";
 
 import {
   Chart as ChartJS,
@@ -25,11 +26,32 @@ import { progressStep } from "./data/StepProgressor";
 import ResultatInteract from "./components/ResultatInteract";
 import { Container } from "semantic-ui-react";
 import Home from "./components/Home";
+// import { useEffect } from "react";
 
 export interface FamilyMember {
   id: string;
   name: string;
   age: string;
+}
+
+export enum TransactionCategory {
+  Housing = "HOUSING",
+  Transportation = "TRANSPORTATION",
+  Food = "FOOD",
+  Utilities = "UTILITIES",
+  Clothing = "CLOTHING",
+  Medical_Healthcare = "MEDICAL_HEALTHCARE",
+  Insurance = "INSURANCE",
+  Household_Items = "HOUSEHOLD_ITEMS",
+  Personal = "PERSONAL",
+  Debt = "DEBT",
+  Retirement = "RETIREMENT",
+  Education = "EDUCATION",
+  Savings = "SAVINGS",
+  Gifts_Donations = "GIFTS_DONATIONS",
+  Entertainment = "ENTERTAINMENT",
+  Income = "INCOME",
+  Undefined = "UNDEFINED"
 }
 
 export interface LedgerRow {
@@ -38,6 +60,7 @@ export interface LedgerRow {
   amount: number;
   accountFrom: string;
   accountTo: string;
+  category: TransactionCategory;
 }
 
 ChartJS.register(
@@ -80,6 +103,7 @@ function App() {
   //       amount: 1000,
   //       accountFrom: "salary",
   //       accountTo: "user",
+  //       category: TransactionCategory.Income
   //     },
   //     {
   //       id: uuidv4(),
@@ -87,6 +111,7 @@ function App() {
   //       amount: 100,
   //       accountFrom: "user",
   //       accountTo: "netflix",
+  //       category: TransactionCategory.Entertainment
   //     },
   //     {
   //       id: uuidv4(),
@@ -94,6 +119,7 @@ function App() {
   //       amount: 1000,
   //       accountFrom: "user",
   //       accountTo: "coffee",
+  //       category: TransactionCategory.Food
   //     },
   //     {
   //       id: uuidv4(),
@@ -101,6 +127,7 @@ function App() {
   //       amount: 167,
   //       accountFrom: "user",
   //       accountTo: "pony",
+  //       category: TransactionCategory.Food
   //     },
   //   ]);
   // }, []);

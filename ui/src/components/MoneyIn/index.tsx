@@ -1,18 +1,10 @@
 import { useEffect, useState } from "react";
-import { Button, Container, Grid, Icon, Table } from "semantic-ui-react";
+import { Button, Container, Icon, Table } from "semantic-ui-react";
 import { LedgerRow } from "../../App"
 import AddMoneyInModal from "../AddMoneyInModal";
-import styled from "styled-components";
 
-import {
-    ChartData,
-  } from 'chart.js';
-  import { Bar } from 'react-chartjs-2';
-import { chartLabels, chartOptions, graphDataInitialState } from "../../chart/ChartSettings";
-import { pengerInn, sortLedger } from "../../data/Ledger";
-import NextButton from "../NextButton";
+import { sortLedger } from "../../data/Ledger";
 import { StyledBoxSection } from "../StyledBoxSection";
-import BackButton from "../BackButton";
 import BackForwardControls from "../BackForwardControls";
 
 interface MoneyInProps {
@@ -25,23 +17,23 @@ interface MoneyInProps {
 export default function MoneyIn(props: MoneyInProps) {
     const [addMoneyInModalOpen, setAddMoneyInModalOpen] = useState<boolean>(false);
     const [sortedLedger, setSortedLedger] = useState<LedgerRow[]>([]);
-    const [graphData, setGraphData] = useState<ChartData<"bar", number[], unknown>>(graphDataInitialState);
+    // const [graphData, setGraphData] = useState<ChartData<"bar", number[], unknown>>(graphDataInitialState);
     const { ledger, addLedgerRow, completeStep } = props;
     
-    useEffect(() => {
-        const data = {
-            labels: chartLabels,
-            datasets: [
-              {
-                label: 'Penger Inn',
-                data: pengerInn(chartLabels, sortedLedger),
-                backgroundColor: 'rgb(255, 99, 132)',
-              },
-            ],
-          };
+    // useEffect(() => {
+    //     const data = {
+    //         labels: chartLabels,
+    //         datasets: [
+    //           {
+    //             label: 'Penger Inn',
+    //             data: pengerInn(chartLabels, sortedLedger),
+    //             backgroundColor: 'rgb(255, 99, 132)',
+    //           },
+    //         ],
+    //       };
 
-          setGraphData(data);
-      }, [sortedLedger]);
+    //       setGraphData(data);
+    //   }, [sortedLedger]);
 
     useEffect(() => {
         setSortedLedger(sortLedger(ledger));
@@ -73,7 +65,7 @@ export default function MoneyIn(props: MoneyInProps) {
                             <Table.Cell>{row.dayOfMonth}</Table.Cell>
                             </Table.Row>
                     } else {
-                        return <></>
+                        return null
                     }
 
                 })} 
@@ -98,6 +90,6 @@ export default function MoneyIn(props: MoneyInProps) {
     </Container>
 }
 
-const StyledGraphContainer = styled.div`
-    height: 100px;
-`
+// const StyledGraphContainer = styled.div`
+//     height: 100px;
+// `
