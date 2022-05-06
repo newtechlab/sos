@@ -98,6 +98,7 @@ export default function UserDetails(props: UserDetailsProps) {
         <Grid columns={2}>
           <Grid.Column width={10}>
             <Input 
+              value={props.goal?.name}
               onChange={ (_, data) => { props.setGoal({ 
                 name: data.value?.toString(),
                 amount: props.goal?.amount || 0 })
@@ -107,6 +108,7 @@ export default function UserDetails(props: UserDetailsProps) {
           </Grid.Column>
           <Grid.Column width={6}>
           <Input 
+              value={props.goal?.amount}
               onChange={ (_, data) => { props.setGoal({ 
                 name: props.goal?.name || "",
                 amount: parseInt(data.value) })

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button, Container, Progress, Table } from "semantic-ui-react";
-import { FamilyMember, LedgerRow } from "../../App"
+import { FamilyMember, Goal, LedgerRow } from "../../App"
 import styled from "styled-components";
 
 import {
@@ -18,17 +18,31 @@ interface ResultatProps {
     familyMembers: Array<FamilyMember>
     removeLedgerRow: (id: string) => void 
     completeStep: () => void
+    goal: Goal;
+    previousData: any[];
 }
 
-const createPdf = async (ledger: Array<LedgerRow>, familyMembers: Array<FamilyMember>) => {
+interface CreatePdfProps {
+    ledger: Array<LedgerRow>;
+    familyMembers: Array<FamilyMember>;
+    goal: Goal;
+    previousData: any[];
+}
+
+const createPdf = async (props: CreatePdfProps) => {
     const pdfDoc = await PDFDocument.create()
     const objectToAttach = {
         version: "0.0.1",
         timestamp: Date.now(),
-        familyMembers: familyMembers,
-        ledger: ledger
+        familyMembers: props.familyMembers,
+        ledger: props.ledger,
+        goal: props.goal
     }
-    const uint8array = new TextEncoder().encode(JSON.stringify(objectToAttach));
+    props.previousData.push(objectToAttach)
+    const history = {
+        history: props.previousData
+    }
+    const uint8array = new TextEncoder().encode(JSON.stringify(history));
     pdfDoc.attach(uint8array, "sos_state")
     const page = pdfDoc.addPage()
     const FrontPageBytes = await fetch('frontpage.png').then(res => res.arrayBuffer())
@@ -49,11 +63,10 @@ const createPdf = async (ledger: Array<LedgerRow>, familyMembers: Array<FamilyMe
 
     const pdfHandler = new PdfHandler(pdfBytes);
     const attachments = await pdfHandler.getAttachments();
-    const attachmentsAsObject = attachments.map((a) => {
-         const decoded = new TextDecoder().decode(a.data);
-         return JSON.parse(decoded)
-    })
-    console.log("attachments", attachmentsAsObject);
+    // const attachmentsAsObject = attachments.map((a) => {
+    //      const decoded = new TextDecoder().decode(a.data);
+    //      return JSON.parse(decoded)
+    // })
 
     const link=document.createElement('a');
     link.href=window.URL.createObjectURL(blob);
@@ -68,7 +81,7 @@ export default function Resultat(props: ResultatProps) {
     const [outTotal, setOutTotal] = useState<number>(0);
     const [outPercent, setOutPercent] = useState<number>(0);
     const [graphData, setGraphData] = useState<ChartData<"bar", number[], unknown>>(graphDataInitialState);
-    const { ledger, familyMembers, completeStep } = props;
+    const { ledger, familyMembers, goal, previousData, completeStep } = props;
     
     useEffect(() => {
         const data = {
@@ -146,7 +159,7 @@ export default function Resultat(props: ResultatProps) {
             </Table>
 
             <Button circular color="teal" onClick={() => {
-                createPdf(ledger, familyMembers);
+                createPdf({ ledger, familyMembers, goal, previousData });
                 completeStep();
             }}>Finish and download report</Button>    
 

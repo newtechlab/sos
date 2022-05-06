@@ -79,10 +79,11 @@ ChartJS.register(
 
 function App() {
   const navigate = useNavigate();
+  const [previousData, setPreviousData] = useState<any[]>([]);
   const [steps, setSteps] = useState<StepsState>(InitialSteps);
   const [familyMembers, setFamilyMembers] = useState<Array<FamilyMember>>([]);
   const [ledger, setLedger] = useState<Array<LedgerRow>>([]);
-  const [goal, setGoal] = useState<Goal | undefined>(undefined);
+  const [goal, setGoal] = useState<Goal>({ name: "", amount: 0 });
 
   const purpleMonkeyDishWasher = (familyMember: FamilyMember) => {
     setFamilyMembers(familyMembers.concat(familyMember));
@@ -165,9 +166,10 @@ function App() {
               path="/"
               element={
                 <Home 
+                  setPreviousData={setPreviousData}
                   setFamilyMembers={setFamilyMembers} 
                   setLedger={setLedger} 
-                  
+                  setGoal={setGoal}
                 />
               }
             />
@@ -224,6 +226,8 @@ function App() {
                   familyMembers={familyMembers}
                   removeLedgerRow={deleteLedgerRow}
                   completeStep={completeStep}
+                  goal={goal}
+                  previousData={previousData}
                 />
               }
             />

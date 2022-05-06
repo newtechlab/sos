@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Container, Progress, Table } from "semantic-ui-react";
+import { Button, Container, Label, Progress, Table } from "semantic-ui-react";
 import { Goal, LedgerRow } from "../../App";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
@@ -28,7 +28,7 @@ interface ResultatInteractProps {
   ledger: Array<LedgerRow>;
   removeLedgerRow: (id: string) => void;
   completeStep: () => void;
-  goal: Goal | undefined;
+  goal: Goal;
 }
 
 interface Adjustments {
@@ -163,8 +163,8 @@ export default function ResultatInteract(props: ResultatInteractProps) {
                 <Progress size='small' percent={inPercent} color='green' />
             </div>
 
-            { props.goal ? <div>
-                <h3>{props.goal.name}</h3>
+            { (props.goal.name !== '') ? <div>
+                <h3>Goal: {props.goal.name}, requiring: {props.goal.amount} <Label>NOK</Label></h3>
                 { goalMonths < 0 ? <p>You need to make more savings to achieve your goal</p> : <p>You will achieve your goal in {goalMonths} months</p> }
             </div> : <div>
               <h3>No goal has been added</h3>
