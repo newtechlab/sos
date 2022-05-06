@@ -12,6 +12,7 @@ import { pengerInn, pengerInnTotal, pengerUt, pengerUtTotal, sortLedger } from "
 import { StyledBoxSection } from "../StyledBoxSection";
 import { PDFDocument } from "pdf-lib";
 import PdfHandler from "../../services/PdfService/PdfService";
+import { CreatePdfProps, PdfWriterService } from "../../services/PdfService/PdfWriterService";
 
 interface ResultatProps {
     ledger: Array<LedgerRow>
@@ -22,52 +23,8 @@ interface ResultatProps {
     previousData: any[];
 }
 
-interface CreatePdfProps {
-    ledger: Array<LedgerRow>;
-    familyMembers: Array<FamilyMember>;
-    goal: Goal;
-    previousData: any[];
-}
-
 const createPdf = async (props: CreatePdfProps) => {
-    const pdfDoc = await PDFDocument.create()
-    const objectToAttach = {
-        version: "0.0.1",
-        timestamp: Date.now(),
-        familyMembers: props.familyMembers,
-        ledger: props.ledger,
-        goal: props.goal
-    }
-    props.previousData.push(objectToAttach)
-    const history = {
-        history: props.previousData
-    }
-    const uint8array = new TextEncoder().encode(JSON.stringify(history));
-    pdfDoc.attach(uint8array, "sos_state")
-    const page = pdfDoc.addPage()
-    const FrontPageBytes = await fetch('frontpage.png').then(res => res.arrayBuffer())
-    const FrontPageImage = await pdfDoc.embedPng(FrontPageBytes)
-    const FrontPageDims = FrontPageImage.scale(0.5)
-    page.drawImage(FrontPageImage, {
-        x: 100,
-        y: 300,
-        width: FrontPageDims.width,
-        height: FrontPageDims.height,
-        // rotate: degrees(30),
-        // opacity: 0.75,
-      })
-
-    page.drawText('Keep this document for next time')
-    const pdfBytes = await pdfDoc.save()
-    const blob=new Blob([pdfBytes], {type: "application/pdf"});// change resultByte to bytes
-
-    const pdfHandler = new PdfHandler(pdfBytes);
-    const attachments = await pdfHandler.getAttachments();
-    // const attachmentsAsObject = attachments.map((a) => {
-    //      const decoded = new TextDecoder().decode(a.data);
-    //      return JSON.parse(decoded)
-    // })
-
+    const blob = await PdfWriterService.createPdf(props);
     const link=document.createElement('a');
     link.href=window.URL.createObjectURL(blob);
     link.download="myFileName.pdf";

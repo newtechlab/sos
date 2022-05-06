@@ -47,18 +47,15 @@ export default function Home(props: HomProps) {
 
                         if (mostRecentRecord) {
                             if (mostRecentRecord.familyMembers) {
-                                const fm = attachment.mostRecentRecord as Array<FamilyMember>
-                                fm && setFamilyMembers(fm);
+                                setFamilyMembers(mostRecentRecord.familyMembers);
                             }
         
                             if (mostRecentRecord.ledger) {
-                                const ledger = mostRecentRecord.ledger as Array<LedgerRow>
-                                ledger && setLedger(ledger)
+                                setLedger(mostRecentRecord.ledger)
                             }
         
                             if (mostRecentRecord.goal) {                        
-                                const goal = mostRecentRecord.goal as Goal
-                                goal && setGoal(goal)
+                                setGoal(mostRecentRecord.goal)
                             }
                         }
                     }                    
