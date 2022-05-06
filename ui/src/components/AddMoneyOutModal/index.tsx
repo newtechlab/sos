@@ -113,9 +113,9 @@ export default function AddMoneyInModal(props: AddMoneyOutModalProps) {
         open={open}
         trigger={<Button>Show Modal</Button>}
     >
-        <Modal.Header>Add money in</Modal.Header>
+        <Modal.Header>Add money out</Modal.Header>
         <Modal.Content>      
-            Money that you pay each month
+            Money that you pay out each month
             <ul>
                 <li>Transport</li>
                 <li>Coffee</li>
