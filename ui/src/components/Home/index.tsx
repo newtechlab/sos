@@ -8,15 +8,23 @@ import PdfHandler from "../../services/PdfService/PdfService";
 import { StyledBoxSection } from "../StyledBoxSection";
 
 export interface HomProps {
+    setPreviousData: (data: any[]) => void
     setFamilyMembers: (_: Array<FamilyMember>) => void
     setLedger: (_: Array<LedgerRow>) => void
+    setGoal: (_: Goal) => void
 }
 
 export const firstStep = "/family";
 
+interface PdfFormat {
+    familyMembers: Array<FamilyMember>;
+    ledger: Array<LedgerRow>;
+    goal: Goal;
+}
+
 export default function Home(props: HomProps) {
     const navigate = useNavigate();
-    const { setFamilyMembers, setLedger } = props; 
+    const { setFamilyMembers, setLedger, setGoal, setPreviousData } = props; 
     const onDrop = useCallback(acceptedFiles => {
         const fileReader = new FileReader();  
         fileReader.onload =  async (event) => {
@@ -25,21 +33,35 @@ export default function Home(props: HomProps) {
                 const typedarray = new Uint8Array(event.target.result as ArrayBuffer);
                 const pdfHandler = new PdfHandler(typedarray);
                 const attachments = await pdfHandler.getAttachments();
-                const attachmentsAsObject = attachments.map((a) => {
+                const attachmentsAsObject: any[] = attachments.map((a) => {
                     const decoded = new TextDecoder().decode(a.data);
-                    return JSON.parse(decoded)
+                    const previousData: any = JSON.parse(decoded);
+                    return previousData
                 })
-                
-                attachmentsAsObject.map((attachment) => {
-                    if (attachment.familyMembers) {
-                        const fm = attachment.familyMembers as Array<FamilyMember>
-                        setFamilyMembers(fm);
-                    }
+                setPreviousData(attachmentsAsObject);
 
-                    if (attachment.ledger) {
-                        const ledger = attachment.ledger as Array<LedgerRow>
-                        setLedger(ledger)
-                    }
+                attachmentsAsObject.map((attachment: any) => {
+                    if (attachment.history) {
+                        const a = attachment.history as Array<PdfFormat>
+                        const mostRecentRecord = a.at(-1)
+
+                        if (mostRecentRecord) {
+                            if (mostRecentRecord.familyMembers) {
+                                const fm = attachment.mostRecentRecord as Array<FamilyMember>
+                                fm && setFamilyMembers(fm);
+                            }
+        
+                            if (mostRecentRecord.ledger) {
+                                const ledger = mostRecentRecord.ledger as Array<LedgerRow>
+                                ledger && setLedger(ledger)
+                            }
+        
+                            if (mostRecentRecord.goal) {                        
+                                const goal = mostRecentRecord.goal as Goal
+                                goal && setGoal(goal)
+                            }
+                        }
+                    }                    
                 })
             }   
             navigate(firstStep);                    
