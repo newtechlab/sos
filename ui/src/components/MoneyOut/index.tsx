@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { Button, Container, Icon, Table } from "semantic-ui-react";
+import { Button, Container, Grid, Icon, Table } from "semantic-ui-react";
 import { LedgerRow } from "../../App"
 
 import AddMoneyOutModal from "../AddMoneyOutModal";
 import { sortLedger } from "../../data/Ledger";
 import BackForwardControls from "../BackForwardControls";
 import { StyledBoxSection } from "../StyledBoxSection";
+import { StyledGrid, StyledGridRow, StyledGridRowBottom } from "../MoneyIn";
 
 interface MoneyOutProps {
     ledger: Array<LedgerRow>
@@ -19,7 +20,7 @@ export default function MoneyOut(props: MoneyOutProps) {
     const [addMoneyOutModalOpen, setAddMoneyOutModalOpen] = useState<boolean>(false);
     const [sortedLedger, setSortedLedger] = useState<LedgerRow[]>([]);
     // const [graphData, setGraphData] = useState<ChartData<"bar", number[], unknown>>(graphDataInitialState);
-    const { ledger, addLedgerRow, completeStep, goBack } = props;
+    const { ledger, addLedgerRow, removeLedgerRow, completeStep, goBack } = props;
     
     // useEffect(() => {
     //     const data = {
@@ -51,36 +52,52 @@ export default function MoneyOut(props: MoneyOutProps) {
         <h1>Regninger og Kostnader</h1>    
         <StyledBoxSection>
             
-            { sortedLedger.length > 0 ? <Table>
-                <Table.Header>
-                    <Table.Row>
-                        <Table.HeaderCell>Item</Table.HeaderCell>
-                        <Table.HeaderCell>Category</Table.HeaderCell>
-                        <Table.HeaderCell>Amount</Table.HeaderCell>
-                        <Table.HeaderCell>Day of month</Table.HeaderCell>
-                    </Table.Row>
-                </Table.Header>
-                <Table.Body>
-                { sortedLedger.map( (row) => {
-
-                    if (row.accountTo !== "user") {
-                        return <Table.Row key={row.id}>
-                            <Table.Cell>{row.accountTo}</Table.Cell>
-                            <Table.Cell>{row.category}</Table.Cell>
-                            <Table.Cell>{row.amount}</Table.Cell>
-                            <Table.Cell>{row.dayOfMonth}</Table.Cell>
-                            </Table.Row>
-                    } else {
-                        return null
-                    }
-
-                })} 
-                </Table.Body>
-            </Table> : <></> }
-
-            <Button circular color="blue" onClick={() => {
-                setAddMoneyOutModalOpen(true);
-            }}><Icon name='plus' />Legg til kostnader</Button>
+            <StyledGrid>
+                    { sortedLedger.length > 0 && 
+                    <Grid.Row>
+                        <Grid.Column width={4}>
+                            <strong>Item</strong>
+                        </Grid.Column>
+                        {/* <Grid.Column width={4}>
+                            Ordning
+                        </Grid.Column> */}
+                        <Grid.Column width={4}>
+                            <strong>Category</strong>
+                        </Grid.Column>
+                        <Grid.Column width={4}>
+                            <strong>Amount</strong>
+                        </Grid.Column>
+                        <Grid.Column width={3}>
+                            <strong>Day of month</strong>
+                        </Grid.Column>
+                    </Grid.Row> }   
+                        { sortedLedger.map( (row) => {
+                            if (row.accountTo === "user") {
+                                return <StyledGridRow key={row.id}>
+                                        <Grid.Column width={4}>{row.accountTo}</Grid.Column>
+                                        <Grid.Column width={4}>{row.category}</Grid.Column>
+                                        <Grid.Column width={4}>{row.amount}</Grid.Column>
+                                        <Grid.Column width={3}>{row.dayOfMonth}</Grid.Column>
+                                        <Grid.Column width={1}>
+                                            <Icon
+                                                onClick={() => { removeLedgerRow(row.id) }}
+                                                name="trash alternate outline" 
+                                                color="blue" 
+                                            />
+                                        </Grid.Column>
+                                    </StyledGridRow>
+                            } else {
+                                return null
+                            }
+                        })} 
+                        <StyledGridRowBottom>
+                            <Grid.Column width={16}>
+                                <Button circular color="blue" onClick={() => {
+                                    setAddMoneyOutModalOpen(true);
+                                }}><Icon name='plus' />Legg til kostnader</Button>
+                            </Grid.Column>
+                        </StyledGridRowBottom>
+                </StyledGrid> 
 
         </StyledBoxSection>
 
