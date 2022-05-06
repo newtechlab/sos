@@ -3,7 +3,7 @@ import { useDropzone } from "react-dropzone";
 import { useNavigate } from "react-router-dom";
 import { Button, Container } from "semantic-ui-react";
 import styled from "styled-components";
-import { FamilyMember, LedgerRow } from "../../App";
+import { FamilyMember, Goal, LedgerRow } from "../../App";
 import PdfHandler from "../../services/PdfService/PdfService";
 import { StyledBoxSection } from "../StyledBoxSection";
 

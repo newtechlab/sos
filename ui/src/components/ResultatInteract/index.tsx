@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button, Container, Progress, Table } from "semantic-ui-react";
-import { LedgerRow } from "../../App";
+import { Goal, LedgerRow } from "../../App";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 
@@ -28,6 +28,7 @@ interface ResultatInteractProps {
   ledger: Array<LedgerRow>;
   removeLedgerRow: (id: string) => void;
   completeStep: () => void;
+  goal: Goal | undefined;
 }
 
 interface Adjustments {
@@ -40,7 +41,6 @@ export type AdjustmentAmountPercent = string;
 
 export default function ResultatInteract(props: ResultatInteractProps) {
   const [sortedLedger, setSortedLedger] = useState<LedgerRow[]>([]);
-  const [goal, setGoal] = useState<number>(3000);
   const [goalMonths, setGoalMonths] = useState<number>(0);
   const [adjustments, setAdjustments] = useState<Map<LedgerRowId, AdjustmentAmountPercent>>(new Map<LedgerRowId, AdjustmentAmountPercent>());
   const [moneyOut, setMoneyOut] = useState<LedgerRow[]>([]);
@@ -85,8 +85,12 @@ export default function ResultatInteract(props: ResultatInteractProps) {
   }, [sortedLedger]);
 
   useEffect(() => {
-    setGoalMonths(Math.round(goal / (inTotal - outTotal)));
-  }, [inTotal, outTotal]);
+
+    if (props.goal) {
+      setGoalMonths(Math.round(props.goal.amount / (inTotal - outTotal)));
+    }
+
+  }, [inTotal, outTotal, props.goal]);
 
   useEffect(() => {
     const data = {
@@ -158,10 +162,15 @@ export default function ResultatInteract(props: ResultatInteractProps) {
                 <h3>Income Percentage</h3>
                 <Progress size='small' percent={inPercent} color='green' />
             </div>
-            <div>
-                <h3>Goal, but me a pony</h3>
+
+            { props.goal ? <div>
+                <h3>{props.goal.name}</h3>
                 { goalMonths < 0 ? <p>You need to make more savings to achieve your goal</p> : <p>You will achieve your goal in {goalMonths} months</p> }
-            </div>
+            </div> : <div>
+              <h3>No goal has been added</h3>
+            </div> }
+
+            
         </StyledComparisonContainer>
 
         <NextButton
