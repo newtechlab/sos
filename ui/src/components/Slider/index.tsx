@@ -6,10 +6,11 @@ interface SliderProps {
   id: string;
   maxPercent: string;
   onUpdateValue: (id: string, value: string) => void
+  value: string;
 }
 
 export const Slider = (props: SliderProps) => {
-  const { id, onUpdateValue, maxPercent } = props
+  const { id, onUpdateValue, value, maxPercent } = props
   const [slider, setSlider] = useState<string>("100");
 
   return (
@@ -27,7 +28,7 @@ export const Slider = (props: SliderProps) => {
             type="range"
             min="1"
             max={maxPercent}
-            value={slider}
+            value={value}
             className="slider"
             id="myRange"
             onChange={(e) => {

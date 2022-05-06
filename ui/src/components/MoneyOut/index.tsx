@@ -12,13 +12,14 @@ interface MoneyOutProps {
     addLedgerRow: (_: LedgerRow) => void
     removeLedgerRow: (id: string) => void 
     completeStep: () => void
+    goBack: () => void
 }
 
 export default function MoneyOut(props: MoneyOutProps) {
     const [addMoneyOutModalOpen, setAddMoneyOutModalOpen] = useState<boolean>(false);
     const [sortedLedger, setSortedLedger] = useState<LedgerRow[]>([]);
     // const [graphData, setGraphData] = useState<ChartData<"bar", number[], unknown>>(graphDataInitialState);
-    const { ledger, addLedgerRow, completeStep } = props;
+    const { ledger, addLedgerRow, completeStep, goBack } = props;
     
     // useEffect(() => {
     //     const data = {
@@ -92,7 +93,7 @@ export default function MoneyOut(props: MoneyOutProps) {
 
         
 
-        <BackForwardControls goBack={() => console.log("foo")} completeStep={completeStep} />   
+        <BackForwardControls goBack={() => goBack() } completeStep={completeStep} />   
 
     </Container>
 }

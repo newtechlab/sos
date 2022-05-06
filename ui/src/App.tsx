@@ -22,7 +22,7 @@ import {
 } from "chart.js";
 import Resultat from "./components/Resultat";
 import styled from "styled-components";
-import { progressStep } from "./data/StepProgressor";
+import { goBackStep, progressStep } from "./data/StepProgressor";
 import ResultatInteract from "./components/ResultatInteract";
 import { Container } from "semantic-ui-react";
 import Home from "./components/Home";
@@ -145,6 +145,12 @@ function App() {
     navigate(newState.steps[newState.activeStepId]?.path || "/");
   };
 
+  const goBack = () => {
+    const newState = goBackStep(steps);
+    setSteps(newState);
+    navigate(newState.steps[newState.activeStepId]?.path || "/");
+  };
+
   const activeStep = steps.steps.find((s) => s.id === steps.activeStepId);
 
   return (
@@ -193,6 +199,7 @@ function App() {
                   addLedgerRow={addLedgerRow}
                   removeLedgerRow={deleteLedgerRow}
                   completeStep={completeStep}
+                  goBack={goBack}
                 />
               }
             />
@@ -204,6 +211,7 @@ function App() {
                   addLedgerRow={addLedgerRow}
                   removeLedgerRow={deleteLedgerRow}
                   completeStep={completeStep}
+                  goBack={goBack}
                 />
               }
             />
@@ -215,6 +223,7 @@ function App() {
                   removeLedgerRow={deleteLedgerRow}
                   completeStep={completeStep}
                   goal={goal}
+                  goBack={goBack}
                 />
               }
             />
@@ -228,6 +237,7 @@ function App() {
                   completeStep={completeStep}
                   goal={goal}
                   previousData={previousData}
+                  goBack={goBack}
                 />
               }
             />

@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { Slider } from "../Slider";
 import { LedgerRow } from "../../App";
 import { AdjustmentAmountPercent } from "../ResultatInteract";
-import { Grid, Icon } from "semantic-ui-react";
+import { Grid, Icon, Label } from "semantic-ui-react";
 
 export interface MoneyOutListProps {
   moneyOut: LedgerRow[];
@@ -21,15 +21,21 @@ export function MoneyOutList(props: MoneyOutListProps) {
     <OuterBox>
       {moneyOut.map((row) => {
 
-        const adjustment = parseInt(adjustments.get(row.id) || "100")
+        const adhustmentStr = adjustments.get(row.id) || "100";
+        const adjustment = parseInt(adhustmentStr)
 
         return (
           <div key={`moneyout_${row.id}`}>
             <MoneyOutItemBox>
-              <AmountDiv>{ Math.round(row.amount / 100 * adjustment ) }</AmountDiv>
+              <AmountDiv>{ Math.round(row.amount / 100 * adjustment ) } <Label size="mini">KR.</Label></AmountDiv>
               <TitleDiv>{row.accountTo}</TitleDiv>
               <SliderDiv>
-                <Slider id={row.id} onUpdateValue={onUpdateValue} maxPercent={"120"} />
+                <Slider 
+                  id={row.id} 
+                  onUpdateValue={onUpdateValue} 
+                  maxPercent={"120"} 
+                  value={adhustmentStr}
+                />
               </SliderDiv>
             </MoneyOutItemBox>
           </div>
