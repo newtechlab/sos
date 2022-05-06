@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Container, Label, Progress, Table } from "semantic-ui-react";
+import { Button, Container, Icon, Label, Progress, Table } from "semantic-ui-react";
 import { Goal, LedgerRow } from "../../App";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
@@ -28,6 +28,7 @@ interface ResultatInteractProps {
   ledger: Array<LedgerRow>;
   removeLedgerRow: (id: string) => void;
   completeStep: () => void;
+  goBack: () => void
   goal: Goal;
 }
 
@@ -122,8 +123,12 @@ export default function ResultatInteract(props: ResultatInteractProps) {
     setMoneyOut(mOut);
   }, [sortedLedger]);
 
-  const onUpdateSlider = (id: string, value: string) => {    
-    setAdjustments(adjustments.set(id, value))
+  useEffect(() => {
+    computeInOutPercent();
+  }, [adjustments]);
+
+  const onUpdateSlider = (id: string, value: string) => {  
+    setAdjustments(adjustments.set(id, value));
     computeInOutPercent();
   }
 
@@ -143,6 +148,11 @@ export default function ResultatInteract(props: ResultatInteractProps) {
         <div>Over or under section</div>
 
         <PaddedSection>
+
+         { moneyOut.length > 0 ? <ResetDialsDiv>
+            <Button basic onClick={() => setAdjustments(new Map<LedgerRowId, AdjustmentAmountPercent>())}><Icon name='undo' />Reset</Button>
+          </ResetDialsDiv> : <></> }
+
           <StyledRow>
             <StyledColumn>
               <h2>Løpende utgifter</h2>
@@ -153,18 +163,18 @@ export default function ResultatInteract(props: ResultatInteractProps) {
 
         <StyledComparisonContainer>
             <div>
-                <StyledBarTotal>outgoings: {outTotal}kr</StyledBarTotal>
+                <StyledBarTotal>outgoings: {outTotal} <Label size="mini">KR.</Label></StyledBarTotal>
                 <h3>Spending Percentage</h3>
                 <Progress size='small' percent={outPercent} color='red' />
             </div>
             <div>
-                <StyledBarTotal>you are saving: {inTotal - outTotal}kr</StyledBarTotal>
+                <StyledBarTotal>you are saving: {inTotal - outTotal} <Label size="mini">KR.</Label></StyledBarTotal>
                 <h3>Income Percentage</h3>
                 <Progress size='small' percent={inPercent} color='green' />
             </div>
 
             { (props.goal.name !== '') ? <div>
-                <h3>Goal: {props.goal.name}, requiring: {props.goal.amount} <Label>NOK</Label></h3>
+                <h3>Goal: {props.goal.name}, requiring: {props.goal.amount} <Label size="mini">KR.</Label></h3>
                 { goalMonths < 0 ? <p>You need to make more savings to achieve your goal</p> : <p>You will achieve your goal in {goalMonths} months</p> }
             </div> : <div>
               <h3>No goal has been added</h3>
@@ -182,6 +192,12 @@ export default function ResultatInteract(props: ResultatInteractProps) {
     </Container>
   );
 }
+
+const ResetDialsDiv = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`
 
 const PaddedSection = styled.div`
   margin-top: 40px;

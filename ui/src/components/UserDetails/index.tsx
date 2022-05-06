@@ -98,6 +98,7 @@ export default function UserDetails(props: UserDetailsProps) {
         <Grid columns={2}>
           <Grid.Column width={10}>
             <Input 
+              placeholder="Type any goal you might have"
               value={props.goal?.name}
               onChange={ (_, data) => { props.setGoal({ 
                 name: data.value?.toString(),
@@ -108,11 +109,14 @@ export default function UserDetails(props: UserDetailsProps) {
           </Grid.Column>
           <Grid.Column width={6}>
           <Input 
-              value={props.goal?.amount}
+              placeholder="Amount"
+              value={props.goal?.amount || ""}
               onChange={ (_, data) => { props.setGoal({ 
                 name: props.goal?.name || "",
                 amount: parseInt(data.value) })
               }} 
+              label="KR."
+              labelPosition="right"
               style={{ width: "100%" }}
             />
           </Grid.Column>

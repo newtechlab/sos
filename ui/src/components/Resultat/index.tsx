@@ -19,6 +19,7 @@ interface ResultatProps {
     familyMembers: Array<FamilyMember>
     removeLedgerRow: (id: string) => void 
     completeStep: () => void
+    goBack: () => void
     goal: Goal;
     previousData: any[];
 }
