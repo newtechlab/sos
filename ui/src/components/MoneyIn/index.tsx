@@ -21,7 +21,7 @@ export default function MoneyIn(props: MoneyInProps) {
     const [addMoneyInModalOpen, setAddMoneyInModalOpen] = useState<boolean>(false);
     const [sortedLedger, setSortedLedger] = useState<LedgerRow[]>([]);
     // const [graphData, setGraphData] = useState<ChartData<"bar", number[], unknown>>(graphDataInitialState);
-    const { ledger, addLedgerRow, completeStep, goBack } = props;
+    const { ledger, addLedgerRow, removeLedgerRow, completeStep, goBack } = props;
     
     // useEffect(() => {
     //     const data = {
@@ -73,7 +73,13 @@ export default function MoneyIn(props: MoneyInProps) {
                                         <Grid.Column width={6}>{row.accountFrom}</Grid.Column>
                                         <Grid.Column width={6}>{row.amount}</Grid.Column>
                                         <Grid.Column width={3}>{row.dayOfMonth}</Grid.Column>
-                                        <Grid.Column width={1}><Icon name="trash" /></Grid.Column>
+                                        <Grid.Column width={1}>
+                                            <Icon
+                                                onClick={() => { removeLedgerRow(row.id) }}
+                                                name="trash alternate outline" 
+                                                color="blue" 
+                                            />
+                                        </Grid.Column>
                                     </StyledGridRow>
                             } else {
                                 return null
@@ -114,7 +120,8 @@ const StyledGrid = styled(Grid)`
 `
 
 const StyledGridRow = styled(Grid.Row)`
-    border: 1px solid;
+    border: 1px solid #3D8EB1;
+    border-radius: 5px;
     margin-bottom: 10px;
 `
 
