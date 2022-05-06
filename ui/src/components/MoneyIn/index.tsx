@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
-import { Button, Container, Grid, GridRow, Icon, Table } from "semantic-ui-react";
+import { Button, Container, Grid, Icon } from "semantic-ui-react";
 import { LedgerRow } from "../../App"
 import AddMoneyInModal from "../AddMoneyInModal";
 
 import { sortLedger } from "../../data/Ledger";
 import { StyledBoxSection } from "../StyledBoxSection";
 import BackForwardControls from "../BackForwardControls";
-import { goBackStep } from "../../data/StepProgressor";
 import styled from "styled-components";
 
 interface MoneyInProps {
@@ -110,16 +109,16 @@ export default function MoneyIn(props: MoneyInProps) {
     </Container>
 }
 
-const StyledGridRowBottom = styled(Grid.Row)`
+export const StyledGridRowBottom = styled(Grid.Row)`
     text-align: center;
 `
 
-const StyledGrid = styled(Grid)`
+export  const StyledGrid = styled(Grid)`
     width: 100%;
     text-align: left;
 `
 
-const StyledGridRow = styled(Grid.Row)`
+export const StyledGridRow = styled(Grid.Row)`
     border: 1px solid #3D8EB1;
     border-radius: 5px;
     margin-bottom: 10px;
