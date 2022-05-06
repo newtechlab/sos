@@ -34,7 +34,7 @@ export default function AddMoneyInModal(props: AddMoneyOutModalProps) {
     const [moneyOutItems, setMoneyOutItems] = useState<Map<string,MoneyOutAndCategory>>(new Map<string,MoneyOutAndCategory>()); 
     const [dropDownItems, setDropDownItems] = useState<DropDownItem[]>([]); 
     const [amount, setAmount] = useState<number | undefined>(undefined);
-    const [day, setDay] = useState<number | undefined>(undefined);
+    const [day] = useState<number | undefined>(1);
     const { open, setOpen, addLedgerRow } = props;
 
     useEffect(() => {
@@ -137,14 +137,14 @@ export default function AddMoneyInModal(props: AddMoneyOutModalProps) {
                 placeholder='Amount'
                 onChange={ (_, data) => { setAmount(parseInt(data.value?.toString() || "0", 10)) }  }
             />
-            <Dropdown
+            {/* <Dropdown
                 placeholder='Day of Month'
                 selection
                 options={getDaysOfMonthDropdown()}
                 onChange={ (_, data) => { 
                     setDay(parseInt(data.value?.toString() || "1", 10)) 
                 }}
-            />
+            /> */}
             <Button color='black' onClick={() => setOpen(false)}>
                 cancel
             </Button>
