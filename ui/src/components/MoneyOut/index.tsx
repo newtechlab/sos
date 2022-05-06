@@ -47,7 +47,7 @@ export default function MoneyOut(props: MoneyOutProps) {
             setOpen={setAddMoneyOutModalOpen} 
             addLedgerRow={addLedgerRow}   /> }
 
-        <h1>Lønn og andre støtteordninger</h1>    
+        <h1>Regninger og Kostnader</h1>    
         <StyledBoxSection>
             
             { sortedLedger.length > 0 ? <Table>
@@ -79,7 +79,7 @@ export default function MoneyOut(props: MoneyOutProps) {
 
             <Button circular color="blue" onClick={() => {
                 setAddMoneyOutModalOpen(true);
-            }}><Icon name='plus' />Legg til inntekt</Button>
+            }}><Icon name='plus' />Legg til kostnader</Button>
 
         </StyledBoxSection>
 
