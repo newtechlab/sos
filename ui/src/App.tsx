@@ -63,6 +63,11 @@ export interface LedgerRow {
   category: TransactionCategory;
 }
 
+export interface Goal {
+  name: string;
+  amount: number;
+}
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -77,6 +82,7 @@ function App() {
   const [steps, setSteps] = useState<StepsState>(InitialSteps);
   const [familyMembers, setFamilyMembers] = useState<Array<FamilyMember>>([]);
   const [ledger, setLedger] = useState<Array<LedgerRow>>([]);
+  const [goal, setGoal] = useState<Goal | undefined>(undefined);
 
   const purpleMonkeyDishWasher = (familyMember: FamilyMember) => {
     setFamilyMembers(familyMembers.concat(familyMember));
@@ -158,7 +164,11 @@ function App() {
             <Route
               path="/"
               element={
-                <Home setFamilyMembers={setFamilyMembers} setLedger={setLedger} />
+                <Home 
+                  setFamilyMembers={setFamilyMembers} 
+                  setLedger={setLedger} 
+                  
+                />
               }
             />
             <Route
@@ -168,6 +178,8 @@ function App() {
                   familyMembers={familyMembers}
                   addFamilyMember={purpleMonkeyDishWasher}
                   completeStep={completeStep}
+                  setGoal={setGoal}
+                  goal={goal}
                 />
               }
             />
@@ -200,6 +212,7 @@ function App() {
                   ledger={ledger}
                   removeLedgerRow={deleteLedgerRow}
                   completeStep={completeStep}
+                  goal={goal}
                 />
               }
             />
