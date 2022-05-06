@@ -19,6 +19,7 @@ interface MoneyOutProps {
 export default function MoneyOut(props: MoneyOutProps) {
     const [addMoneyOutModalOpen, setAddMoneyOutModalOpen] = useState<boolean>(false);
     const [sortedLedger, setSortedLedger] = useState<LedgerRow[]>([]);
+    const [filteredLedger, setFilteredLedger] = useState<LedgerRow[]>([]);
     // const [graphData, setGraphData] = useState<ChartData<"bar", number[], unknown>>(graphDataInitialState);
     const { ledger, addLedgerRow, removeLedgerRow, completeStep, goBack } = props;
     
@@ -41,6 +42,10 @@ export default function MoneyOut(props: MoneyOutProps) {
         setSortedLedger(sortLedger(ledger));
       }, [ledger]);
 
+      useEffect(() => {
+        setFilteredLedger(sortedLedger.filter((row) => { return row.accountFrom === "user" }));
+      }, [sortedLedger]);
+
 
     return <Container>
 
@@ -53,31 +58,31 @@ export default function MoneyOut(props: MoneyOutProps) {
         <StyledBoxSection>
             
             <StyledGrid>
-                    { sortedLedger.length > 0 && 
+                    { filteredLedger.length > 0 && 
                     <Grid.Row>
-                        <Grid.Column width={4}>
+                        <Grid.Column width={6}>
                             <strong>Item</strong>
                         </Grid.Column>
                         {/* <Grid.Column width={4}>
                             Ordning
                         </Grid.Column> */}
-                        <Grid.Column width={4}>
+                        <Grid.Column width={6}>
                             <strong>Category</strong>
                         </Grid.Column>
-                        <Grid.Column width={4}>
+                        <Grid.Column width={3}>
                             <strong>Amount</strong>
                         </Grid.Column>
-                        <Grid.Column width={3}>
+                        {/* <Grid.Column width={3}>
                             <strong>Day of month</strong>
-                        </Grid.Column>
+                        </Grid.Column> */}
                     </Grid.Row> }   
-                        { sortedLedger.map( (row) => {
-                            if (row.accountTo === "user") {
+                        { filteredLedger.map( (row) => {
+                            if (row.accountFrom === "user") {
                                 return <StyledGridRow key={row.id}>
-                                        <Grid.Column width={4}>{row.accountTo}</Grid.Column>
-                                        <Grid.Column width={4}>{row.category}</Grid.Column>
-                                        <Grid.Column width={4}>{row.amount}</Grid.Column>
-                                        <Grid.Column width={3}>{row.dayOfMonth}</Grid.Column>
+                                        <Grid.Column width={6}>{row.accountTo}</Grid.Column>
+                                        <Grid.Column width={6}>{row.category}</Grid.Column>
+                                        <Grid.Column width={3}>{row.amount}</Grid.Column>
+                                        {/* <Grid.Column width={3}>{row.dayOfMonth}</Grid.Column> */}
                                         <Grid.Column width={1}>
                                             <Icon
                                                 onClick={() => { removeLedgerRow(row.id) }}

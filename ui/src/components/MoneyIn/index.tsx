@@ -19,6 +19,7 @@ interface MoneyInProps {
 export default function MoneyIn(props: MoneyInProps) {
     const [addMoneyInModalOpen, setAddMoneyInModalOpen] = useState<boolean>(false);
     const [sortedLedger, setSortedLedger] = useState<LedgerRow[]>([]);
+    const [filteredLedger, setFilteredLedger] = useState<LedgerRow[]>([]);
     // const [graphData, setGraphData] = useState<ChartData<"bar", number[], unknown>>(graphDataInitialState);
     const { ledger, addLedgerRow, removeLedgerRow, completeStep, goBack } = props;
     
@@ -41,6 +42,9 @@ export default function MoneyIn(props: MoneyInProps) {
         setSortedLedger(sortLedger(ledger));
       }, [ledger]);
 
+      useEffect(() => {
+        setFilteredLedger(sortedLedger.filter((row) => { return row.accountTo === "user" }));
+      }, [sortedLedger]);
 
     return <Container>
 
@@ -51,7 +55,7 @@ export default function MoneyIn(props: MoneyInProps) {
         <StyledBoxSection>
             
                 <StyledGrid>
-                    { sortedLedger.length > 0 && 
+                    { filteredLedger.length > 0 && 
                     <Grid.Row>
                         <Grid.Column width={6}>
                             <strong>Utbetaler</strong>
@@ -66,7 +70,7 @@ export default function MoneyIn(props: MoneyInProps) {
                             <strong>Beløp</strong>
                         </Grid.Column>
                     </Grid.Row> }   
-                        { sortedLedger.map( (row) => {
+                        { filteredLedger.map( (row) => {
                             if (row.accountTo === "user") {
                                 return <StyledGridRow key={row.id}>
                                         <Grid.Column width={6}>{row.accountFrom}</Grid.Column>
