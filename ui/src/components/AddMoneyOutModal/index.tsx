@@ -39,14 +39,62 @@ export default function AddMoneyInModal(props: AddMoneyOutModalProps) {
 
     useEffect(() => {
         const items = new Map<string,MoneyOutAndCategory>();
-        items.set("Streaming service", {
-            name: "Streaming service",
+        items.set("Streaming service's", {
+            name: "Streaming service's",
             category: TransactionCategory.Personal
         });
+        items.set("Gym/Exercise", {
+            name: "Gym/Exercise",
+            category: TransactionCategory.Personal
+        });        
         items.set("Mortgage/Rent", {
             name: "Mortgage/Rent",
             category: TransactionCategory.Housing
         });
+        items.set("Travel", {
+            name: "Travel",
+            category: TransactionCategory.Transportation
+        });        
+        items.set("Food", {
+            name: "Food",
+            category: TransactionCategory.Food
+        });        
+        items.set("Utility bills", {
+            name: "Utility bills",
+            category: TransactionCategory.Utilities
+        });        
+        items.set("Clothes", {
+            name: "Clothes",
+            category: TransactionCategory.Clothing
+        });         
+        items.set("Healthcare", {
+            name: "Healthcare",
+            category: TransactionCategory.Medical_Healthcare
+        });         
+        items.set("Insurance", {
+            name: "Insurance",
+            category: TransactionCategory.Insurance
+        });
+        items.set("Utility bills", {
+            name: "Utility bills",
+            category: TransactionCategory.Utilities
+        });      
+        items.set("Household shopping", {
+            name: "Household shopping",
+            category: TransactionCategory.Household_Items
+        });    
+        items.set("Loans", {
+            name: "Loans",
+            category: TransactionCategory.Debt
+        });   
+        items.set("Pension", {
+            name: "Pension",
+            category: TransactionCategory.Retirement
+        }); 
+        items.set("Gifts/Donations", {
+            name: "Gifts/Donations",
+            category: TransactionCategory.Gifts_Donations
+        });                                 
         setMoneyOutItems(items);
     }, [])
 
