@@ -4,12 +4,12 @@ import { Route, Routes } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import "semantic-ui-css/semantic.min.css";
 import Steps, { StepsState } from "./components/Steps";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import UserDetails from "./components/UserDetails";
 import { InitialSteps } from "./data/StepsInitialState";
 import MoneyIn from "./components/MoneyIn";
 import MoneyOut from "./components/MoneyOut";
-import { v4 as uuidv4 } from "uuid";
+// import { v4 as uuidv4 } from "uuid";
 
 import {
   Chart as ChartJS,
@@ -22,15 +22,36 @@ import {
 } from "chart.js";
 import Resultat from "./components/Resultat";
 import styled from "styled-components";
-import { progressStep } from "./data/StepProgressor";
+import { goBackStep, progressStep } from "./data/StepProgressor";
 import ResultatInteract from "./components/ResultatInteract";
 import { Container } from "semantic-ui-react";
 import Home from "./components/Home";
+// import { useEffect } from "react";
 
 export interface FamilyMember {
   id: string;
   name: string;
   age: string;
+}
+
+export enum TransactionCategory {
+  Housing = "HOUSING",
+  Transportation = "TRANSPORTATION",
+  Food = "FOOD",
+  Utilities = "UTILITIES",
+  Clothing = "CLOTHING",
+  Medical_Healthcare = "MEDICAL_HEALTHCARE",
+  Insurance = "INSURANCE",
+  Household_Items = "HOUSEHOLD_ITEMS",
+  Personal = "PERSONAL",
+  Debt = "DEBT",
+  Retirement = "RETIREMENT",
+  Education = "EDUCATION",
+  Savings = "SAVINGS",
+  Gifts_Donations = "GIFTS_DONATIONS",
+  Entertainment = "ENTERTAINMENT",
+  Income = "INCOME",
+  Undefined = "UNDEFINED"
 }
 
 export interface LedgerRow {
@@ -39,6 +60,12 @@ export interface LedgerRow {
   amount: number;
   accountFrom: string;
   accountTo: string;
+  category: TransactionCategory;
+}
+
+export interface Goal {
+  name: string;
+  amount: number;
 }
 
 ChartJS.register(
@@ -52,9 +79,11 @@ ChartJS.register(
 
 function App() {
   const navigate = useNavigate();
+  const [previousData, setPreviousData] = useState<any[]>([]);
   const [steps, setSteps] = useState<StepsState>(InitialSteps);
   const [familyMembers, setFamilyMembers] = useState<Array<FamilyMember>>([]);
   const [ledger, setLedger] = useState<Array<LedgerRow>>([]);
+  const [goal, setGoal] = useState<Goal>({ name: "", amount: 0 });
 
   const purpleMonkeyDishWasher = (familyMember: FamilyMember) => {
     setFamilyMembers(familyMembers.concat(familyMember));
@@ -72,42 +101,52 @@ function App() {
     setLedger(filtered);
   };
 
-  // This is kept as it is useful for local testing  
-  useEffect(() => {
-    setLedger([
-      {
-        id: uuidv4(),
-        dayOfMonth: 1,
-        amount: 1000,
-        accountFrom: "salary",
-        accountTo: "user",
-      },
-      {
-        id: uuidv4(),
-        dayOfMonth: 10,
-        amount: 100,
-        accountFrom: "user",
-        accountTo: "netflix",
-      },
-      {
-        id: uuidv4(),
-        dayOfMonth: 1,
-        amount: 1000,
-        accountFrom: "user",
-        accountTo: "coffee",
-      },
-      {
-        id: uuidv4(),
-        dayOfMonth: 15,
-        amount: 167,
-        accountFrom: "user",
-        accountTo: "pony",
-      },
-    ]);
-  }, []);
+  // // This is kept as it is useful for local testing  
+  // useEffect(() => {
+  //   setLedger([
+  //     {
+  //       id: uuidv4(),
+  //       dayOfMonth: 1,
+  //       amount: 1000,
+  //       accountFrom: "salary",
+  //       accountTo: "user",
+  //       category: TransactionCategory.Income
+  //     },
+  //     {
+  //       id: uuidv4(),
+  //       dayOfMonth: 10,
+  //       amount: 100,
+  //       accountFrom: "user",
+  //       accountTo: "netflix",
+  //       category: TransactionCategory.Entertainment
+  //     },
+  //     {
+  //       id: uuidv4(),
+  //       dayOfMonth: 1,
+  //       amount: 1000,
+  //       accountFrom: "user",
+  //       accountTo: "coffee",
+  //       category: TransactionCategory.Food
+  //     },
+  //     {
+  //       id: uuidv4(),
+  //       dayOfMonth: 15,
+  //       amount: 167,
+  //       accountFrom: "user",
+  //       accountTo: "pony",
+  //       category: TransactionCategory.Food
+  //     },
+  //   ]);
+  // }, []);
 
   const completeStep = () => {
     const newState = progressStep(steps);
+    setSteps(newState);
+    navigate(newState.steps[newState.activeStepId]?.path || "/");
+  };
+
+  const goBack = () => {
+    const newState = goBackStep(steps);
     setSteps(newState);
     navigate(newState.steps[newState.activeStepId]?.path || "/");
   };
@@ -132,7 +171,12 @@ function App() {
             <Route
               path="/"
               element={
-                <Home setFamilyMembers={setFamilyMembers} setLedger={setLedger} />
+                <Home 
+                  setPreviousData={setPreviousData}
+                  setFamilyMembers={setFamilyMembers} 
+                  setLedger={setLedger} 
+                  setGoal={setGoal}
+                />
               }
             />
             <Route
@@ -142,6 +186,8 @@ function App() {
                   familyMembers={familyMembers}
                   addFamilyMember={purpleMonkeyDishWasher}
                   completeStep={completeStep}
+                  setGoal={setGoal}
+                  goal={goal}
                 />
               }
             />
@@ -153,6 +199,7 @@ function App() {
                   addLedgerRow={addLedgerRow}
                   removeLedgerRow={deleteLedgerRow}
                   completeStep={completeStep}
+                  goBack={goBack}
                 />
               }
             />
@@ -164,6 +211,7 @@ function App() {
                   addLedgerRow={addLedgerRow}
                   removeLedgerRow={deleteLedgerRow}
                   completeStep={completeStep}
+                  goBack={goBack}
                 />
               }
             />
@@ -174,6 +222,8 @@ function App() {
                   ledger={ledger}
                   removeLedgerRow={deleteLedgerRow}
                   completeStep={completeStep}
+                  goal={goal}
+                  goBack={goBack}
                 />
               }
             />
@@ -185,6 +235,9 @@ function App() {
                   familyMembers={familyMembers}
                   removeLedgerRow={deleteLedgerRow}
                   completeStep={completeStep}
+                  goal={goal}
+                  previousData={previousData}
+                  goBack={goBack}
                 />
               }
             />

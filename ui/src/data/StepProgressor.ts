@@ -24,4 +24,13 @@ export const progressStep = (state: StepsState): StepsState => {
       stepGroups: InitialSteps.stepGroups,
       completedGroups: _.reduce(newSteps, reducerF, new Set<StepGroupType>(Array.from(state.stepGroups.keys())))
     }
+}
+
+export const goBackStep = (state: StepsState): StepsState => {
+  return {
+    activeStepId: state.activeStepId - 1,
+    steps: state.steps,
+    stepGroups: InitialSteps.stepGroups,
+    completedGroups: state.completedGroups
   }
+}
