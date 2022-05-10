@@ -1,15 +1,22 @@
 import { Button } from "semantic-ui-react";
 
 interface BackButtonProps {
-    goBack: () => void
+  goBack: () => void;
 }
 
 export default function BackButton(props: BackButtonProps) {
-    const { goBack } = props;
+  const { goBack } = props;
 
- return <Button basic circular color="teal" onClick={() => {
-    goBack();
-        }}>Tilbake</Button>
+  return (
+    <Button
+      circular
+      basic
+      color="blue"
+      onClick={() => {
+        goBack();
+      }}
+    >
+      Tilbake
+    </Button>
+  );
 }
-
-

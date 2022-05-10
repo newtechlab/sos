@@ -1,13 +1,21 @@
 import { Button } from "semantic-ui-react";
 
 interface NextButtonProps {
-    completeStep: () => void
+  completeStep: () => void;
 }
 
 export default function NextButton(props: NextButtonProps) {
-    const { completeStep } = props;
+  const { completeStep } = props;
 
- return <Button circular color="teal" onClick={() => {
-          completeStep();
-        }}>Neste</Button>
+  return (
+    <Button
+      circular
+      color="blue"
+      onClick={() => {
+        completeStep();
+      }}
+    >
+      Neste
+    </Button>
+  );
 }

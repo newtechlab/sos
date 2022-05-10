@@ -156,16 +156,6 @@ function App() {
   return (
     <StyledRootDiv className="App">
       <StyledOverridesDiv>
-        {/* <StyledHeaderDiv>
-        <Container>
-          <h1>{activeStep?.heading}</h1>
-          {activeStep && activeStep?.description && (
-            <p> {activeStep?.description} </p>
-          )}
-          <Steps steps={steps} />
-        </Container>
-      </StyledHeaderDiv> */}
-
         <StyledBodyDiv>
           <Routes>
             <Route
@@ -193,6 +183,7 @@ function App() {
                 />
               }
             />
+
             <Route
               path="/penger-inn"
               element={
@@ -271,7 +262,7 @@ export const StyledOverridesDiv = styled.div`
 `;
 
 export const StyledRootDiv = styled.div`
-  background-color: #f1f8f8;
+  // background-color: #f1f8f8;
   height: 100%;
   min-height: 100vh;
 `;
@@ -281,12 +272,5 @@ const StyledBodyDiv = styled.div`
   padding-top: 40px;
   padding-bottom: 40px;
 `;
-
-// const StyledHeaderDiv = styled.div`
-//   text-align: left;
-//   padding-top: 40px;
-//   padding-bottom: 40px;
-//   background-color: #fff !important;
-// `;
 
 export default App;

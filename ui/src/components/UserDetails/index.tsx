@@ -43,124 +43,163 @@ export default function UserDetails(props: UserDetailsProps) {
   const { addFamilyMember, familyMembers, completeStep, activeStep, steps } =
     props;
   return (
-    <Container>
-      {addFamilyModalOpen && (
-        <AddFamilyMemberModal
-          addFamilyMember={addFamilyMember}
-          open={addFamilyModalOpen}
-          setOpen={setAddFamilyModalOpen}
-        />
-      )}
-      <StepHeader activeStep={activeStep} steps={steps} />
-      <StyledHeadingDiv>
-        <h1>Legg til familiemedlemmer</h1>
-        <StyledTopRightLabel>Hvorfor?</StyledTopRightLabel>
-        <Card.Group>
-          {familyMembers.map((fm) => {
-            return <FamilyMemberCard key={fm.id} familyMember={fm} />;
-          })}
-          <AddFamilyMemberCard
-            key="ADD_NEW_MEMBER"
-            onClick={() => {
-              setAddFamilyModalOpen(true);
-            }}
-          />
-        </Card.Group>
-      </StyledHeadingDiv>
-
-      <StyledHeadingDiv>
-        <h1>Eier familien en bil?</h1>
-        <StyledTopRightLabel>Leaser du bil?</StyledTopRightLabel>
-        <JaNei
-          optionOneText="Ja"
-          optionOneClick={() => {
-            console.log("todo");
-          }}
-          optionTwoText="Nei"
-          optionTwoClick={() => {
-            console.log("todo");
-          }}
-        />
-      </StyledHeadingDiv>
-
-      <StyledHeadingDiv>
-        <h1>Boligsituasjon</h1>
-        <StyledTopRightLabel>Hverken eier eller leier du?</StyledTopRightLabel>
-        <JaNei
-          optionOneText="Eie"
-          optionOneClick={() => {
-            console.log("todo");
-          }}
-          optionTwoText="Leie"
-          optionTwoClick={() => {
-            console.log("todo");
-          }}
-        />
-      </StyledHeadingDiv>
-
-      <StyledHeadingDiv>
-        <h1>Eier du noen dyr?</h1>
-        <StyledTopRightLabel>Hvorfor spør vi om dette?</StyledTopRightLabel>
-        <Grid columns={1}>
-          <Grid.Column width={16}>
-            <DottedDiv>+ Legg til</DottedDiv>
-          </Grid.Column>
-        </Grid>
-      </StyledHeadingDiv>
-
-      <StyledHeadingDiv>
-        <h1>Andre eiendeler?</h1>
-        <StyledTopRightLabel>
-          Hva mener vi med annen formue?
-        </StyledTopRightLabel>
-        <StyledInput />
-      </StyledHeadingDiv>
-
-      <StyledHeadingDiv>
-        <h1>Do you have any goals?</h1>
-        <StyledTopRightLabel>Hva mener vi med goals?</StyledTopRightLabel>
-        <Grid columns={2}>
-          <Grid.Column width={10}>
-            <Input
-              placeholder="Type any goal you might have"
-              value={props.goal?.name}
-              onChange={(_, data) => {
-                props.setGoal({
-                  name: data.value?.toString(),
-                  amount: props.goal?.amount || 0,
-                });
-              }}
-              style={{ width: "100%" }}
+    <StyledBackgroundColour>
+      <StyledHeader>
+        <StepHeader activeStep={activeStep} steps={steps} />
+      </StyledHeader>
+      <Container>
+        <StyledContainerSpace>
+          {addFamilyModalOpen && (
+            <AddFamilyMemberModal
+              addFamilyMember={addFamilyMember}
+              open={addFamilyModalOpen}
+              setOpen={setAddFamilyModalOpen}
             />
-          </Grid.Column>
-          <Grid.Column width={6}>
-            <Input
-              placeholder="Amount"
-              value={props.goal?.amount || ""}
-              onChange={(_, data) => {
-                props.setGoal({
-                  name: props.goal?.name || "",
-                  amount: parseInt(data.value),
-                });
-              }}
-              label="KR."
-              labelPosition="right"
-              style={{ width: "100%" }}
-            />
-          </Grid.Column>
-        </Grid>
-      </StyledHeadingDiv>
+          )}
 
-      <StyledBControlsDiv>
-        {/* <Button onClick={() => {
+          <StyledHeadingDiv>
+            <h1>Familiemedlemmer</h1>
+            <h3>Hvem består familien av?</h3>
+            <Card.Group>
+              {familyMembers.map((fm) => {
+                return <FamilyMemberCard key={fm.id} familyMember={fm} />;
+              })}
+              <AddFamilyMemberCard
+                key="ADD_NEW_MEMBER"
+                onClick={() => {
+                  setAddFamilyModalOpen(true);
+                }}
+              />
+            </Card.Group>
+          </StyledHeadingDiv>
+
+          <StyledHeadingDiv>
+            <h1>Eier familien bil(er)?</h1>
+            <StyledTopRightLabel>Leaser du bil?</StyledTopRightLabel>
+            <JaNei
+              optionOneText="Ja"
+              optionOneClick={() => {
+                console.log("todo");
+              }}
+              optionTwoText="Nei"
+              optionTwoClick={() => {
+                console.log("todo");
+              }}
+            />
+          </StyledHeadingDiv>
+
+          <StyledHeadingDiv>
+            <h1>Hvordan bor familien?</h1>
+            <StyledTopRightLabel>
+              Verken eier eller leier du?
+            </StyledTopRightLabel>
+            <JaNei
+              optionOneText="Eie"
+              optionOneClick={() => {
+                console.log("todo");
+              }}
+              optionTwoText="Leie"
+              optionTwoClick={() => {
+                console.log("todo");
+              }}
+            />
+          </StyledHeadingDiv>
+
+          <StyledHeadingDiv>
+            <h1>Har familien dyr?</h1>
+            <StyledTopRightLabel>Hvorfor spør vi om dette?</StyledTopRightLabel>
+            <Grid columns={1}>
+              <Grid.Column width={16}>
+                <DottedDiv>+ Legg til</DottedDiv>
+              </Grid.Column>
+            </Grid>
+          </StyledHeadingDiv>
+
+          <StyledHeadingDiv>
+            <h1>Andre eiendeler?</h1>
+            <StyledTopRightLabel>
+              Hva mener vi med andre eiendeler?
+            </StyledTopRightLabel>
+            <Grid columns={1}>
+              <Grid.Column>
+                <Input
+                  placeholder="Skriv inn eiendelen her (f.eks Hytte)"
+                  value={props.goal?.name}
+                  onChange={(_, data) => {
+                    props.setGoal({
+                      name: data.value?.toString(),
+                      amount: props.goal?.amount || 0,
+                    });
+                  }}
+                  style={{ width: "100%" }}
+                />
+              </Grid.Column>
+            </Grid>
+          </StyledHeadingDiv>
+
+          <StyledHeadingDiv>
+            <h1>Har familien et sparemål?</h1>
+            <StyledTopRightLabel>
+              Hva mener vi med sparemål?
+            </StyledTopRightLabel>
+            <Grid columns={2}>
+              <Grid.Column width={10}>
+                <Input
+                  placeholder="Skriv inn målet her (f.eks Tur til Kreta)"
+                  value={props.goal?.name}
+                  onChange={(_, data) => {
+                    props.setGoal({
+                      name: data.value?.toString(),
+                      amount: props.goal?.amount || 0,
+                    });
+                  }}
+                  style={{ width: "100%" }}
+                />
+              </Grid.Column>
+              <Grid.Column width={6}>
+                <Input
+                  placeholder="ca beløp (f.eks. 40 000)"
+                  value={props.goal?.amount || ""}
+                  onChange={(_, data) => {
+                    props.setGoal({
+                      name: props.goal?.name || "",
+                      amount: parseInt(data.value),
+                    });
+                  }}
+                  label="Kr"
+                  labelPosition="right"
+                  style={{ width: "100%" }}
+                />
+              </Grid.Column>
+            </Grid>
+          </StyledHeadingDiv>
+
+          <StyledBControlsDiv>
+            {/* <Button onClick={() => {
           setAddFamilyModalOpen(true);
         }}>Add Family Member</Button> */}
 
-        <NextButton completeStep={() => completeStep()} />
-      </StyledBControlsDiv>
-    </Container>
+            <NextButton completeStep={() => completeStep()} />
+          </StyledBControlsDiv>
+        </StyledContainerSpace>
+      </Container>
+    </StyledBackgroundColour>
   );
 }
+
+export const StyledBackgroundColour = styled.div`
+  background-color: #f1f8f8;
+  width: 100%;
+`;
+
+export const StyledContainerSpace = styled.div`
+  padding-top: 3em;
+  padding-bottom: 4em;
+`;
+export const StyledHeader = styled.div`
+  background-color: #ffffff;
+  width: 100%;
+`;
 
 const StyledBControlsDiv = styled.div`
   text-align: right;
@@ -178,7 +217,7 @@ const DottedDiv = styled.div`
 
 const StyledHeadingDiv = styled.div`
   position: relative;
-  margin-bottom: 20px;
+  margin-bottom: 4em;
 `;
 
 const StyledTopRightLabel = styled.div`

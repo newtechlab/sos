@@ -64,85 +64,91 @@ export default function MoneyIn(props: MoneyInProps) {
   }, [sortedLedger]);
 
   return (
-    <Container>
-      <StepHeader activeStep={activeStep} steps={steps} />
-      {addMoneyInModalOpen && (
-        <AddMoneyInModal
-          open={addMoneyInModalOpen}
-          setOpen={setAddMoneyInModalOpen}
-          addLedgerRow={addLedgerRow}
-        />
-      )}
+    <StyledBackgroundColour>
+      <StyledHeader>
+        <StepHeader activeStep={activeStep} steps={steps} />
+      </StyledHeader>
+      <Container>
+        <StyledContainerSpace>
+          {addMoneyInModalOpen && (
+            <AddMoneyInModal
+              open={addMoneyInModalOpen}
+              setOpen={setAddMoneyInModalOpen}
+              addLedgerRow={addLedgerRow}
+            />
+          )}
 
-      <h1>Lønn og andre støtteordninger</h1>
+          <h1>Lønn, støtteordninger og andre inntekter</h1>
 
-      <StyledBoxSection>
-        <StyledGrid>
-          {filteredLedger.length > 0 && (
-            <Grid.Row>
-              <Grid.Column width={6}>
-                <strong>Utbetaler</strong>
-              </Grid.Column>
-              {/* <Grid.Column width={4}>
+          <StyledBoxSection>
+            <StyledGrid>
+              {filteredLedger.length > 0 && (
+                <Grid.Row>
+                  <Grid.Column width={6}>
+                    <strong>Type inntekt</strong>
+                  </Grid.Column>
+                  {/* <Grid.Column width={4}>
                             Ordning
                         </Grid.Column> */}
-              <Grid.Column width={6}>
-                <strong>Intervall</strong>
-              </Grid.Column>
-              <Grid.Column width={3}>
-                <strong>Beløp</strong>
-              </Grid.Column>
-            </Grid.Row>
-          )}
-          {filteredLedger.map((row) => {
-            if (row.accountTo === "user") {
-              return (
-                <StyledGridRow key={row.id}>
-                  <Grid.Column width={6}>{row.accountFrom}</Grid.Column>
-                  <Grid.Column width={6}>{row.amount}</Grid.Column>
-                  <Grid.Column width={3}>{row.dayOfMonth}</Grid.Column>
-                  <Grid.Column width={1}>
-                    <Icon
-                      onClick={() => {
-                        removeLedgerRow(row.id);
-                      }}
-                      name="trash alternate outline"
-                      color="blue"
-                    />
+                  <Grid.Column width={6}>
+                    <strong>Beløp</strong>
                   </Grid.Column>
-                </StyledGridRow>
-              );
-            } else {
-              return null;
-            }
-          })}
-          <StyledGridRowBottom>
-            <Grid.Column width={16}>
-              <Button
-                circular
-                color="blue"
-                onClick={() => {
-                  setAddMoneyInModalOpen(true);
-                }}
-              >
-                <Icon name="plus" />
-                Legg til inntekt
-              </Button>
-            </Grid.Column>
-          </StyledGridRowBottom>
-        </StyledGrid>
-      </StyledBoxSection>
+                  <Grid.Column width={3}>
+                    <strong>Dato</strong>
+                  </Grid.Column>
+                </Grid.Row>
+              )}
+              {filteredLedger.map((row) => {
+                if (row.accountTo === "user") {
+                  return (
+                    <StyledGridRow key={row.id}>
+                      <Grid.Column width={6}>{row.accountFrom}</Grid.Column>
+                      <Grid.Column width={6}>{row.amount}</Grid.Column>
+                      <Grid.Column width={3}>{row.dayOfMonth}</Grid.Column>
+                      <Grid.Column width={1}>
+                        <Icon
+                          onClick={() => {
+                            removeLedgerRow(row.id);
+                          }}
+                          name="trash alternate outline"
+                          color="blue"
+                        />
+                      </Grid.Column>
+                    </StyledGridRow>
+                  );
+                } else {
+                  return null;
+                }
+              })}
+              <StyledGridRowBottom>
+                <Grid.Column width={16}>
+                  <Button
+                    circular
+                    color="blue"
+                    onClick={() => {
+                      setAddMoneyInModalOpen(true);
+                    }}
+                  >
+                    <Icon name="plus" />
+                    Legg til inntekt
+                  </Button>
+                </Grid.Column>
+              </StyledGridRowBottom>
+            </StyledGrid>
+          </StyledBoxSection>
 
-      {/* 
+          {/* 
         <StyledGraphContainer>
             <Bar options={chartOptions} data={graphData} />
         </StyledGraphContainer> */}
 
-      <BackForwardControls
-        goBack={() => goBack()}
-        completeStep={completeStep}
-      />
-    </Container>
+          <BackForwardControls
+            goBack={() => goBack()}
+            completeStep={completeStep}
+          />
+        </StyledContainerSpace>
+      </Container>
+    </StyledBackgroundColour>
   );
 }
 
@@ -159,6 +165,20 @@ export const StyledGridRow = styled(Grid.Row)`
   border: 1px solid #3d8eb1;
   border-radius: 5px;
   margin-bottom: 10px;
+`;
+
+const StyledBackgroundColour = styled.div`
+  background-color: #f1f8f8;
+  width: 100%;
+`;
+
+const StyledContainerSpace = styled.div`
+  padding-top: 3em;
+  padding-bottom: 4em;
+`;
+const StyledHeader = styled.div`
+  background-color: #ffffff;
+  width: 100%;
 `;
 
 // {

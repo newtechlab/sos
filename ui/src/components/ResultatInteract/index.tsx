@@ -28,6 +28,11 @@ import { MoneyOutList } from "../MoneyOutList";
 import _ from "lodash";
 import { StepDefinition, StepsState } from "../Steps";
 import StepHeader from "../StepHeader";
+import {
+  StyledBackgroundColour,
+  StyledContainerSpace,
+  StyledHeader,
+} from "../UserDetails";
 
 interface ResultatInteractProps {
   ledger: Array<LedgerRow>;
@@ -139,95 +144,102 @@ export default function ResultatInteract(props: ResultatInteractProps) {
   };
 
   return (
-    <Container>
-      <StepHeader activeStep={activeStep} steps={steps} />
-      <StyledBoxSection>
-        <h1>Balanseoversikt</h1>
-      </StyledBoxSection>
+    <StyledBackgroundColour>
+      <StyledHeader>
+        <StepHeader activeStep={activeStep} steps={steps} />
+      </StyledHeader>
+      <Container>
+        <StyledContainerSpace>
+          <StyledBoxSection>
+            <h1>Balanseoversikt</h1>
+          </StyledBoxSection>
 
-      <StyledBoxSection>
-        <h1>Pengebruk</h1>
+          <StyledBoxSection>
+            <h1>Pengebruk</h1>
 
-        <StyledGraphContainer>
-          <Bar options={chartOptions} data={graphData} />
-        </StyledGraphContainer>
+            <StyledGraphContainer>
+              <Bar options={chartOptions} data={graphData} />
+            </StyledGraphContainer>
 
-        <div>Over or under section</div>
+            <div>Over or under section</div>
 
-        <PaddedSection>
-          {moneyOut.length > 0 ? (
-            <ResetDialsDiv>
-              <Button
-                basic
-                onClick={() =>
-                  setAdjustments(
-                    new Map<LedgerRowId, AdjustmentAmountPercent>()
-                  )
-                }
-              >
-                <Icon name="undo" />
-                Reset
-              </Button>
-            </ResetDialsDiv>
-          ) : (
-            <></>
-          )}
-
-          <StyledRow>
-            <StyledColumn>
-              <h2>Løpende utgifter</h2>
-              <MoneyOutList
-                moneyOut={moneyOut}
-                onUpdateValue={onUpdateSlider}
-                adjustments={adjustments}
-              />
-            </StyledColumn>
-          </StyledRow>
-        </PaddedSection>
-
-        <StyledComparisonContainer>
-          <div>
-            <StyledBarTotal>
-              outgoings: {outTotal} <Label size="mini">KR.</Label>
-            </StyledBarTotal>
-            <h3>Spending Percentage</h3>
-            <Progress size="small" percent={outPercent} color="red" />
-          </div>
-          <div>
-            <StyledBarTotal>
-              you are saving: {inTotal - outTotal}{" "}
-              <Label size="mini">KR.</Label>
-            </StyledBarTotal>
-            <h3>Income Percentage</h3>
-            <Progress size="small" percent={inPercent} color="green" />
-          </div>
-
-          {props.goal.name !== "" ? (
-            <div>
-              <h3>
-                Goal: {props.goal.name}, requiring: {props.goal.amount}{" "}
-                <Label size="mini">KR.</Label>
-              </h3>
-              {goalMonths < 0 ? (
-                <p>You need to make more savings to achieve your goal</p>
+            <PaddedSection>
+              {moneyOut.length > 0 ? (
+                <ResetDialsDiv>
+                  <Button
+                    circular
+                    basic
+                    onClick={() =>
+                      setAdjustments(
+                        new Map<LedgerRowId, AdjustmentAmountPercent>()
+                      )
+                    }
+                  >
+                    <Icon name="undo" />
+                    Reset
+                  </Button>
+                </ResetDialsDiv>
               ) : (
-                <p>You will achieve your goal in {goalMonths} months</p>
+                <></>
               )}
-            </div>
-          ) : (
-            <div>
-              <h3>No goal has been added</h3>
-            </div>
-          )}
-        </StyledComparisonContainer>
 
-        <NextButton
-          completeStep={() => {
-            completeStep();
-          }}
-        />
-      </StyledBoxSection>
-    </Container>
+              <StyledRow>
+                <StyledColumn>
+                  <h2>Løpende utgifter</h2>
+                  <MoneyOutList
+                    moneyOut={moneyOut}
+                    onUpdateValue={onUpdateSlider}
+                    adjustments={adjustments}
+                  />
+                </StyledColumn>
+              </StyledRow>
+            </PaddedSection>
+
+            <StyledComparisonContainer>
+              <div>
+                <StyledBarTotal>
+                  outgoings: {outTotal} <Label size="mini">KR.</Label>
+                </StyledBarTotal>
+                <h3>Spending Percentage</h3>
+                <Progress size="small" percent={outPercent} color="red" />
+              </div>
+              <div>
+                <StyledBarTotal>
+                  you are saving: {inTotal - outTotal}{" "}
+                  <Label size="mini">KR.</Label>
+                </StyledBarTotal>
+                <h3>Income Percentage</h3>
+                <Progress size="small" percent={inPercent} color="green" />
+              </div>
+
+              {props.goal.name !== "" ? (
+                <div>
+                  <h3>
+                    Goal: {props.goal.name}, requiring: {props.goal.amount}{" "}
+                    <Label size="mini">KR.</Label>
+                  </h3>
+                  {goalMonths < 0 ? (
+                    <p>You need to make more savings to achieve your goal</p>
+                  ) : (
+                    <p>You will achieve your goal in {goalMonths} months</p>
+                  )}
+                </div>
+              ) : (
+                <div>
+                  <h3>No goal has been added</h3>
+                </div>
+              )}
+            </StyledComparisonContainer>
+
+            <NextButton
+              completeStep={() => {
+                completeStep();
+              }}
+            />
+          </StyledBoxSection>
+        </StyledContainerSpace>
+      </Container>
+    </StyledBackgroundColour>
   );
 }
 
