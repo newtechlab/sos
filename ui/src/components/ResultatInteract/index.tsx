@@ -1,5 +1,12 @@
 import { useEffect, useState } from "react";
-import { Button, Container, Icon, Label, Progress, Table } from "semantic-ui-react";
+import {
+  Button,
+  Container,
+  Icon,
+  Label,
+  Progress,
+  Table,
+} from "semantic-ui-react";
 import { Goal, LedgerRow } from "../../App";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
@@ -13,23 +20,23 @@ import {
   PengerInnColour,
   PengerUtColour,
 } from "../../chart/ChartSettings";
-import {
-  pengerInnTotal,
-  pengerUtTotal,
-  sortLedger,
-} from "../../data/Ledger";
+import { pengerInnTotal, pengerUtTotal, sortLedger } from "../../data/Ledger";
 import { Slider } from "../Slider";
 import { StyledBoxSection } from "../StyledBoxSection";
 import NextButton from "../NextButton";
 import { MoneyOutList } from "../MoneyOutList";
 import _ from "lodash";
+import { StepDefinition, StepsState } from "../Steps";
+import StepHeader from "../StepHeader";
 
 interface ResultatInteractProps {
   ledger: Array<LedgerRow>;
   removeLedgerRow: (id: string) => void;
   completeStep: () => void;
-  goBack: () => void
+  goBack: () => void;
   goal: Goal;
+  activeStep: StepDefinition | undefined;
+  steps: StepsState;
 }
 
 interface Adjustments {
@@ -43,7 +50,9 @@ export type AdjustmentAmountPercent = string;
 export default function ResultatInteract(props: ResultatInteractProps) {
   const [sortedLedger, setSortedLedger] = useState<LedgerRow[]>([]);
   const [goalMonths, setGoalMonths] = useState<number>(0);
-  const [adjustments, setAdjustments] = useState<Map<LedgerRowId, AdjustmentAmountPercent>>(new Map<LedgerRowId, AdjustmentAmountPercent>());
+  const [adjustments, setAdjustments] = useState<
+    Map<LedgerRowId, AdjustmentAmountPercent>
+  >(new Map<LedgerRowId, AdjustmentAmountPercent>());
   const [moneyOut, setMoneyOut] = useState<LedgerRow[]>([]);
   const [inTotal, setInTotal] = useState<number>(0);
   const [inPercent, setInPercent] = useState<number>(0);
@@ -52,23 +61,22 @@ export default function ResultatInteract(props: ResultatInteractProps) {
   const [graphData, setGraphData] = useState<
     ChartData<"bar", number[], unknown>
   >(graphDataInitialState);
-  const { ledger, completeStep } = props;
+  const { ledger, completeStep, activeStep, steps } = props;
 
   const labels = ["Penger Inn", "Penger Ut"];
 
   const computeInOutPercent = () => {
-
     const adjustedLedger = sortedLedger.map((row) => {
       if (adjustments.has(row.id)) {
-        const adjustment = parseInt(adjustments.get(row.id) || "100")
+        const adjustment = parseInt(adjustments.get(row.id) || "100");
         return {
           ...row,
-          amount: Math.round(row.amount / 100 * adjustment)
-        }
-      }else {
-        return row
+          amount: Math.round((row.amount / 100) * adjustment),
+        };
+      } else {
+        return row;
       }
-    })
+    });
 
     const totalIn = pengerInnTotal(chartLabels, adjustedLedger);
     setInTotal(totalIn);
@@ -79,18 +87,16 @@ export default function ResultatInteract(props: ResultatInteractProps) {
     const outPercent = (totalOut / (totalIn + totalOut)) * 100;
     setInPercent(inPercent);
     setOutPercent(outPercent);
-  }
+  };
 
   useEffect(() => {
     computeInOutPercent();
   }, [sortedLedger]);
 
   useEffect(() => {
-
     if (props.goal) {
       setGoalMonths(Math.round(props.goal.amount / (inTotal - outTotal)));
     }
-
   }, [inTotal, outTotal, props.goal]);
 
   useEffect(() => {
@@ -127,13 +133,14 @@ export default function ResultatInteract(props: ResultatInteractProps) {
     computeInOutPercent();
   }, [adjustments]);
 
-  const onUpdateSlider = (id: string, value: string) => {  
+  const onUpdateSlider = (id: string, value: string) => {
     setAdjustments(adjustments.set(id, value));
     computeInOutPercent();
-  }
+  };
 
   return (
     <Container>
+      <StepHeader activeStep={activeStep} steps={steps} />
       <StyledBoxSection>
         <h1>Balanseoversikt</h1>
       </StyledBoxSection>
@@ -148,39 +155,70 @@ export default function ResultatInteract(props: ResultatInteractProps) {
         <div>Over or under section</div>
 
         <PaddedSection>
-
-         { moneyOut.length > 0 ? <ResetDialsDiv>
-            <Button basic onClick={() => setAdjustments(new Map<LedgerRowId, AdjustmentAmountPercent>())}><Icon name='undo' />Reset</Button>
-          </ResetDialsDiv> : <></> }
+          {moneyOut.length > 0 ? (
+            <ResetDialsDiv>
+              <Button
+                basic
+                onClick={() =>
+                  setAdjustments(
+                    new Map<LedgerRowId, AdjustmentAmountPercent>()
+                  )
+                }
+              >
+                <Icon name="undo" />
+                Reset
+              </Button>
+            </ResetDialsDiv>
+          ) : (
+            <></>
+          )}
 
           <StyledRow>
             <StyledColumn>
               <h2>Løpende utgifter</h2>
-              <MoneyOutList moneyOut={moneyOut} onUpdateValue={onUpdateSlider} adjustments={adjustments} />
+              <MoneyOutList
+                moneyOut={moneyOut}
+                onUpdateValue={onUpdateSlider}
+                adjustments={adjustments}
+              />
             </StyledColumn>
           </StyledRow>
         </PaddedSection>
 
         <StyledComparisonContainer>
-            <div>
-                <StyledBarTotal>outgoings: {outTotal} <Label size="mini">KR.</Label></StyledBarTotal>
-                <h3>Spending Percentage</h3>
-                <Progress size='small' percent={outPercent} color='red' />
-            </div>
-            <div>
-                <StyledBarTotal>you are saving: {inTotal - outTotal} <Label size="mini">KR.</Label></StyledBarTotal>
-                <h3>Income Percentage</h3>
-                <Progress size='small' percent={inPercent} color='green' />
-            </div>
+          <div>
+            <StyledBarTotal>
+              outgoings: {outTotal} <Label size="mini">KR.</Label>
+            </StyledBarTotal>
+            <h3>Spending Percentage</h3>
+            <Progress size="small" percent={outPercent} color="red" />
+          </div>
+          <div>
+            <StyledBarTotal>
+              you are saving: {inTotal - outTotal}{" "}
+              <Label size="mini">KR.</Label>
+            </StyledBarTotal>
+            <h3>Income Percentage</h3>
+            <Progress size="small" percent={inPercent} color="green" />
+          </div>
 
-            { (props.goal.name !== '') ? <div>
-                <h3>Goal: {props.goal.name}, requiring: {props.goal.amount} <Label size="mini">KR.</Label></h3>
-                { goalMonths < 0 ? <p>You need to make more savings to achieve your goal</p> : <p>You will achieve your goal in {goalMonths} months</p> }
-            </div> : <div>
+          {props.goal.name !== "" ? (
+            <div>
+              <h3>
+                Goal: {props.goal.name}, requiring: {props.goal.amount}{" "}
+                <Label size="mini">KR.</Label>
+              </h3>
+              {goalMonths < 0 ? (
+                <p>You need to make more savings to achieve your goal</p>
+              ) : (
+                <p>You will achieve your goal in {goalMonths} months</p>
+              )}
+            </div>
+          ) : (
+            <div>
               <h3>No goal has been added</h3>
-            </div> }
-
-            
+            </div>
+          )}
         </StyledComparisonContainer>
 
         <NextButton
@@ -194,10 +232,10 @@ export default function ResultatInteract(props: ResultatInteractProps) {
 }
 
 const ResetDialsDiv = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 
 const PaddedSection = styled.div`
   margin-top: 40px;

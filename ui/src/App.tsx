@@ -24,7 +24,7 @@ import Resultat from "./components/Resultat";
 import styled from "styled-components";
 import { goBackStep, progressStep } from "./data/StepProgressor";
 import ResultatInteract from "./components/ResultatInteract";
-import { Container } from "semantic-ui-react";
+// import { Container } from "semantic-ui-react";
 import Home from "./components/Home";
 // import { useEffect } from "react";
 
@@ -51,7 +51,7 @@ export enum TransactionCategory {
   Gifts_Donations = "GIFTS_DONATIONS",
   Entertainment = "ENTERTAINMENT",
   Income = "INCOME",
-  Undefined = "UNDEFINED"
+  Undefined = "UNDEFINED",
 }
 
 export interface LedgerRow {
@@ -101,7 +101,7 @@ function App() {
     setLedger(filtered);
   };
 
-  // // This is kept as it is useful for local testing  
+  // // This is kept as it is useful for local testing
   // useEffect(() => {
   //   setLedger([
   //     {
@@ -156,25 +156,25 @@ function App() {
   return (
     <StyledRootDiv className="App">
       <StyledOverridesDiv>
-        <StyledHeaderDiv>
-          <Container>
-            <h1>{activeStep?.heading}</h1>
-            {activeStep && activeStep?.description && (
-              <p> {activeStep?.description} </p>
-            )}
-            <Steps steps={steps} />
-          </Container>
-        </StyledHeaderDiv>
+        {/* <StyledHeaderDiv>
+        <Container>
+          <h1>{activeStep?.heading}</h1>
+          {activeStep && activeStep?.description && (
+            <p> {activeStep?.description} </p>
+          )}
+          <Steps steps={steps} />
+        </Container>
+      </StyledHeaderDiv> */}
 
         <StyledBodyDiv>
           <Routes>
             <Route
               path="/"
               element={
-                <Home 
+                <Home
                   setPreviousData={setPreviousData}
-                  setFamilyMembers={setFamilyMembers} 
-                  setLedger={setLedger} 
+                  setFamilyMembers={setFamilyMembers}
+                  setLedger={setLedger}
                   setGoal={setGoal}
                 />
               }
@@ -185,6 +185,8 @@ function App() {
                 <UserDetails
                   familyMembers={familyMembers}
                   addFamilyMember={purpleMonkeyDishWasher}
+                  activeStep={activeStep}
+                  steps={steps}
                   completeStep={completeStep}
                   setGoal={setGoal}
                   goal={goal}
@@ -200,6 +202,8 @@ function App() {
                   removeLedgerRow={deleteLedgerRow}
                   completeStep={completeStep}
                   goBack={goBack}
+                  activeStep={activeStep}
+                  steps={steps}
                 />
               }
             />
@@ -212,6 +216,8 @@ function App() {
                   removeLedgerRow={deleteLedgerRow}
                   completeStep={completeStep}
                   goBack={goBack}
+                  activeStep={activeStep}
+                  steps={steps}
                 />
               }
             />
@@ -224,6 +230,8 @@ function App() {
                   completeStep={completeStep}
                   goal={goal}
                   goBack={goBack}
+                  activeStep={activeStep}
+                  steps={steps}
                 />
               }
             />
@@ -274,11 +282,11 @@ const StyledBodyDiv = styled.div`
   padding-bottom: 40px;
 `;
 
-const StyledHeaderDiv = styled.div`
-  text-align: left;
-  padding-top: 40px;
-  padding-bottom: 40px;
-  background-color: #fff !important;
-`;
+// const StyledHeaderDiv = styled.div`
+//   text-align: left;
+//   padding-top: 40px;
+//   padding-bottom: 40px;
+//   background-color: #fff !important;
+// `;
 
 export default App;

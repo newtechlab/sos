@@ -7,13 +7,17 @@ import AddFamilyMemberCard from "../AddFamilyMemberCard";
 import AddFamilyMemberModal from "../AddFamilyMemberModal";
 import FamilyMemberCard from "../FamilyMemberCard";
 import NextButton from "../NextButton";
+import StepHeader from "../StepHeader";
+import { StepDefinition, StepsState } from "../Steps";
 
 export interface UserDetailsProps {
   familyMembers: Array<FamilyMember>;
   addFamilyMember: (_: FamilyMember) => void;
   setGoal: (_: Goal) => void;
   goal: Goal | undefined;
-  completeStep: () => void
+  completeStep: () => void;
+  activeStep: StepDefinition | undefined;
+  steps: StepsState;
 }
 
 interface JaNeiProps {
@@ -23,7 +27,7 @@ interface JaNeiProps {
   optionTwoClick: () => void;
 }
 
-const JaNei = (props: JaNeiProps) => 
+const JaNei = (props: JaNeiProps) => (
   <Grid columns={2}>
     <Grid.Column width={8}>
       <DottedDiv>{props.optionOneText}</DottedDiv>
@@ -32,63 +36,83 @@ const JaNei = (props: JaNeiProps) =>
       <DottedDiv>{props.optionTwoText}</DottedDiv>
     </Grid.Column>
   </Grid>
+);
 
 export default function UserDetails(props: UserDetailsProps) {
   const [addFamilyModalOpen, setAddFamilyModalOpen] = useState<boolean>(false);
-  const {addFamilyMember, familyMembers, completeStep} = props
-    return <Container>
-
-    { addFamilyModalOpen && <AddFamilyMemberModal 
-        addFamilyMember={addFamilyMember} 
-        open={addFamilyModalOpen} 
-        setOpen={setAddFamilyModalOpen} /> }
-
+  const { addFamilyMember, familyMembers, completeStep, activeStep, steps } =
+    props;
+  return (
+    <Container>
+      {addFamilyModalOpen && (
+        <AddFamilyMemberModal
+          addFamilyMember={addFamilyMember}
+          open={addFamilyModalOpen}
+          setOpen={setAddFamilyModalOpen}
+        />
+      )}
+      <StepHeader activeStep={activeStep} steps={steps} />
       <StyledHeadingDiv>
         <h1>Legg til familiemedlemmer</h1>
         <StyledTopRightLabel>Hvorfor?</StyledTopRightLabel>
         <Card.Group>
-          { familyMembers.map((fm) => {
-            return <FamilyMemberCard key={fm.id} familyMember={fm} />
-          }) }
-          <AddFamilyMemberCard key="ADD_NEW_MEMBER" onClick={() => {setAddFamilyModalOpen(true)}} />
+          {familyMembers.map((fm) => {
+            return <FamilyMemberCard key={fm.id} familyMember={fm} />;
+          })}
+          <AddFamilyMemberCard
+            key="ADD_NEW_MEMBER"
+            onClick={() => {
+              setAddFamilyModalOpen(true);
+            }}
+          />
         </Card.Group>
       </StyledHeadingDiv>
 
       <StyledHeadingDiv>
         <h1>Eier familien en bil?</h1>
         <StyledTopRightLabel>Leaser du bil?</StyledTopRightLabel>
-        <JaNei 
-          optionOneText="Ja" 
-          optionOneClick={() => { console.log("todo") }}
-          optionTwoText="Nei" 
-          optionTwoClick={() => { console.log("todo") }}
+        <JaNei
+          optionOneText="Ja"
+          optionOneClick={() => {
+            console.log("todo");
+          }}
+          optionTwoText="Nei"
+          optionTwoClick={() => {
+            console.log("todo");
+          }}
         />
-      </StyledHeadingDiv>  
+      </StyledHeadingDiv>
 
       <StyledHeadingDiv>
         <h1>Boligsituasjon</h1>
         <StyledTopRightLabel>Hverken eier eller leier du?</StyledTopRightLabel>
-        <JaNei 
-            optionOneText="Eie" 
-            optionOneClick={() => { console.log("todo") }}
-            optionTwoText="Leie" 
-            optionTwoClick={() => { console.log("todo") }}
+        <JaNei
+          optionOneText="Eie"
+          optionOneClick={() => {
+            console.log("todo");
+          }}
+          optionTwoText="Leie"
+          optionTwoClick={() => {
+            console.log("todo");
+          }}
         />
-      </StyledHeadingDiv>  
+      </StyledHeadingDiv>
 
       <StyledHeadingDiv>
         <h1>Eier du noen dyr?</h1>
         <StyledTopRightLabel>Hvorfor spør vi om dette?</StyledTopRightLabel>
         <Grid columns={1}>
           <Grid.Column width={16}>
-          <DottedDiv>+ Legg til</DottedDiv>
+            <DottedDiv>+ Legg til</DottedDiv>
           </Grid.Column>
         </Grid>
       </StyledHeadingDiv>
 
       <StyledHeadingDiv>
         <h1>Andre eiendeler?</h1>
-        <StyledTopRightLabel>Hva mener vi med annen formue?</StyledTopRightLabel>
+        <StyledTopRightLabel>
+          Hva mener vi med annen formue?
+        </StyledTopRightLabel>
         <StyledInput />
       </StyledHeadingDiv>
 
@@ -97,24 +121,28 @@ export default function UserDetails(props: UserDetailsProps) {
         <StyledTopRightLabel>Hva mener vi med goals?</StyledTopRightLabel>
         <Grid columns={2}>
           <Grid.Column width={10}>
-            <Input 
+            <Input
               placeholder="Type any goal you might have"
               value={props.goal?.name}
-              onChange={ (_, data) => { props.setGoal({ 
-                name: data.value?.toString(),
-                amount: props.goal?.amount || 0 })
-              }} 
+              onChange={(_, data) => {
+                props.setGoal({
+                  name: data.value?.toString(),
+                  amount: props.goal?.amount || 0,
+                });
+              }}
               style={{ width: "100%" }}
             />
           </Grid.Column>
           <Grid.Column width={6}>
-          <Input 
+            <Input
               placeholder="Amount"
               value={props.goal?.amount || ""}
-              onChange={ (_, data) => { props.setGoal({ 
-                name: props.goal?.name || "",
-                amount: parseInt(data.value) })
-              }} 
+              onChange={(_, data) => {
+                props.setGoal({
+                  name: props.goal?.name || "",
+                  amount: parseInt(data.value),
+                });
+              }}
               label="KR."
               labelPosition="right"
               style={{ width: "100%" }}
@@ -124,43 +152,41 @@ export default function UserDetails(props: UserDetailsProps) {
       </StyledHeadingDiv>
 
       <StyledBControlsDiv>
-
         {/* <Button onClick={() => {
           setAddFamilyModalOpen(true);
         }}>Add Family Member</Button> */}
 
-        <NextButton completeStep={() => completeStep()} />  
-
-      </StyledBControlsDiv>  
-
+        <NextButton completeStep={() => completeStep()} />
+      </StyledBControlsDiv>
     </Container>
+  );
 }
 
 const StyledBControlsDiv = styled.div`
-    text-align: right;
-    padding-top: 40px;
-    padding-bottom: 40px;
-`
+  text-align: right;
+  padding-top: 40px;
+  padding-bottom: 40px;
+`;
 
 const DottedDiv = styled.div`
-    border: 2px dashed #A5C8D7;
-    height: 145px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-`
+  border: 2px dashed #a5c8d7;
+  height: 145px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 
 const StyledHeadingDiv = styled.div`
-    position: relative;
-    margin-bottom: 20px;
-`
+  position: relative;
+  margin-bottom: 20px;
+`;
 
 const StyledTopRightLabel = styled.div`
-    position: absolute;
-    top: 0px;
-    right:0px;
-`
+  position: absolute;
+  top: 0px;
+  right: 0px;
+`;
 
 const StyledInput = styled(Input)`
-    width: 100%;
-`
+  width: 100%;
+`;
