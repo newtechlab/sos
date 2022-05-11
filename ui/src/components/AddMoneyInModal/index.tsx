@@ -1,7 +1,7 @@
-import { Button, Container, Grid, Input, Modal } from "semantic-ui-react";
+import { Button, Container, Dropdown, Grid, Input, Modal } from "semantic-ui-react";
 import { LedgerRow, StyledOverridesDiv, TransactionCategory } from "../../App";
 import { v4 as uuidv4 } from "uuid";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DaySelector from "../DaySelector";
 import styled from "styled-components";
 
@@ -11,11 +11,60 @@ interface AddMoneyInModalProps {
   addLedgerRow: (_: LedgerRow) => void;
 }
 
+interface MoneyInAndCategory {
+  name: string;
+  category: TransactionCategory;
+}
+
+interface DropDownItem {
+  key: string;
+  text: string;
+  value: string;
+}
+
+const convertDropdownItem = (item: MoneyInAndCategory): DropDownItem => {
+  return {
+    key: item.name,
+    text: item.name,
+    value: item.name,
+  };
+};
+
 export default function AddMoneyInModal(props: AddMoneyInModalProps) {
   const [from, setFrom] = useState<string | undefined>(undefined);
+  const [moneyInItems, setMoneyInItems] = useState<
+    Map<string, MoneyInAndCategory>
+  >(new Map<string, MoneyInAndCategory>());  
+  const [dropDownItems, setDropDownItems] = useState<DropDownItem[]>([]);
   const [amount, setAmount] = useState<number | undefined>(undefined);
   const [day, setDay] = useState<number | undefined>(undefined);
   const { open, setOpen, addLedgerRow } = props;
+
+  useEffect(() => {
+    const items = new Map<string, MoneyInAndCategory>();
+    items.set("Lönn", {
+      name: "Lönn",
+      category: TransactionCategory.Income,
+    });
+    items.set("Pension", {
+      name: "Pension",
+      category: TransactionCategory.Income,
+    });
+    items.set("Benefit", {
+      name: "Benefit",
+      category: TransactionCategory.Income,
+    });       
+    setMoneyInItems(items);
+  }, []);
+
+  useEffect(() => {
+    const dropDownItems: DropDownItem[] = [];
+    moneyInItems.forEach((value) => {
+      const i = convertDropdownItem(value);
+      dropDownItems.push(i);
+    });
+    setDropDownItems(dropDownItems);
+  }, [moneyInItems]);  
 
   return (
     <Modal
@@ -41,8 +90,9 @@ export default function AddMoneyInModal(props: AddMoneyInModalProps) {
                 <Grid columns={2}>
                   <Grid.Column width={2}>Type</Grid.Column>
                   <Grid.Column width={14}>
-                    <Input
+                    <Dropdown
                       placeholder="f.eks. Lønn"
+                      options={dropDownItems}
                       onChange={(_, data) => {
                         setFrom(data.value?.toString());
                       }}
