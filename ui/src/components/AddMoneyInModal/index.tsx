@@ -1,4 +1,11 @@
-import { Button, Container, Dropdown, Grid, Input, Modal } from "semantic-ui-react";
+import {
+  Button,
+  Container,
+  Dropdown,
+  Grid,
+  Input,
+  Modal,
+} from "semantic-ui-react";
 import { LedgerRow, StyledOverridesDiv, TransactionCategory } from "../../App";
 import { v4 as uuidv4 } from "uuid";
 import { useEffect, useState } from "react";
@@ -34,7 +41,7 @@ export default function AddMoneyInModal(props: AddMoneyInModalProps) {
   const [from, setFrom] = useState<string | undefined>(undefined);
   const [moneyInItems, setMoneyInItems] = useState<
     Map<string, MoneyInAndCategory>
-  >(new Map<string, MoneyInAndCategory>());  
+  >(new Map<string, MoneyInAndCategory>());
   const [dropDownItems, setDropDownItems] = useState<DropDownItem[]>([]);
   const [amount, setAmount] = useState<number | undefined>(undefined);
   const [day, setDay] = useState<number | undefined>(undefined);
@@ -53,7 +60,7 @@ export default function AddMoneyInModal(props: AddMoneyInModalProps) {
     items.set("Benefit", {
       name: "Benefit",
       category: TransactionCategory.Income,
-    });       
+    });
     setMoneyInItems(items);
   }, []);
 
@@ -64,7 +71,7 @@ export default function AddMoneyInModal(props: AddMoneyInModalProps) {
       dropDownItems.push(i);
     });
     setDropDownItems(dropDownItems);
-  }, [moneyInItems]);  
+  }, [moneyInItems]);
 
   return (
     <Modal
@@ -128,6 +135,7 @@ export default function AddMoneyInModal(props: AddMoneyInModalProps) {
                   </Grid.Column>
                   <Grid.Column textAlign="right">
                     <Button
+                      circular
                       content="Legg til"
                       color="blue"
                       onClick={() => {
