@@ -1,13 +1,11 @@
 import { useEffect, useState } from "react";
-import { Button, Container, Progress, Table } from "semantic-ui-react";
+import { Button, Container, Image } from "semantic-ui-react";
 import { FamilyMember, Goal, LedgerRow } from "../../App";
-import styled from "styled-components";
+import congratulations from "./congratulations.png";
 
 import { ChartData } from "chart.js";
-import { Bar } from "react-chartjs-2";
 import {
   chartLabels,
-  chartOptions,
   graphDataInitialState,
   PengerInnColour,
   PengerUtColour,
@@ -20,8 +18,6 @@ import {
   sortLedger,
 } from "../../data/Ledger";
 import { StyledBoxSection } from "../StyledBoxSection";
-import { PDFDocument } from "pdf-lib";
-import PdfHandler from "../../services/PdfService/PdfService";
 import {
   CreatePdfProps,
   PdfWriterService,
@@ -94,44 +90,9 @@ export default function Resultat(props: ResultatProps) {
     <Container>
       <StyledBoxSection>
         <h1>Resultat</h1>
-
-        <StyledGraphContainer>
-          <Bar options={chartOptions} data={graphData} />
-        </StyledGraphContainer>
-
-        <StyledComparisonContainer>
           <div>
-            <StyledBarTotal>{inTotal}kr</StyledBarTotal>
-            <h3>Penger Inn</h3>
-            <Progress size="small" percent={inPercent} color="green" />
+          <Image size="big" src={congratulations} wrapped />
           </div>
-          <div>
-            <StyledBarTotal>{outTotal}kr</StyledBarTotal>
-            <h3>Penger Ut</h3>
-            <Progress size="small" percent={outPercent} color="yellow" />
-          </div>
-        </StyledComparisonContainer>
-
-        <Table>
-          <Table.Header>
-            <Table.Row>
-              <Table.HeaderCell>Item</Table.HeaderCell>
-              <Table.HeaderCell>Amount</Table.HeaderCell>
-              <Table.HeaderCell>Day of month</Table.HeaderCell>
-            </Table.Row>
-          </Table.Header>
-          <Table.Body>
-            {sortedLedger.map((row) => {
-              return (
-                <Table.Row key={row.id}>
-                  <Table.Cell>{row.accountFrom}</Table.Cell>
-                  <Table.Cell>{row.amount}</Table.Cell>
-                  <Table.Cell>{row.dayOfMonth}</Table.Cell>
-                </Table.Row>
-              );
-            })}
-          </Table.Body>
-        </Table>
 
         <Button
           circular
@@ -147,17 +108,3 @@ export default function Resultat(props: ResultatProps) {
     </Container>
   );
 }
-
-const StyledBarTotal = styled.h3`
-  position: relative;
-  float: right;
-`;
-
-const StyledGraphContainer = styled.div`
-  height: 100px;
-`;
-
-const StyledComparisonContainer = styled.div`
-  padding: 50px;
-  text-align: left;
-`;
