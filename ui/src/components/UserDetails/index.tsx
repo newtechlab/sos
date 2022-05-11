@@ -1,8 +1,10 @@
+import { setCharacterSpacing } from "pdf-lib";
 import { useState } from "react";
 import { Card, Container, Grid, Input } from "semantic-ui-react";
 import styled from "styled-components";
 import { getOriginalNode } from "typescript";
-import { FamilyMember, Goal } from "../../App";
+import { Car, FamilyMember, Goal } from "../../App";
+import { progressStep } from "../../data/StepProgressor";
 import AddFamilyMemberCard from "../AddFamilyMemberCard";
 import AddFamilyMemberModal from "../AddFamilyMemberModal";
 import FamilyMemberCard from "../FamilyMemberCard";
@@ -15,6 +17,8 @@ export interface UserDetailsProps {
   addFamilyMember: (_: FamilyMember) => void;
   setGoal: (_: Goal) => void;
   goal: Goal | undefined;
+  setCar: (_: Car) => void;
+  car: Car | undefined;
   completeStep: () => void;
   activeStep: StepDefinition | undefined;
   steps: StepsState;
@@ -23,25 +27,51 @@ export interface UserDetailsProps {
 interface JaNeiProps {
   optionOneText: string;
   optionOneClick: () => void;
+
   optionTwoText: string;
   optionTwoClick: () => void;
 }
 
+// const JaNei = (props: JaNeiProps) => (
+//   <Grid columns={2}>
+//     <Grid.Column width={8}>
+//       <DottedDiv onClick={props.optionOneClick}>
+//         {props.optionOneText}
+//       </DottedDiv>
+//     </Grid.Column>
+//     <Grid.Column width={8}>
+//       <DottedDiv onClick={props.optionTwoClick}>
+//         {props.optionTwoText}
+//       </DottedDiv>
+//     </Grid.Column>
+//   </Grid>
+// );
+
 const JaNei = (props: JaNeiProps) => (
   <Grid columns={2}>
     <Grid.Column width={8}>
-      <DottedDiv>{props.optionOneText}</DottedDiv>
+      <ButtonDotted onClick={props.optionOneClick}>
+        {props.optionOneText}
+      </ButtonDotted>
     </Grid.Column>
     <Grid.Column width={8}>
-      <DottedDiv>{props.optionTwoText}</DottedDiv>
+      <ButtonDotted onClick={props.optionTwoClick}>
+        {props.optionTwoText}
+      </ButtonDotted>
     </Grid.Column>
   </Grid>
 );
 
 export default function UserDetails(props: UserDetailsProps) {
   const [addFamilyModalOpen, setAddFamilyModalOpen] = useState<boolean>(false);
-  const { addFamilyMember, familyMembers, completeStep, activeStep, steps } =
-    props;
+  const {
+    addFamilyMember,
+    familyMembers,
+    completeStep,
+    activeStep,
+    steps,
+    car,
+  } = props;
   return (
     <StyledBackgroundColour>
       <StyledHeader>
@@ -79,11 +109,13 @@ export default function UserDetails(props: UserDetailsProps) {
             <JaNei
               optionOneText="Ja"
               optionOneClick={() => {
-                console.log("todo");
+                props.setCar({ own: true });
+                console.log({ car });
               }}
               optionTwoText="Nei"
               optionTwoClick={() => {
-                console.log("todo");
+                props.setCar({ own: false });
+                console.log({ car });
               }}
             />
           </StyledHeadingDiv>
@@ -213,6 +245,24 @@ const DottedDiv = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+`;
+const ButtonDotted = styled.button`
+  border: 2px dashed #a5c8d7;
+  height: 145px;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  &:hover {
+    background-color: blue;
+  }
+`;
+const ButtonDottedSelected = styled.button`
+  border: 2px dashed #a5c8d7;
+  height: 145px;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  background-color: Green;
 `;
 
 const StyledHeadingDiv = styled.div`

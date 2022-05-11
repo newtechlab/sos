@@ -68,6 +68,10 @@ export interface Goal {
   amount: number;
 }
 
+export interface Car {
+  own: boolean;
+}
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -84,6 +88,7 @@ function App() {
   const [familyMembers, setFamilyMembers] = useState<Array<FamilyMember>>([]);
   const [ledger, setLedger] = useState<Array<LedgerRow>>([]);
   const [goal, setGoal] = useState<Goal>({ name: "", amount: 0 });
+  const [car, setCar] = useState<Car>({ own: false });
 
   const purpleMonkeyDishWasher = (familyMember: FamilyMember) => {
     setFamilyMembers(familyMembers.concat(familyMember));
@@ -180,6 +185,8 @@ function App() {
                   completeStep={completeStep}
                   setGoal={setGoal}
                   goal={goal}
+                  car={car}
+                  setCar={setCar}
                 />
               }
             />
