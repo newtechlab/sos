@@ -103,6 +103,7 @@ export default function Home(props: HomProps) {
         <StyledSpace>eller</StyledSpace>
         <StyledSpace>
           <Button
+            circular
             color={"blue"}
             onClick={() => {
               navigate(firstStep);

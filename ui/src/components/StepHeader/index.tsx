@@ -23,7 +23,7 @@ export default StepHeader;
 
 const StyledHeaderDiv = styled.div`
   text-align: left;
-  padding-top: 40px;
-  padding-bottom: 40px;
+  padding-top: 1em;
+  padding-bottom: 5em;
   background-color: #fff !important;
 `;
