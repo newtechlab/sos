@@ -20,7 +20,7 @@ import {
   PengerInnColour,
   PengerUtColour,
 } from "../../chart/ChartSettings";
-import { pengerInnTotal, pengerUtTotal, sortLedger } from "../../data/Ledger";
+import { calculateMoneyIn, calculateMoneyOut, pengerInnTotal, pengerUtTotal, sortLedger } from "../../data/Ledger";
 import { Slider } from "../Slider";
 import { StyledBoxSection } from "../StyledBoxSection";
 import NextButton from "../NextButton";
@@ -83,15 +83,15 @@ export default function ResultatInteract(props: ResultatInteractProps) {
       }
     });
 
-    const totalIn = pengerInnTotal(chartLabels, adjustedLedger);
+    const totalIn = calculateMoneyIn(adjustedLedger);  
     setInTotal(totalIn);
-    const totalOut = pengerUtTotal(chartLabels, adjustedLedger);
+    const totalOut = calculateMoneyOut(adjustedLedger);  
     setOutTotal(totalOut);
 
-    const inPercent = (totalIn / (totalIn + totalOut)) * 100;
-    const outPercent = (totalOut / (totalIn + totalOut)) * 100;
-    setInPercent(inPercent);
-    setOutPercent(outPercent);
+    const newInPercent = (totalIn / (totalIn + totalOut)) * 100;
+    const newOutPercent = (totalOut / (totalIn + totalOut)) * 100;
+    setInPercent(newInPercent);
+    setOutPercent(newOutPercent);
   };
 
   useEffect(() => {
@@ -139,8 +139,9 @@ export default function ResultatInteract(props: ResultatInteractProps) {
   }, [adjustments]);
 
   const onUpdateSlider = (id: string, value: string) => {
-    setAdjustments(adjustments.set(id, value));
-    computeInOutPercent();
+    const newAdjustments = new Map(adjustments)
+    newAdjustments.set(id, value);
+    setAdjustments(newAdjustments);
   };
 
   return (
