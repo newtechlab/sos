@@ -23,3 +23,15 @@ export const pengerUtTotal = (chartLabels: number[], ledger: Array<LedgerRow>): 
 export const sortLedger = (ledger: Array<LedgerRow>) => {
     return _.orderBy(ledger, ["dayOfMonth"], ["asc"]);
 }
+
+export const calculateMoneyOut = (ledger: Array<LedgerRow>): number => {
+    return ledger
+      .map((r) => r.accountFrom === 'user' ? r.amount : 0 )
+      .reduce((total, amount) => total + amount, 0) 
+}
+
+export const calculateMoneyIn = (ledger: Array<LedgerRow>): number => {
+    return ledger
+      .map((r) => r.accountFrom !== 'user' ? r.amount : 0 )
+      .reduce((total, amount) => total + amount, 0) 
+}
