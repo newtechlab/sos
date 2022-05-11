@@ -48,7 +48,7 @@ export default function AddMoneyInModal(props: AddMoneyOutModalProps) {
     });
     items.set("Gym/Exercise", {
       name: "Gym/Exercise",
-      category: TransactionCategory.Debt,
+      category: TransactionCategory.Personal_Care,
     });
     items.set("Mortgage/Rent", {
       name: "Mortgage/Rent",
