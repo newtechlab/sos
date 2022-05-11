@@ -50,9 +50,9 @@ export enum TransactionCategory {
   // Savings = "SAVINGS",
   // Gifts_Donations = "GIFTS_DONATIONS",
   // Entertainment = "ENTERTAINMENT",
-  // Income = "INCOME",
   // Undefined = "UNDEFINED",
 
+  Income = "INCOME",
   Childcare_other ="AKS/SFO",
   Kindergarden = "Barnehage",
   Insurance = "Forsikring", 
