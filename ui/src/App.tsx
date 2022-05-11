@@ -108,6 +108,11 @@ ChartJS.register(
   Legend
 );
 
+export enum HouseSituation {
+  OWN="OWN",
+  RENT="RENT"
+}
+
 function App() {
   const navigate = useNavigate();
   const [previousData, setPreviousData] = useState<any[]>([]);
@@ -116,6 +121,8 @@ function App() {
   const [ledger, setLedger] = useState<Array<LedgerRow>>([]);
   const [goal, setGoal] = useState<Goal>({ name: "", amount: 0 });
   const [car, setCar] = useState<Car>({ own: false });
+  const [house, setHouse] = useState<HouseSituation>(HouseSituation.RENT);
+  const [otherAssets, setOtherAssets] = useState<string>("");
 
   const purpleMonkeyDishWasher = (familyMember: FamilyMember) => {
     setFamilyMembers(familyMembers.concat(familyMember));
@@ -214,6 +221,10 @@ function App() {
                   goal={goal}
                   car={car}
                   setCar={setCar}
+                  house={house}
+                  setHouse={setHouse}
+                  otherAssets={otherAssets}
+                  setOtherAssets={setOtherAssets}
                 />
               }
             />
