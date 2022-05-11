@@ -3,13 +3,14 @@ import { Button, Container, Grid, Icon, Table } from "semantic-ui-react";
 import { LedgerRow } from "../../App";
 
 import AddMoneyOutModal from "../AddMoneyOutModal";
-import { sortLedger } from "../../data/Ledger";
+import { calculateMoneyOut, sortLedger } from "../../data/Ledger";
 import BackForwardControls from "../BackForwardControls";
 import { StyledBoxSection } from "../StyledBoxSection";
 import { StyledGrid, StyledGridRow, StyledGridRowBottom } from "../MoneyIn";
 import { StepDefinition, StepsState } from "../Steps";
 import StepHeader from "../StepHeader";
 import styled from "styled-components";
+import MoneyTotal from "../MoneyTotal";
 
 interface MoneyOutProps {
   ledger: Array<LedgerRow>;
@@ -26,6 +27,7 @@ export default function MoneyOut(props: MoneyOutProps) {
     useState<boolean>(false);
   const [sortedLedger, setSortedLedger] = useState<LedgerRow[]>([]);
   const [filteredLedger, setFilteredLedger] = useState<LedgerRow[]>([]);
+  const [moneyOut, setMoneyOut] = useState<number>(0);
   // const [graphData, setGraphData] = useState<ChartData<"bar", number[], unknown>>(graphDataInitialState);
   const {
     ledger,
@@ -62,6 +64,7 @@ export default function MoneyOut(props: MoneyOutProps) {
         return row.accountFrom === "user";
       })
     );
+    setMoneyOut(calculateMoneyOut(sortedLedger))
   }, [sortedLedger]);
 
   return (
@@ -138,6 +141,9 @@ export default function MoneyOut(props: MoneyOutProps) {
                   </Button>
                 </Grid.Column>
               </StyledGridRowBottom>
+
+              <MoneyTotal text="Utgifter og gjeld" total={moneyOut} />          
+
             </StyledGrid>
           </StyledBoxSection>
 

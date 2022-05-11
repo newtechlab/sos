@@ -1,8 +1,7 @@
-import { Card, Icon, Image } from "semantic-ui-react";
+import { Image } from "semantic-ui-react";
 import styled from "styled-components";
 import { FamilyMember } from "../../App";
-import { StyledCard } from "../StyledFamilyCard";
-import childImage from './child.png';
+import userImage from './person.png'
 
 interface FamilyMemberCardProps {
     familyMember: FamilyMember;
@@ -11,26 +10,44 @@ interface FamilyMemberCardProps {
 export default function FamilyMemberCard(props: FamilyMemberCardProps) {
     const { familyMember } = props;
 
-    return <StyledCard>
-        <StyledImage src={childImage} wrapped ui={false} />
-        <StyledNameDiv>{familyMember.name} : {familyMember.age}</StyledNameDiv>
-    </StyledCard>
+    return <StyledFamilyMemberCard>
+        <StyledAgeDiv>{familyMember.age}</StyledAgeDiv>
+        <StyledImage src={userImage} wrapped ui={false} />
+        <StyledNameDiv>{familyMember.name} </StyledNameDiv>
+    </StyledFamilyMemberCard>
 }
+
+export const StyledFamilyMemberCard = styled.div`
+    position: relative;
+    margin: 10px;
+    background: unset !important;
+    width: 216px;
+    height: 206px;
+    position: relative;
+`
+
+const StyledAgeDiv = styled.div`
+    position: absolute;
+    top: 105px;
+    left: 92px;
+`
 
 const StyledNameDiv = styled.div`
     position: absolute;
     bottom: 0px;
     height: 40px;
-    width: 100%;
+    width: 212px;
     background-color: #FFF;
     text-align: center;
     line-height: 40px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
 `
 
 const StyledImage = styled(Image)`
     img {
-        width: 286px !important;
-        height: 286px !important;
+        width: 212px !important;
+        height: 167px !important;
     }
 `
 

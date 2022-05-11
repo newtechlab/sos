@@ -3,7 +3,7 @@ import { Route, Routes } from "react-router-dom";
 
 import { useNavigate } from "react-router-dom";
 import "semantic-ui-css/semantic.min.css";
-import Steps, { StepsState } from "./components/Steps";
+import { StepsState } from "./components/Steps";
 import { useState } from "react";
 import UserDetails from "./components/UserDetails";
 import { InitialSteps } from "./data/StepsInitialState";
@@ -35,23 +35,50 @@ export interface FamilyMember {
 }
 
 export enum TransactionCategory {
-  Housing = "HOUSING",
-  Transportation = "TRANSPORTATION",
-  Food = "FOOD",
-  Utilities = "UTILITIES",
-  Clothing = "CLOTHING",
-  Medical_Healthcare = "MEDICAL_HEALTHCARE",
-  Insurance = "INSURANCE",
-  Household_Items = "HOUSEHOLD_ITEMS",
-  Personal = "PERSONAL",
-  Debt = "DEBT",
-  Retirement = "RETIREMENT",
-  Education = "EDUCATION",
-  Savings = "SAVINGS",
-  Gifts_Donations = "GIFTS_DONATIONS",
-  Entertainment = "ENTERTAINMENT",
+  // Housing = "HOUSING",
+  // Transportation = "TRANSPORTATION",
+  // Food = "FOOD",
+  // Utilities = "UTILITIES",
+  // Clothing = "CLOTHING",
+  // Medical_Healthcare = "MEDICAL_HEALTHCARE",
+  // Insurance = "INSURANCE",
+  // Household_Items = "HOUSEHOLD_ITEMS",
+  // Personal = "PERSONAL",
+  // Debt = "DEBT",
+  // Retirement = "RETIREMENT",
+  // Education = "EDUCATION",
+  // Savings = "SAVINGS",
+  // Gifts_Donations = "GIFTS_DONATIONS",
+  // Entertainment = "ENTERTAINMENT",
+  // Undefined = "UNDEFINED",
+
   Income = "INCOME",
-  Undefined = "UNDEFINED",
+  Childcare_other ="AKS/SFO",
+  Kindergarden = "Barnehage",
+  Insurance = "Forsikring", 
+  Debt = "Gjeld",
+  Rent = "Husleie",
+  Phone = "Telefonabonnement",
+  WiFi = "Internettabonnement (WiFi)",
+  Other = "Annet",
+  Media_and_Subscriptions = "Abonnement (Streaming, gaming)",
+  Car = "Bilkostnader",
+  Food_and_Beverages = "Dagligvarer",
+  Household_Items = "Husholdningsartikler",
+  Snacks_and_stuff = "Godteri, brus og snacks",
+  Cafe = "Kafé, kaffe",
+  Clothing_and_Footwear = "Klær og sko",
+  Furniture = "Møbler",
+  Personal_Care = "Personlig pleie",
+  Bars_and_restaurants = "Restaurant / bar",
+  Recreation = "Sport og fritid",
+  Electricity = "Strøm",
+  Travel_Expenses = "Transport og reise",
+  Regular_Income = "Fast jobb",
+  Part_Time_Income = "Deltidsjobb",
+  Social_Support = "NAV-støtte",
+  Private_Funding = "Privat bidrag",  
+  Undefined = "UNDEFINED"  
 }
 
 export interface LedgerRow {

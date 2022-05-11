@@ -3,12 +3,13 @@ import { Button, Container, Grid, Icon } from "semantic-ui-react";
 import { LedgerRow } from "../../App";
 import AddMoneyInModal from "../AddMoneyInModal";
 
-import { sortLedger } from "../../data/Ledger";
+import { calculateMoneyIn, sortLedger } from "../../data/Ledger";
 import { StyledBoxSection } from "../StyledBoxSection";
 import BackForwardControls from "../BackForwardControls";
 import styled from "styled-components";
 import { StepDefinition, StepsState } from "../Steps";
 import StepHeader from "../StepHeader";
+import MoneyTotal from "../MoneyTotal";
 
 interface MoneyInProps {
   ledger: Array<LedgerRow>;
@@ -25,6 +26,7 @@ export default function MoneyIn(props: MoneyInProps) {
     useState<boolean>(false);
   const [sortedLedger, setSortedLedger] = useState<LedgerRow[]>([]);
   const [filteredLedger, setFilteredLedger] = useState<LedgerRow[]>([]);
+  const [moneyIn, setMoneyIn] = useState<number>(0);
   // const [graphData, setGraphData] = useState<ChartData<"bar", number[], unknown>>(graphDataInitialState);
   const {
     ledger,
@@ -61,6 +63,8 @@ export default function MoneyIn(props: MoneyInProps) {
         return row.accountTo === "user";
       })
     );
+
+    setMoneyIn(calculateMoneyIn(sortedLedger))
   }, [sortedLedger]);
 
   return (
@@ -120,6 +124,7 @@ export default function MoneyIn(props: MoneyInProps) {
                   return null;
                 }
               })}
+
               <StyledGridRowBottom>
                 <Grid.Column width={16}>
                   <Button
@@ -134,6 +139,9 @@ export default function MoneyIn(props: MoneyInProps) {
                   </Button>
                 </Grid.Column>
               </StyledGridRowBottom>
+
+              <MoneyTotal text="Lønn og andre støtteordninger" total={moneyIn} />      
+
             </StyledGrid>
           </StyledBoxSection>
 
@@ -151,6 +159,10 @@ export default function MoneyIn(props: MoneyInProps) {
     </StyledBackgroundColour>
   );
 }
+
+export const StyledTotalGrid = styled(Grid)`
+  background-color: #F5F5F0;
+`;
 
 export const StyledGridRowBottom = styled(Grid.Row)`
   text-align: center;
