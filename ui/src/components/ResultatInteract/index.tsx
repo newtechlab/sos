@@ -1,9 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  Button,
-  Container,
-  Icon
-} from "semantic-ui-react";
+import { Button, Container, Icon } from "semantic-ui-react";
 import { Goal, LedgerRow } from "../../App";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
@@ -16,7 +12,11 @@ import {
   PengerInnColour,
   PengerUtColour,
 } from "../../chart/ChartSettings";
-import { calculateMoneyIn, calculateMoneyOut, sortLedger } from "../../data/Ledger";
+import {
+  calculateMoneyIn,
+  calculateMoneyOut,
+  sortLedger,
+} from "../../data/Ledger";
 import { StyledBoxSection } from "../StyledBoxSection";
 import NextButton from "../NextButton";
 import { MoneyOutList } from "../MoneyOutList";
@@ -78,9 +78,9 @@ export default function ResultatInteract(props: ResultatInteractProps) {
       }
     });
 
-    const totalIn = calculateMoneyIn(adjustedLedger);  
+    const totalIn = calculateMoneyIn(adjustedLedger);
     setInTotal(totalIn);
-    const totalOut = calculateMoneyOut(adjustedLedger);  
+    const totalOut = calculateMoneyOut(adjustedLedger);
     setOutTotal(totalOut);
 
     const newInPercent = (totalIn / (totalIn + totalOut)) * 100;
@@ -128,7 +128,7 @@ export default function ResultatInteract(props: ResultatInteractProps) {
   }, [adjustments]);
 
   const onUpdateSlider = (id: string, value: string) => {
-    const newAdjustments = new Map(adjustments)
+    const newAdjustments = new Map(adjustments);
     newAdjustments.set(id, value);
     setAdjustments(newAdjustments);
   };
@@ -166,7 +166,7 @@ export default function ResultatInteract(props: ResultatInteractProps) {
                     }
                   >
                     <Icon name="undo" />
-                    Reset
+                    Tilbakestill
                   </Button>
                 </ResetDialsDiv>
               ) : (
@@ -193,9 +193,14 @@ export default function ResultatInteract(props: ResultatInteractProps) {
           </StyledBoxSection>
         </StyledContainerSpace>
       </StyledContainer>
-        
-      <ComparisonGraph outTotal={outTotal} outPercent={outPercent} inTotal={inTotal} inPercent={inPercent} goal={props.goal} />        
 
+      <ComparisonGraph
+        outTotal={outTotal}
+        outPercent={outPercent}
+        inTotal={inTotal}
+        inPercent={inPercent}
+        goal={props.goal}
+      />
     </StyledBackgroundColour>
   );
 }

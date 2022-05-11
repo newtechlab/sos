@@ -4,64 +4,64 @@ import styled from "styled-components";
 import { Goal } from "../../App";
 
 interface ComparisonGraphProps {
-    outTotal: number;
-    inTotal: number;
-    outPercent: number;
-    inPercent: number;
-    goal: Goal;
+  outTotal: number;
+  inTotal: number;
+  outPercent: number;
+  inPercent: number;
+  goal: Goal;
 }
-  
+
 export default function ComparisonGraph(props: ComparisonGraphProps) {
-    const { outTotal, outPercent, inTotal, inPercent, goal } = props;
-    
-    const [goalMonths, setGoalMonths] = useState<number>(0);
+  const { outTotal, outPercent, inTotal, inPercent, goal } = props;
 
-    useEffect(() => {
-        if (props.goal) {
-          setGoalMonths(Math.round(props.goal.amount / (inTotal - outTotal)));
-        }
-      }, [inTotal, outTotal, goal]);
+  const [goalMonths, setGoalMonths] = useState<number>(0);
 
-    return <FixedBottomDiv>
-            <Container>
-                <StyledComparisonContainer>
-                    <div>
-                        <StyledBarTotal>
-                            outgoings: {outTotal} <Label size="mini">KR.</Label>
-                        </StyledBarTotal>
-                        <h3>Spending Percentage</h3>
-                        <Progress size="small" percent={outPercent} color="red" />
-                    </div>
-                    <div>
-                    <StyledBarTotal>
-                        you are saving: {inTotal - outTotal}{" "}
-                        <Label size="mini">KR.</Label>
-                    </StyledBarTotal>
-                    <h3>Income Percentage</h3>
-                    <Progress size="small" percent={inPercent} color="green" />
-                    </div>
+  useEffect(() => {
+    if (props.goal) {
+      setGoalMonths(Math.round(props.goal.amount / (inTotal - outTotal)));
+    }
+  }, [inTotal, outTotal, goal]);
 
-                    {goal.name !== "" ? (
-                    <div>
-                        <h3>
-                        Goal: {goal.name}, requiring: {goal.amount}{" "}
-                        <Label size="mini">KR.</Label>
-                        </h3>
-                        {goalMonths < 0 ? (
-                        <p>You need to make more savings to achieve your goal</p>
-                        ) : (
-                        <p>You will achieve your goal in {goalMonths} months</p>
-                        )}
-                    </div>
-                    ) : (
-                    <div>
-                        <h3>No goal has been added</h3>
-                    </div>
-                    )}
-                </StyledComparisonContainer>
-            </Container>
-        </FixedBottomDiv>  
+  return (
+    <FixedBottomDiv>
+      <Container>
+        <StyledComparisonContainer>
+          <div>
+            <StyledBarTotal>
+              {outTotal} <Label size="mini">Kr</Label>
+            </StyledBarTotal>
+            <h3>Overforbruk</h3>
+            <Progress size="small" percent={outPercent} color="red" />
+          </div>
+          <div>
+            <StyledBarTotal>
+              {inTotal - outTotal} <Label size="mini">Kr</Label>
+            </StyledBarTotal>
+            <h3>Sparepotensiale</h3>
+            <Progress size="small" percent={inPercent} color="green" />
+          </div>
 
+          {goal.name !== "" ? (
+            <div>
+              <h3>
+                Sparemål: {goal.name}, krever: {goal.amount}{" "}
+                <Label size="mini">Kr</Label>
+              </h3>
+              {goalMonths < 0 ? (
+                <p>Du må spare mer for å nå sparemålet</p>
+              ) : (
+                <p>Du vil nå sparemålet om {goalMonths} måneder</p>
+              )}
+            </div>
+          ) : (
+            <div>
+              <h3>Det er ikke lagt til noe sparemål</h3>
+            </div>
+          )}
+        </StyledComparisonContainer>
+      </Container>
+    </FixedBottomDiv>
+  );
 }
 
 const FixedBottomDiv = styled.div`
