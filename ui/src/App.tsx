@@ -3,7 +3,7 @@ import { Route, Routes } from "react-router-dom";
 
 import { useNavigate } from "react-router-dom";
 import "semantic-ui-css/semantic.min.css";
-import Steps, { StepsState } from "./components/Steps";
+import { StepsState } from "./components/Steps";
 import { useState } from "react";
 import UserDetails from "./components/UserDetails";
 import { InitialSteps } from "./data/StepsInitialState";
