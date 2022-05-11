@@ -74,7 +74,11 @@ export enum TransactionCategory {
   Recreation = "Sport og fritid",
   Electricity = "Strøm",
   Travel_Expenses = "Transport og reise",
-  Undefined = "UNDEFINED"
+  Regular_Income = "Fast jobb",
+  Part_Time_Income = "Deltidsjobb",
+  Social_Support = "NAV-støtte",
+  Private_Funding = "Privat bidrag",  
+  Undefined = "UNDEFINED"  
 }
 
 export interface LedgerRow {
