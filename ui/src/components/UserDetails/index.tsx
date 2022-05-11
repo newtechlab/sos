@@ -8,6 +8,7 @@ import { progressStep } from "../../data/StepProgressor";
 import AddFamilyMemberCard from "../AddFamilyMemberCard";
 import AddFamilyMemberModal from "../AddFamilyMemberModal";
 import FamilyMemberCard from "../FamilyMemberCard";
+import HelpTextModal from "../HelpTextModal";
 import { JaNei } from "../JaNei";
 import NextButton from "../NextButton";
 import StepHeader from "../StepHeader";
@@ -26,11 +27,12 @@ export interface UserDetailsProps {
   activeStep: StepDefinition | undefined;
   steps: StepsState;
   otherAssets: string;
-  setOtherAssets: (_: string) => void
+  setOtherAssets: (_: string) => void;
 }
 
 export default function UserDetails(props: UserDetailsProps) {
   const [addFamilyModalOpen, setAddFamilyModalOpen] = useState<boolean>(false);
+  const [addHelpTextModalOpen, OpenHelpTextModal] = useState<boolean>(false);
   const {
     addFamilyMember,
     familyMembers,
@@ -39,7 +41,7 @@ export default function UserDetails(props: UserDetailsProps) {
     steps,
     car,
     house,
-    setHouse
+    setHouse,
   } = props;
   return (
     <StyledBackgroundColour>
@@ -74,7 +76,12 @@ export default function UserDetails(props: UserDetailsProps) {
 
           <StyledHeadingDiv>
             <h1>Eier familien bil(er)?</h1>
-            <StyledTopRightLabel>Leaser du bil?</StyledTopRightLabel>
+
+            <HelpTextModal
+              open={addHelpTextModalOpen}
+              setOpen={OpenHelpTextModal}
+            />
+
             <JaNei
               optionOneSelected={car?.own === true}
               optionOneText="Ja"
@@ -100,12 +107,12 @@ export default function UserDetails(props: UserDetailsProps) {
               optionOneSelected={house === HouseSituation.OWN}
               optionOneText="Eie"
               optionOneClick={() => {
-                setHouse(HouseSituation.OWN)
+                setHouse(HouseSituation.OWN);
               }}
               optionTwoSelected={house === HouseSituation.RENT}
               optionTwoText="Leie"
               optionTwoClick={() => {
-                setHouse(HouseSituation.RENT)
+                setHouse(HouseSituation.RENT);
               }}
             />
           </StyledHeadingDiv>
