@@ -1,11 +1,14 @@
+import { setCharacterSpacing } from "pdf-lib";
 import { useState } from "react";
 import { Card, Container, Grid, Input } from "semantic-ui-react";
 import styled from "styled-components";
 import { getOriginalNode } from "typescript";
-import { FamilyMember, Goal } from "../../App";
+import { Car, FamilyMember, Goal, HouseSituation } from "../../App";
+import { progressStep } from "../../data/StepProgressor";
 import AddFamilyMemberCard from "../AddFamilyMemberCard";
 import AddFamilyMemberModal from "../AddFamilyMemberModal";
 import FamilyMemberCard from "../FamilyMemberCard";
+import { JaNei } from "../JaNei";
 import NextButton from "../NextButton";
 import StepHeader from "../StepHeader";
 import { StepDefinition, StepsState } from "../Steps";
@@ -15,33 +18,29 @@ export interface UserDetailsProps {
   addFamilyMember: (_: FamilyMember) => void;
   setGoal: (_: Goal) => void;
   goal: Goal | undefined;
+  setCar: (_: Car) => void;
+  car: Car | undefined;
+  house: HouseSituation;
+  setHouse: (_: HouseSituation) => void;
   completeStep: () => void;
   activeStep: StepDefinition | undefined;
   steps: StepsState;
+  otherAssets: string;
+  setOtherAssets: (_: string) => void
 }
-
-interface JaNeiProps {
-  optionOneText: string;
-  optionOneClick: () => void;
-  optionTwoText: string;
-  optionTwoClick: () => void;
-}
-
-const JaNei = (props: JaNeiProps) => (
-  <Grid columns={2}>
-    <Grid.Column width={8}>
-      <DottedDiv>{props.optionOneText}</DottedDiv>
-    </Grid.Column>
-    <Grid.Column width={8}>
-      <DottedDiv>{props.optionTwoText}</DottedDiv>
-    </Grid.Column>
-  </Grid>
-);
 
 export default function UserDetails(props: UserDetailsProps) {
   const [addFamilyModalOpen, setAddFamilyModalOpen] = useState<boolean>(false);
-  const { addFamilyMember, familyMembers, completeStep, activeStep, steps } =
-    props;
+  const {
+    addFamilyMember,
+    familyMembers,
+    completeStep,
+    activeStep,
+    steps,
+    car,
+    house,
+    setHouse
+  } = props;
   return (
     <StyledBackgroundColour>
       <StyledHeader>
@@ -77,13 +76,17 @@ export default function UserDetails(props: UserDetailsProps) {
             <h1>Eier familien bil(er)?</h1>
             <StyledTopRightLabel>Leaser du bil?</StyledTopRightLabel>
             <JaNei
+              optionOneSelected={car?.own === true}
               optionOneText="Ja"
               optionOneClick={() => {
-                console.log("todo");
+                props.setCar({ own: true });
+                console.log({ car });
               }}
+              optionTwoSelected={car?.own !== true}
               optionTwoText="Nei"
               optionTwoClick={() => {
-                console.log("todo");
+                props.setCar({ own: false });
+                console.log({ car });
               }}
             />
           </StyledHeadingDiv>
@@ -94,13 +97,15 @@ export default function UserDetails(props: UserDetailsProps) {
               Verken eier eller leier du?
             </StyledTopRightLabel>
             <JaNei
+              optionOneSelected={house === HouseSituation.OWN}
               optionOneText="Eie"
               optionOneClick={() => {
-                console.log("todo");
+                setHouse(HouseSituation.OWN)
               }}
+              optionTwoSelected={house === HouseSituation.RENT}
               optionTwoText="Leie"
               optionTwoClick={() => {
-                console.log("todo");
+                setHouse(HouseSituation.RENT)
               }}
             />
           </StyledHeadingDiv>
@@ -146,12 +151,9 @@ export default function UserDetails(props: UserDetailsProps) {
               <Grid.Column width={10}>
                 <Input
                   placeholder="Skriv inn målet her (f.eks Tur til Kreta)"
-                  value={props.goal?.name}
+                  value={props.otherAssets}
                   onChange={(_, data) => {
-                    props.setGoal({
-                      name: data.value?.toString(),
-                      amount: props.goal?.amount || 0,
-                    });
+                    props.setOtherAssets(data.value?.toString());
                   }}
                   style={{ width: "100%" }}
                 />
