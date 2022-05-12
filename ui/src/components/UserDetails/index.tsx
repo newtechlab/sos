@@ -8,7 +8,7 @@ import { progressStep } from "../../data/StepProgressor";
 import AddFamilyMemberCard from "../AddFamilyMemberCard";
 import AddFamilyMemberModal from "../AddFamilyMemberModal";
 import FamilyMemberCard from "../FamilyMemberCard";
-import HelpTextModal from "../HelpTextModal";
+import HelpTextModalGoal from "../HelpTextModalGoal";
 import { JaNei } from "../JaNei";
 import NextButton from "../NextButton";
 import StepHeader from "../StepHeader";
@@ -32,7 +32,8 @@ export interface UserDetailsProps {
 
 export default function UserDetails(props: UserDetailsProps) {
   const [addFamilyModalOpen, setAddFamilyModalOpen] = useState<boolean>(false);
-  const [addHelpTextModalOpen, OpenHelpTextModal] = useState<boolean>(false);
+  const [addHelpTextGoalModalOpen, OpenHelpTextGoalModal] =
+    useState<boolean>(false);
   const {
     addFamilyMember,
     familyMembers,
@@ -77,11 +78,6 @@ export default function UserDetails(props: UserDetailsProps) {
           <StyledHeadingDiv>
             <h1>Eier familien bil(er)?</h1>
 
-            <HelpTextModal
-              open={addHelpTextModalOpen}
-              setOpen={OpenHelpTextModal}
-            />
-
             <JaNei
               optionOneSelected={car?.own === true}
               optionOneText="Ja"
@@ -100,9 +96,7 @@ export default function UserDetails(props: UserDetailsProps) {
 
           <StyledHeadingDiv>
             <h1>Hvordan bor familien?</h1>
-            <StyledTopRightLabel>
-              Verken eier eller leier du?
-            </StyledTopRightLabel>
+
             <JaNei
               optionOneSelected={house === HouseSituation.OWN}
               optionOneText="Eie"
@@ -119,7 +113,7 @@ export default function UserDetails(props: UserDetailsProps) {
 
           <StyledHeadingDiv>
             <h1>Har familien dyr?</h1>
-            <StyledTopRightLabel>Hvorfor spør vi om dette?</StyledTopRightLabel>
+
             <Grid columns={1}>
               <Grid.Column width={16}>
                 <DottedDiv>+ Legg til</DottedDiv>
@@ -129,9 +123,7 @@ export default function UserDetails(props: UserDetailsProps) {
 
           <StyledHeadingDiv>
             <h1>Andre eiendeler?</h1>
-            <StyledTopRightLabel>
-              Hva mener vi med andre eiendeler?
-            </StyledTopRightLabel>
+
             <Grid columns={1}>
               <Grid.Column>
                 <Input
@@ -148,9 +140,10 @@ export default function UserDetails(props: UserDetailsProps) {
 
           <StyledHeadingDiv>
             <h1>Har familien et sparemål?</h1>
-            <StyledTopRightLabel>
-              Hva mener vi med sparemål?
-            </StyledTopRightLabel>
+            <HelpTextModalGoal
+              open={addHelpTextGoalModalOpen}
+              setOpen={OpenHelpTextGoalModal}
+            />
             <Grid columns={2}>
               <Grid.Column width={10}>
                 <Input
@@ -227,14 +220,4 @@ const DottedDiv = styled.div`
 const StyledHeadingDiv = styled.div`
   position: relative;
   margin-bottom: 4em;
-`;
-
-const StyledTopRightLabel = styled.div`
-  position: absolute;
-  top: 0px;
-  right: 0px;
-`;
-
-const StyledInput = styled(Input)`
-  width: 100%;
 `;
