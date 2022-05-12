@@ -42,67 +42,67 @@ export default function AddMoneyInModal(props: AddMoneyOutModalProps) {
 
   useEffect(() => {
     const items = new Map<string, MoneyOutAndCategory>();
-    items.set("Streaming service's", {
+    items.set("Abonnement (Netflix, HBO, Spill m.m)", {
       name: "Abonnement (Netflix, HBO, Spill m.m)",
       category: TransactionCategory.Media_and_Subscriptions,
     });
-    items.set("Gym/Exercise", {
+    items.set("Sport, trening og fritid", {
       name: "Sport, trening og fritid",
       category: TransactionCategory.Debt,
     });
-    items.set("Transport", {
+    items.set("Transport (trikk, tog, buss)", {
       name: "Transport (trikk, tog, buss)",
       category: TransactionCategory.Travel_Expenses,
     });    
-    items.set("Mortgage", {
+    items.set("Huslån", {
       name: "Huslån",
       category: TransactionCategory.Debt,
     });
-    items.set("Rent", {
+    items.set("Husleie", {
       name: "Husleie",
       category: TransactionCategory.Debt,
     });    
-    items.set("Travel", {
+    items.set("Reise (Fly, hotell)", {
       name: "Reise (Fly, hotell)",
       category: TransactionCategory.Travel_Expenses,
     });
-    items.set("Food", {
+    items.set("Mat og drikke", {
       name: "Mat og drikke",
       category: TransactionCategory.Food_and_Beverages,
     });
-    items.set("El", {
+    items.set("Strøm", {
       name: "Strøm",
       category: TransactionCategory.Electricity,
     });
-    items.set("Clothes", {
+    items.set("Klær og sko", {
       name: "Klær og sko",
       category: TransactionCategory.Clothing_and_Footwear,
     });
-    items.set("Healthcare", {
+    items.set("Personlig pleie", {
       name: "Personlig pleie",
       category: TransactionCategory.Personal_Care,
     });
-    items.set("Insurance", {
+    items.set("Forsikring", {
       name: "Forsikring",
       category: TransactionCategory.Insurance,
     });
-    items.set("Utility bills", {
+    items.set("Andre bokostnader (kommunale avgifter m.m.)", {
       name: "Andre bokostnader (kommunale avgifter m.m.)",
       category: TransactionCategory.Household_Items,
     });
-    items.set("Household shopping", {
+    items.set("Husholdningsartikler", {
       name: "Husholdningsartikler",
       category: TransactionCategory.Household_Items,
     });
-    items.set("Loans", {
+    items.set("Annen gjeld", {
       name: "Annen gjeld",
       category: TransactionCategory.Debt,
     });
-    items.set("Car Loan", {
+    items.set("Billån", {
       name: "Billån",
       category: TransactionCategory.Debt,
     });    
-    items.set("Gifts/Donations", {
+    items.set("Faste donasjoner", {
       name: "Faste donasjoner",
       category: TransactionCategory.Personal_Care,
     });
