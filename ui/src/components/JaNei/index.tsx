@@ -50,6 +50,7 @@ const ButtonDotted = styled.button<ButtonDottedProps>`
   &:hover {
     background-color: #ffffff;
     border: 3px solid #3d8eb1;
+    cursor: pointer;
   }
 `;
 
