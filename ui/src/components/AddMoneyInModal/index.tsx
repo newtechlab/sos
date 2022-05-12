@@ -61,10 +61,10 @@ export default function AddMoneyInModal(props: AddMoneyInModalProps) {
       name: "NAV-støtte",
       category: TransactionCategory.Income,
     });
-        items.set("Private", {
-      name: "Privat bidrag",
-      category: TransactionCategory.Income,
-    });
+    //     items.set("Private", {
+    //   name: "Privat bidrag",
+    //   category: TransactionCategory.Income,
+    // });
     setMoneyInItems(items);
   }, []);
 
