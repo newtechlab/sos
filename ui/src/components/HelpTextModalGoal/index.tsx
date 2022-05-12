@@ -1,6 +1,5 @@
-import { useState } from "react";
 import styled from "styled-components";
-import { Button, Grid, Icon, Image, Modal } from "semantic-ui-react";
+import { Button, Modal } from "semantic-ui-react";
 
 interface AddHelpTextModalProps {
   open: boolean;
@@ -15,12 +14,17 @@ export default function OpenHelpTextModal(props: AddHelpTextModalProps) {
       onClose={() => setOpen(false)}
       onOpen={() => setOpen(true)}
       open={open}
-      trigger={<LabelButton>Leaser du bil?</LabelButton>}
+      trigger={<LabelButton>Hvorfor spør vi om dette?</LabelButton>}
     >
-      <Modal.Header>Hvorfor spør vi om du leaser?</Modal.Header>
+      <Modal.Header>Hva mener vi med sparemål?</Modal.Header>
 
       <Modal.Actions>
-        <p>Forklarende tekst om leasing og hvorfor vi trenger dette</p>
+        <p>
+          Med sparemål så mener vi om du har noe du sparer til? Har du en drøm
+          om å kjøpe en bil, ta med familien på ferie eller noe annet som krever
+          at du må spare penger? Ønsker du ganske enkelt bare å spare litt til
+          framtiden? Legg inn et beløp som vi kan hjelpe deg å nå.
+        </p>
         <Button circular basic color="blue" onClick={() => setOpen(false)}>
           Lukk
         </Button>
