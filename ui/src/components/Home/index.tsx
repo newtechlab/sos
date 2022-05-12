@@ -1,9 +1,9 @@
 import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { useNavigate } from "react-router-dom";
-import { Button, Container, Modal, Image, Icon } from "semantic-ui-react";
+import { Button, Container, Image, Icon } from "semantic-ui-react";
 import styled from "styled-components";
-import { FamilyMember, Goal, LedgerRow } from "../../App";
+import { FamilyMember, LedgerRow, UserInformation } from "../../App";
 import PdfHandler from "../../services/PdfService/PdfService";
 import { StyledBoxSection } from "../StyledBoxSection";
 import frontpage_family from "./frontpage_family.png";
@@ -12,7 +12,7 @@ export interface HomProps {
   setPreviousData: (data: any[]) => void;
   setFamilyMembers: (_: Array<FamilyMember>) => void;
   setLedger: (_: Array<LedgerRow>) => void;
-  setGoal: (_: Goal) => void;
+  setUserDetails(_: UserInformation): void;
 }
 
 export const firstStep = "/family";
@@ -20,12 +20,12 @@ export const firstStep = "/family";
 interface PdfFormat {
   familyMembers: Array<FamilyMember>;
   ledger: Array<LedgerRow>;
-  goal: Goal;
+  userDetails: UserInformation;
 }
 
 export default function Home(props: HomProps) {
   const navigate = useNavigate();
-  const { setFamilyMembers, setLedger, setGoal, setPreviousData } = props;
+  const { setFamilyMembers, setLedger, setUserDetails, setPreviousData } = props;
   const onDrop = useCallback((acceptedFiles) => {
     const fileReader = new FileReader();
     fileReader.onload = async (event) => {
@@ -54,8 +54,8 @@ export default function Home(props: HomProps) {
                 setLedger(mostRecentRecord.ledger);
               }
 
-              if (mostRecentRecord.goal) {
-                setGoal(mostRecentRecord.goal);
+              if (mostRecentRecord.userDetails) {
+                setUserDetails(mostRecentRecord.userDetails);
               }
             }
           }

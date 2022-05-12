@@ -1,11 +1,11 @@
 import { PDFDocument } from "pdf-lib";
-import { FamilyMember, Goal, LedgerRow } from "../../App";
+import { FamilyMember, LedgerRow, UserInformation } from "../../App";
 
 
 export interface CreatePdfProps {
     ledger: Array<LedgerRow>;
     familyMembers: Array<FamilyMember>;
-    goal: Goal;
+    userDetails: UserInformation;
     previousData: any[];
 }
 
@@ -18,7 +18,7 @@ export class PdfWriterService {
             timestamp: Date.now(),
             familyMembers: props.familyMembers,
             ledger: props.ledger,
-            goal: props.goal
+            userDetails: props.userDetails
         }
         props.previousData.push(objectToAttach)
         const history = {

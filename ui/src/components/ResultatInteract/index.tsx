@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Button, Container, Icon } from "semantic-ui-react";
 import { Goal, LedgerRow } from "../../App";
 import styled from "styled-components";
-import { v4 as uuidv4 } from "uuid";
 
 import { ChartData } from "chart.js";
 import { Bar } from "react-chartjs-2";
