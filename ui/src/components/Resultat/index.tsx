@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button, Container, Image } from "semantic-ui-react";
-import { FamilyMember, Goal, LedgerRow } from "../../App";
+import { FamilyMember, Goal, LedgerRow, UserInformation } from "../../App";
 import congratulations from "./congratulations.png";
 
 import { ChartData } from "chart.js";
@@ -29,7 +29,7 @@ interface ResultatProps {
   removeLedgerRow: (id: string) => void;
   completeStep: () => void;
   goBack: () => void;
-  goal: Goal;
+  userDetails: UserInformation;
   previousData: any[];
 }
 
@@ -50,7 +50,7 @@ export default function Resultat(props: ResultatProps) {
   const [graphData, setGraphData] = useState<
     ChartData<"bar", number[], unknown>
   >(graphDataInitialState);
-  const { ledger, familyMembers, goal, previousData, completeStep } = props;
+  const { ledger, familyMembers, userDetails, previousData, completeStep } = props;
 
   useEffect(() => {
     const data = {
@@ -98,7 +98,7 @@ export default function Resultat(props: ResultatProps) {
           circular
           color="blue"
           onClick={() => {
-            createPdf({ ledger, familyMembers, goal, previousData });
+            createPdf({ ledger, familyMembers, userDetails, previousData });
             completeStep();
           }}
         >

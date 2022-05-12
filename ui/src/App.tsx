@@ -113,16 +113,27 @@ export enum HouseSituation {
   RENT="RENT"
 }
 
+export interface UserInformation {
+  goal: Goal;
+  car: Car;
+  house: HouseSituation;
+  otherAssets: string;
+}
+
+const InitialUserInfo: UserInformation = {
+  goal: { name: "", amount: 0 },
+  car: { own: false },
+  house: HouseSituation.RENT,
+  otherAssets: ""
+}
+
 function App() {
   const navigate = useNavigate();
   const [previousData, setPreviousData] = useState<any[]>([]);
   const [steps, setSteps] = useState<StepsState>(InitialSteps);
   const [familyMembers, setFamilyMembers] = useState<Array<FamilyMember>>([]);
   const [ledger, setLedger] = useState<Array<LedgerRow>>([]);
-  const [goal, setGoal] = useState<Goal>({ name: "", amount: 0 });
-  const [car, setCar] = useState<Car>({ own: false });
-  const [house, setHouse] = useState<HouseSituation>(HouseSituation.RENT);
-  const [otherAssets, setOtherAssets] = useState<string>("");
+  const [userDetails, setUserDetails] = useState<UserInformation>(InitialUserInfo);
 
   const purpleMonkeyDishWasher = (familyMember: FamilyMember) => {
     setFamilyMembers(familyMembers.concat(familyMember));
@@ -204,7 +215,7 @@ function App() {
                   setPreviousData={setPreviousData}
                   setFamilyMembers={setFamilyMembers}
                   setLedger={setLedger}
-                  setGoal={setGoal}
+                  setUserDetails={setUserDetails}
                 />
               }
             />
@@ -217,14 +228,8 @@ function App() {
                   activeStep={activeStep}
                   steps={steps}
                   completeStep={completeStep}
-                  setGoal={setGoal}
-                  goal={goal}
-                  car={car}
-                  setCar={setCar}
-                  house={house}
-                  setHouse={setHouse}
-                  otherAssets={otherAssets}
-                  setOtherAssets={setOtherAssets}
+                  setUserDetails={setUserDetails}
+                  userDetails={userDetails}
                 />
               }
             />
@@ -264,7 +269,7 @@ function App() {
                   ledger={ledger}
                   removeLedgerRow={deleteLedgerRow}
                   completeStep={completeStep}
-                  goal={goal}
+                  goal={userDetails.goal}
                   goBack={goBack}
                   activeStep={activeStep}
                   steps={steps}
@@ -279,7 +284,7 @@ function App() {
                   familyMembers={familyMembers}
                   removeLedgerRow={deleteLedgerRow}
                   completeStep={completeStep}
-                  goal={goal}
+                  userDetails={userDetails}
                   previousData={previousData}
                   goBack={goBack}
                 />

@@ -1,10 +1,7 @@
-import { setCharacterSpacing } from "pdf-lib";
 import { useState } from "react";
 import { Card, Container, Grid, Input } from "semantic-ui-react";
 import styled from "styled-components";
-import { getOriginalNode } from "typescript";
-import { Car, FamilyMember, Goal, HouseSituation } from "../../App";
-import { progressStep } from "../../data/StepProgressor";
+import { FamilyMember, HouseSituation, UserInformation } from "../../App";
 import AddFamilyMemberCard from "../AddFamilyMemberCard";
 import AddFamilyMemberModal from "../AddFamilyMemberModal";
 import FamilyMemberCard from "../FamilyMemberCard";
@@ -17,17 +14,11 @@ import { StepDefinition, StepsState } from "../Steps";
 export interface UserDetailsProps {
   familyMembers: Array<FamilyMember>;
   addFamilyMember: (_: FamilyMember) => void;
-  setGoal: (_: Goal) => void;
-  goal: Goal | undefined;
-  setCar: (_: Car) => void;
-  car: Car | undefined;
-  house: HouseSituation;
-  setHouse: (_: HouseSituation) => void;
+  setUserDetails: (_: UserInformation) => void;
+  userDetails: UserInformation;
   completeStep: () => void;
   activeStep: StepDefinition | undefined;
   steps: StepsState;
-  otherAssets: string;
-  setOtherAssets: (_: string) => void;
 }
 
 export default function UserDetails(props: UserDetailsProps) {
@@ -40,9 +31,8 @@ export default function UserDetails(props: UserDetailsProps) {
     completeStep,
     activeStep,
     steps,
-    car,
-    house,
-    setHouse,
+    userDetails,
+    setUserDetails
   } = props;
   return (
     <StyledBackgroundColour>
@@ -79,17 +69,21 @@ export default function UserDetails(props: UserDetailsProps) {
             <h1>Eier familien bil(er)?</h1>
 
             <JaNei
-              optionOneSelected={car?.own === true}
+              optionOneSelected={userDetails.car?.own === true}
               optionOneText="Ja"
               optionOneClick={() => {
-                props.setCar({ own: true });
-                console.log({ car });
+                setUserDetails({
+                  ...userDetails,
+                  car: { own: true }
+                });
               }}
-              optionTwoSelected={car?.own !== true}
+              optionTwoSelected={userDetails.car?.own !== true}
               optionTwoText="Nei"
               optionTwoClick={() => {
-                props.setCar({ own: false });
-                console.log({ car });
+                setUserDetails({
+                  ...userDetails,
+                  car: { own: false }
+                });
               }}
             />
           </StyledHeadingDiv>
@@ -98,15 +92,21 @@ export default function UserDetails(props: UserDetailsProps) {
             <h1>Hvordan bor familien?</h1>
 
             <JaNei
-              optionOneSelected={house === HouseSituation.OWN}
+              optionOneSelected={userDetails.house === HouseSituation.OWN}
               optionOneText="Eie"
               optionOneClick={() => {
-                setHouse(HouseSituation.OWN);
+                setUserDetails({
+                  ...userDetails,
+                  house: HouseSituation.OWN
+                });
               }}
-              optionTwoSelected={house === HouseSituation.RENT}
+              optionTwoSelected={userDetails.house === HouseSituation.RENT}
               optionTwoText="Leie"
               optionTwoClick={() => {
-                setHouse(HouseSituation.RENT);
+                setUserDetails({
+                  ...userDetails,
+                  house: HouseSituation.RENT
+                });
               }}
             />
           </StyledHeadingDiv>
@@ -128,9 +128,12 @@ export default function UserDetails(props: UserDetailsProps) {
               <Grid.Column>
                 <Input
                   placeholder="Skriv inn eiendelen her (f.eks Hytte)"
-                  value={props.otherAssets}
+                  value={userDetails.otherAssets}
                   onChange={(_, data) => {
-                    props.setOtherAssets(data.value?.toString());
+                    props.setUserDetails({
+                      ...userDetails,
+                      otherAssets: data.value?.toString()
+                    });
                   }}
                   style={{ width: "100%" }}
                 />
@@ -148,12 +151,15 @@ export default function UserDetails(props: UserDetailsProps) {
               <Grid.Column width={10}>
                 <Input
                   placeholder="Skriv inn målet her (f.eks Tur til Kreta)"
-                  value={props.goal?.name}
+                  value={props.userDetails.goal?.name}
                   onChange={(_, data) => {
-                    props.setGoal({
-                      name: data.value?.toString(),
-                      amount: props.goal?.amount || 0,
-                    });
+                    props.setUserDetails({
+                      ... props.userDetails,
+                      goal: {
+                        name: data.value?.toString(),
+                        amount: props.userDetails.goal?.amount || 0,
+                      }
+                  });
                   }}
                   style={{ width: "100%" }}
                 />
@@ -161,11 +167,14 @@ export default function UserDetails(props: UserDetailsProps) {
               <Grid.Column width={6}>
                 <Input
                   placeholder="ca beløp (f.eks. 40 000)"
-                  value={props.goal?.amount || ""}
+                  value={props.userDetails.goal?.amount || ""}
                   onChange={(_, data) => {
-                    props.setGoal({
-                      name: props.goal?.name || "",
-                      amount: parseInt(data.value),
+                    props.setUserDetails({
+                      ... props.userDetails,
+                      goal: {
+                        name: props.userDetails.goal?.name || "",
+                        amount: parseInt(data.value),
+                      }
                     });
                   }}
                   label="Kr"
