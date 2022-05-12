@@ -49,16 +49,20 @@ export default function AddMoneyInModal(props: AddMoneyInModalProps) {
 
   useEffect(() => {
     const items = new Map<string, MoneyInAndCategory>();
-    items.set("Lönn", {
-      name: "Lönn",
+    items.set("Salary", {
+      name: "Fast jobb",
       category: TransactionCategory.Income,
     });
-    items.set("Pension", {
-      name: "Pension",
+    items.set("Part_time", {
+      name: "Deltidsjobb",
       category: TransactionCategory.Income,
     });
-    items.set("Benefit", {
-      name: "Benefit",
+    items.set("Benefits", {
+      name: "NAV-støtte",
+      category: TransactionCategory.Income,
+    });
+        items.set("Private", {
+      name: "Privat bidrag",
       category: TransactionCategory.Income,
     });
     setMoneyInItems(items);
