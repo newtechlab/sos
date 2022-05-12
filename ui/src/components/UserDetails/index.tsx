@@ -221,7 +221,3 @@ const StyledHeadingDiv = styled.div`
   position: relative;
   margin-bottom: 4em;
 `;
-
-const StyledInput = styled(Input)`
-  width: 100%;
-`;
