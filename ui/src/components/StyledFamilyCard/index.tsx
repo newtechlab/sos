@@ -8,4 +8,5 @@ export const StyledCard = styled.div`
     height: 206px;
     position: relative;
     border-radius: 5px;
+    cursor: pointer;
 `
