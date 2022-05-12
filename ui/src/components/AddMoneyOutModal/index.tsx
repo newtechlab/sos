@@ -43,55 +43,67 @@ export default function AddMoneyInModal(props: AddMoneyOutModalProps) {
   useEffect(() => {
     const items = new Map<string, MoneyOutAndCategory>();
     items.set("Streaming service's", {
-      name: "Streaming service's",
+      name: "Abonnement (Netflix, HBO, Spill m.m)",
       category: TransactionCategory.Media_and_Subscriptions,
     });
     items.set("Gym/Exercise", {
-      name: "Gym/Exercise",
-      category: TransactionCategory.Personal_Care,
-    });
-    items.set("Mortgage/Rent", {
-      name: "Mortgage/Rent",
+      name: "Sport, trening og fritid",
       category: TransactionCategory.Debt,
     });
+    items.set("Transport", {
+      name: "Transport (trikk, tog, buss)",
+      category: TransactionCategory.Travel_Expenses,
+    });    
+    items.set("Mortgage", {
+      name: "Huslån",
+      category: TransactionCategory.Debt,
+    });
+    items.set("Rent", {
+      name: "Husleie",
+      category: TransactionCategory.Debt,
+    });    
     items.set("Travel", {
-      name: "Travel",
+      name: "Reise (Fly, hotell)",
       category: TransactionCategory.Travel_Expenses,
     });
     items.set("Food", {
-      name: "Food",
+      name: "Mat og drikke",
       category: TransactionCategory.Food_and_Beverages,
     });
     items.set("El", {
-      name: "El",
+      name: "Strøm",
       category: TransactionCategory.Electricity,
     });
     items.set("Clothes", {
-      name: "Clothes",
+      name: "Klær og sko",
       category: TransactionCategory.Clothing_and_Footwear,
     });
     items.set("Healthcare", {
-      name: "Healthcare",
+      name: "Personlig pleie",
       category: TransactionCategory.Personal_Care,
     });
     items.set("Insurance", {
-      name: "Insurance",
+      name: "Forsikring",
       category: TransactionCategory.Insurance,
     });
     items.set("Utility bills", {
-      name: "Utility bills",
+      name: "Andre bokostnader (kommunale avgifter m.m.)",
       category: TransactionCategory.Household_Items,
     });
     items.set("Household shopping", {
-      name: "Household shopping",
+      name: "Husholdningsartikler",
       category: TransactionCategory.Household_Items,
     });
     items.set("Loans", {
-      name: "Loans",
+      name: "Annen gjeld",
       category: TransactionCategory.Debt,
     });
+    items.set("Car Loan", {
+      name: "Billån",
+      category: TransactionCategory.Debt,
+    });    
     items.set("Gifts/Donations", {
-      name: "Gifts/Donations",
+      name: "Faste donasjoner",
       category: TransactionCategory.Personal_Care,
     });
     setMoneyOutItems(items);
