@@ -136,12 +136,9 @@ export default function UserDetails(props: UserDetailsProps) {
               <Grid.Column>
                 <Input
                   placeholder="Skriv inn eiendelen her (f.eks Hytte)"
-                  value={props.goal?.name}
+                  value={props.otherAssets}
                   onChange={(_, data) => {
-                    props.setGoal({
-                      name: data.value?.toString(),
-                      amount: props.goal?.amount || 0,
-                    });
+                    props.setOtherAssets(data.value?.toString());
                   }}
                   style={{ width: "100%" }}
                 />
@@ -158,9 +155,12 @@ export default function UserDetails(props: UserDetailsProps) {
               <Grid.Column width={10}>
                 <Input
                   placeholder="Skriv inn målet her (f.eks Tur til Kreta)"
-                  value={props.otherAssets}
+                  value={props.goal?.name}
                   onChange={(_, data) => {
-                    props.setOtherAssets(data.value?.toString());
+                    props.setGoal({
+                      name: data.value?.toString(),
+                      amount: props.goal?.amount || 0,
+                    });
                   }}
                   style={{ width: "100%" }}
                 />
