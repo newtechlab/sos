@@ -140,7 +140,7 @@ export default function ResultatInteract(props: ResultatInteractProps) {
       <StyledContainer>
         <StyledContainerSpace>
           <StyledBoxSection>
-            <h1>Balanseoversikt</h1>
+            <h1>Balanse</h1>
           </StyledBoxSection>
 
           <StyledBoxSection>
@@ -149,8 +149,6 @@ export default function ResultatInteract(props: ResultatInteractProps) {
             <StyledGraphContainer>
               <Bar options={chartOptions} data={graphData} />
             </StyledGraphContainer>
-
-            <div>Over or under section</div>
 
             <PaddedSection>
               {moneyOut.length > 0 ? (
@@ -235,5 +233,5 @@ const StyledColumn = styled.div`
 `;
 
 const StyledGraphContainer = styled.div`
-  height: 100px;
+  height: 150px;
 `;

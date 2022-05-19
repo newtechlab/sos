@@ -9,7 +9,7 @@ import UserDetails from "./components/UserDetails";
 import { InitialSteps } from "./data/StepsInitialState";
 import MoneyIn from "./components/MoneyIn";
 import MoneyOut from "./components/MoneyOut";
-// import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4 } from "uuid";
 
 import {
   Chart as ChartJS,
@@ -26,7 +26,7 @@ import { goBackStep, progressStep } from "./data/StepProgressor";
 import ResultatInteract from "./components/ResultatInteract";
 // import { Container } from "semantic-ui-react";
 import Home from "./components/Home";
-// import { useEffect } from "react";
+import { useEffect } from "react";
 
 export interface FamilyMember {
   id: string;
@@ -151,43 +151,43 @@ function App() {
     setLedger(filtered);
   };
 
-  // // This is kept as it is useful for local testing
-  // useEffect(() => {
-  //   setLedger([
-  //     {
-  //       id: uuidv4(),
-  //       dayOfMonth: 1,
-  //       amount: 1000,
-  //       accountFrom: "salary",
-  //       accountTo: "user",
-  //       category: TransactionCategory.Income
-  //     },
-  //     {
-  //       id: uuidv4(),
-  //       dayOfMonth: 10,
-  //       amount: 100,
-  //       accountFrom: "user",
-  //       accountTo: "netflix",
-  //       category: TransactionCategory.Entertainment
-  //     },
-  //     {
-  //       id: uuidv4(),
-  //       dayOfMonth: 1,
-  //       amount: 1000,
-  //       accountFrom: "user",
-  //       accountTo: "coffee",
-  //       category: TransactionCategory.Food
-  //     },
-  //     {
-  //       id: uuidv4(),
-  //       dayOfMonth: 15,
-  //       amount: 167,
-  //       accountFrom: "user",
-  //       accountTo: "pony",
-  //       category: TransactionCategory.Food
-  //     },
-  //   ]);
-  // }, []);
+  // This is kept as it is useful for local testing
+  useEffect(() => {
+    setLedger([
+      {
+        id: uuidv4(),
+        dayOfMonth: 1,
+        amount: 1000,
+        accountFrom: "salary",
+        accountTo: "user",
+        category: TransactionCategory.Income
+      },
+      {
+        id: uuidv4(),
+        dayOfMonth: 10,
+        amount: 100,
+        accountFrom: "user",
+        accountTo: "netflix",
+        category: TransactionCategory.Cafe
+      },
+      {
+        id: uuidv4(),
+        dayOfMonth: 1,
+        amount: 1000,
+        accountFrom: "user",
+        accountTo: "coffee",
+        category: TransactionCategory.Furniture
+      },
+      {
+        id: uuidv4(),
+        dayOfMonth: 15,
+        amount: 167,
+        accountFrom: "user",
+        accountTo: "pony",
+        category: TransactionCategory.Childcare_other
+      },
+    ]);
+  }, []);
 
   const completeStep = () => {
     const newState = progressStep(steps);
