@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Container, Label, Progress } from "semantic-ui-react";
+import { Container, Label } from "semantic-ui-react";
 import styled from "styled-components";
 import { Goal } from "../../App";
 
@@ -11,8 +11,25 @@ interface ComparisonGraphProps {
   goal: Goal;
 }
 
+interface OverspendProps {
+  overspend: number;
+}
+
+interface SavingsProps {
+  savings:number;
+}
+
+const Overspend = (props: OverspendProps) => {
+  return <StyledOverspendingDiv>Overforbruk: { props.overspend } <Label size="mini">Kr</Label></StyledOverspendingDiv>
+}
+
+const Saving = (props: SavingsProps) => <StyledSavingDiv>Sparepotensiale: { props.savings } <Label size="mini">Kr</Label></StyledSavingDiv>
+
 export default function ComparisonGraph(props: ComparisonGraphProps) {
   const { outTotal, outPercent, inTotal, inPercent, goal } = props;
+  const [savings, setSavings] = useState<number>(inTotal - outTotal);
+  const [overspend, setOverspend] = useState<number>(outTotal - inTotal);
+  
 
   const [goalMonths, setGoalMonths] = useState<number>(0);
 
@@ -20,13 +37,16 @@ export default function ComparisonGraph(props: ComparisonGraphProps) {
     if (props.goal) {
       setGoalMonths(Math.round(props.goal.amount / (inTotal - outTotal)));
     }
+
+    setSavings(inTotal - outTotal);
+    setOverspend(outTotal - inTotal);
   }, [inTotal, outTotal, goal]);
 
   return (
     <FixedBottomDiv>
       <Container>
         <StyledComparisonContainer>
-          <div>
+          {/* <div>
             <StyledBarTotal>
               {outTotal} <Label size="mini">Kr</Label>
             </StyledBarTotal>
@@ -39,9 +59,13 @@ export default function ComparisonGraph(props: ComparisonGraphProps) {
             </StyledBarTotal>
             <h3>Sparepotensiale</h3>
             <Progress size="small" percent={inPercent} color="green" />
-          </div>
+          </div> */}
 
-          {goal.name !== "" ? (
+          <StyledOverspendingContainer>
+            { (outTotal > inTotal) ? <Overspend overspend={overspend} /> : <Saving savings={savings}  /> }
+          </StyledOverspendingContainer>
+
+          {goal.name !== "" || (
             <div>
               <h3>
                 Sparemål: {goal.name}, krever: {goal.amount}{" "}
@@ -52,17 +76,37 @@ export default function ComparisonGraph(props: ComparisonGraphProps) {
               ) : (
                 <p>Du vil nå sparemålet om {goalMonths} måneder</p>
               )}
-            </div>
-          ) : (
-            <div>
-              <h3>Det er ikke lagt til noe sparemål</h3>
-            </div>
-          )}
+            </div>) }
+          {/* // ) 
+          // : (
+          //   <div>
+          //     <h3>Det er ikke lagt til noe sparemål</h3>
+          //   </div>
+          // )} */}
         </StyledComparisonContainer>
       </Container>
     </FixedBottomDiv>
   );
 }
+
+export const StyledOverspendingContainer = styled.div`
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+`
+
+const StyledSavingDiv = styled.div`
+  line-height: 20px;
+  width: 300px;
+  background-color: green;
+`;
+
+const StyledOverspendingDiv = styled.div`
+  line-height: 20px;
+  width: 300px;
+  background-color: red;
+`;
 
 const FixedBottomDiv = styled.div`
   -webkit-box-shadow: 0px -4px 3px rgba(100, 100, 100, 0.2);
@@ -78,6 +122,7 @@ const FixedBottomDiv = styled.div`
 const StyledComparisonContainer = styled.div`
   padding: 30px;
   text-align: left;
+  background-color: red;
 `;
 
 const StyledBarTotal = styled.h3`
