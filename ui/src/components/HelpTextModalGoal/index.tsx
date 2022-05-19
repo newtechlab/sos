@@ -1,5 +1,10 @@
 import styled from "styled-components";
-import { Button, Header, Segment, TransitionablePortal } from "semantic-ui-react";
+import {
+  Button,
+  Header,
+  Segment,
+  TransitionablePortal,
+} from "semantic-ui-react";
 import { Fragment } from "react";
 
 interface AddHelpTextModalProps {
@@ -17,38 +22,46 @@ interface AddHelpTextModalProps {
 export default function OpenHelpTextModal(props: AddHelpTextModalProps) {
   const { open, setOpen } = props;
   const transition = {
-      animation: "slide left",
-      duration: 1500
-  };  
+    animation: "fly left",
+    duration: 300,
+  };
 
   return (
     <Fragment>
-
-    <LabelButton onClick={() => setOpen(true)}>Hvorfor spør vi om dette?</LabelButton>
-    <TransitionablePortal open={open} transition={transition} >
-    <Segment
-              style={{
-                right: '0',
-                position: 'fixed',
-                top: '0',
-                zIndex: 1000,
-              }}
-            >
-              <Header>Hva mener vi med sparemål</Header>
+      <LabelButton onClick={() => setOpen(true)}>
+        Hvorfor spør vi om dette?
+      </LabelButton>
+      <TransitionablePortal
+        onClose={() => setOpen(false)}
+        open={open}
+        transition={transition}
+      >
+        <Segment
+          style={{
+            right: "0",
+            position: "fixed",
+            top: "0",
+            zIndex: 1000,
+          }}
+        >
+          <StyledModalSidebar>
+            <Header>Hva mener vi med sparemål</Header>
+            <p>Med sparemål så mener vi om du har noe du sparer til?</p>
             <p>
-            Med sparemål så mener vi om du har noe du sparer til? 
+              Har du en drøm om å kjøpe en bil, ta med familien på ferie eller
+              noe annet som krever at du må spare penger?
             </p>
             <p>
-            Har du en drøm om å kjøpe en bil, ta med familien på ferie eller noe annet som krever
-            at du må spare penger? 
+              Ønsker du ganske enkelt bare å spare litt til framtiden? Legg inn
+              et beløp som vi kan hjelpe deg å nå.
             </p>
-            <p>Ønsker du ganske enkelt bare å spare litt til
-            framtiden? Legg inn et beløp som vi kan hjelpe deg å nå.</p>
             <Button circular basic color="blue" onClick={() => setOpen(false)}>
-            Lukk
-          </Button>
-            </Segment>
-      {/* <Modal
+              Lukk
+            </Button>
+          </StyledModalSidebar>
+        </Segment>
+
+        {/* <Modal
         onClose={() => setOpen(false)}
         onOpen={() => setOpen(true)}
         open={open}
@@ -68,7 +81,7 @@ export default function OpenHelpTextModal(props: AddHelpTextModalProps) {
           </Button>
         </Modal.Actions>
       </Modal> */}
-    </TransitionablePortal>
+      </TransitionablePortal>
     </Fragment>
   );
 }
@@ -84,6 +97,10 @@ const LabelButton = styled.button`
   &:hover {
     text-decoration: underline;
   }
+`;
+
+const StyledModalSidebar = styled.div`
+  padding: 3em;
 `;
 
 // Modal.defaultProps = DEFAULT_PROPS;
