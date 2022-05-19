@@ -98,7 +98,7 @@ export default function Resultat(props: ResultatProps) {
           circular
           color="blue"
           onClick={() => {
-            createPdf({ ledger, familyMembers, userDetails, previousData });
+            createPdf({ ledger, familyMembers, userDetails, previousData, addImage: true });
             completeStep();
           }}
         >
