@@ -132,7 +132,7 @@ export const InitialUserInfo: UserInformation = {
 function App() {
   const navigate = useNavigate();
   const [previousData, setPreviousData] = useState<any[]>([]);
-  const [steps, setSteps] = useState<StepsState>(InitialSteps);
+  const [steps, setSteps] = useState<StepsState>(InitialSteps(window.location.pathname));
   const [familyMembers, setFamilyMembers] = useState<Array<FamilyMember>>([]);
   const [ledger, setLedger] = useState<Array<LedgerRow>>([]);
   const [userDetails, setUserDetails] = useState<UserInformation>(InitialUserInfo);
@@ -230,6 +230,7 @@ function App() {
                   activeStep={activeStep}
                   steps={steps}
                   completeStep={completeStep}
+                  goBack={goBack}
                   setUserDetails={setUserDetails}
                   userDetails={userDetails}
                 />

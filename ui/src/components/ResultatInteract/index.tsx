@@ -28,6 +28,7 @@ import {
   StyledHeader,
 } from "../UserDetails";
 import ComparisonGraph from "../ComparisonGraph";
+import BackForwardControls from "../BackForwardControls";
 
 interface ResultatInteractProps {
   ledger: Array<LedgerRow>;
@@ -60,7 +61,7 @@ export default function ResultatInteract(props: ResultatInteractProps) {
   const [graphData, setGraphData] = useState<
     ChartData<"bar", number[], unknown>
   >(graphDataInitialState);
-  const { ledger, completeStep, activeStep, steps } = props;
+  const { ledger, completeStep, activeStep, steps, goBack } = props;
 
   const labels = ["Penger Inn", "Penger Ut"];
 
@@ -181,13 +182,13 @@ export default function ResultatInteract(props: ResultatInteractProps) {
                 </StyledColumn>
               </StyledRow>
             </PaddedSection>
-
-            <NextButton
-              completeStep={() => {
-                completeStep();
-              }}
-            />
           </StyledBoxSection>
+
+          <BackForwardControls
+                goBack={() => goBack()}
+                completeStep={completeStep}
+              />        
+
         </StyledContainerSpace>
       </StyledContainer>
 

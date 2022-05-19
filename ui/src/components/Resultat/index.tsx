@@ -50,7 +50,7 @@ export default function Resultat(props: ResultatProps) {
   const [graphData, setGraphData] = useState<
     ChartData<"bar", number[], unknown>
   >(graphDataInitialState);
-  const { ledger, familyMembers, userDetails, previousData, completeStep } = props;
+  const { ledger, familyMembers, userDetails, previousData, completeStep, goBack } = props;
 
   useEffect(() => {
     const data = {

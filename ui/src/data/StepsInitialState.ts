@@ -13,7 +13,7 @@ const StepsInitialState: Array<StepDefinition> = [
         id: 1,
         group: StepGroupType.MONEY_IN,
         completed: false,
-        path: "penger-inn",
+        path: "/penger-inn",
         heading: "Penger inn",
         description: "I dette punktet ønsker vi å få en oversikt over dine inntektskilder og hvor mye penger inn du får i løpet av en måned."
     },
@@ -21,7 +21,7 @@ const StepsInitialState: Array<StepDefinition> = [
         id: 2,
         group: StepGroupType.MONEY_OUT,
         completed: false,
-        path: "gjeld",
+        path: "/gjeld",
         heading: "Gjeld",
         description: "I dette punktet ønsker vi å kartlegge både faste og løpende utgifter, samt din gjeldssituasjon"
     },
@@ -29,7 +29,7 @@ const StepsInitialState: Array<StepDefinition> = [
         id: 3,
         group: StepGroupType.MONEY_OUT,
         completed: false,
-        path: "penger-ut",
+        path: "/penger-ut",
         heading: "Penger ut",
         description: "I dette punktet ønsker vi å kartlegge både faste og løpende utgifter, samt din gjeldssituasjon"
     },
@@ -37,14 +37,14 @@ const StepsInitialState: Array<StepDefinition> = [
         id: 4,
         group: StepGroupType.RESULTS,
         completed: false,
-        path: "resultat1",
+        path: "/resultat1",
         heading: "Resultat"
     },
     {
         id: 5,
         group: StepGroupType.RESULTS,
         completed: false,
-        path: "resultat2",
+        path: "/resultat2",
         heading: "Resultat"
     },
 ];
@@ -72,10 +72,26 @@ const StepGroups = (): Map<StepGroupType, StepGroup> => {
     return stepGroups;
 }
 
-export const InitialSteps: StepsState = {
-    activeStepId: 0,
-    steps: StepsInitialState,
-    stepGroups: StepGroups(),
-    completedGroups: new Set<StepGroupType>()
+export const InitialSteps = (path: string | undefined): StepsState => {
+
+    const current = StepsInitialState.find((s) => s.path === path)
+
+    if (current) {
+        return {
+            activeStepId: current.id,
+            steps: StepsInitialState,
+            stepGroups: StepGroups(),
+            completedGroups: new Set<StepGroupType>()
+        }
+    } 
+
+    return {
+        activeStepId: 0,
+        steps: StepsInitialState,
+        stepGroups: StepGroups(),
+        completedGroups: new Set<StepGroupType>()
+    }
+
+    
 }
 
