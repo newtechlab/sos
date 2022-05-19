@@ -21,19 +21,27 @@ const StepsInitialState: Array<StepDefinition> = [
         id: 2,
         group: StepGroupType.MONEY_OUT,
         completed: false,
+        path: "gjeld",
+        heading: "Gjeld",
+        description: "I dette punktet ønsker vi å kartlegge både faste og løpende utgifter, samt din gjeldssituasjon"
+    },
+    {
+        id: 3,
+        group: StepGroupType.MONEY_OUT,
+        completed: false,
         path: "penger-ut",
         heading: "Penger ut",
         description: "I dette punktet ønsker vi å kartlegge både faste og løpende utgifter, samt din gjeldssituasjon"
     },
     {
-        id: 3,
+        id: 4,
         group: StepGroupType.RESULTS,
         completed: false,
         path: "resultat1",
         heading: "Resultat"
     },
     {
-        id: 4,
+        id: 5,
         group: StepGroupType.RESULTS,
         completed: false,
         path: "resultat2",
