@@ -81,6 +81,8 @@ export enum TransactionCategory {
   Undefined = "UNDEFINED"  
 }
 
+export const AllTransactionCategories: Array<string> = Object.values(TransactionCategory);
+
 export interface LedgerRow {
   id: string;
   dayOfMonth: number;
@@ -249,6 +251,21 @@ function App() {
               }
             />
             <Route
+              path="/gjeld"
+              element={
+                <MoneyOut
+                  ledger={ledger}
+                  addLedgerRow={addLedgerRow}
+                  removeLedgerRow={deleteLedgerRow}
+                  completeStep={completeStep}
+                  goBack={goBack}
+                  activeStep={activeStep}
+                  steps={steps}
+                  categories={new Set([TransactionCategory.Debt])}
+                />
+              }
+            />
+            <Route
               path="/penger-ut"
               element={
                 <MoneyOut
@@ -259,6 +276,7 @@ function App() {
                   goBack={goBack}
                   activeStep={activeStep}
                   steps={steps}
+                  categories={new Set(AllTransactionCategories.filter(c => c !== TransactionCategory.Debt.toString()))}
                 />
               }
             />
