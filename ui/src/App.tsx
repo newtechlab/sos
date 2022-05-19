@@ -120,7 +120,7 @@ export interface UserInformation {
   otherAssets: string;
 }
 
-const InitialUserInfo: UserInformation = {
+export const InitialUserInfo: UserInformation = {
   goal: { name: "", amount: 0 },
   car: { own: false },
   house: HouseSituation.RENT,
