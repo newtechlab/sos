@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Button, Modal, TransitionablePortal } from "semantic-ui-react";
+import { Button, Header, Segment, TransitionablePortal } from "semantic-ui-react";
 import { Fragment } from "react";
 
 interface AddHelpTextModalProps {
@@ -17,18 +17,38 @@ interface AddHelpTextModalProps {
 export default function OpenHelpTextModal(props: AddHelpTextModalProps) {
   const { open, setOpen } = props;
   const transition = {
-    transition: {
       animation: "slide left",
       duration: 1500
-    }
   };  
 
   return (
     <Fragment>
 
-    <LabelButton onClick={() => setOpen(true)}>Open Modal</LabelButton>
-    <TransitionablePortal {...{ open }} {...{ transition }}>
-      <Modal
+    <LabelButton onClick={() => setOpen(true)}>Hvorfor spør vi om dette?</LabelButton>
+    <TransitionablePortal open={open} transition={transition} >
+    <Segment
+              style={{
+                right: '0',
+                position: 'fixed',
+                top: '0',
+                zIndex: 1000,
+              }}
+            >
+              <Header>Hva mener vi med sparemål</Header>
+            <p>
+            Med sparemål så mener vi om du har noe du sparer til? 
+            </p>
+            <p>
+            Har du en drøm om å kjøpe en bil, ta med familien på ferie eller noe annet som krever
+            at du må spare penger? 
+            </p>
+            <p>Ønsker du ganske enkelt bare å spare litt til
+            framtiden? Legg inn et beløp som vi kan hjelpe deg å nå.</p>
+            <Button circular basic color="blue" onClick={() => setOpen(false)}>
+            Lukk
+          </Button>
+            </Segment>
+      {/* <Modal
         onClose={() => setOpen(false)}
         onOpen={() => setOpen(true)}
         open={open}
@@ -47,7 +67,7 @@ export default function OpenHelpTextModal(props: AddHelpTextModalProps) {
             Lukk
           </Button>
         </Modal.Actions>
-      </Modal>
+      </Modal> */}
     </TransitionablePortal>
     </Fragment>
   );
