@@ -20,10 +20,10 @@ interface SavingsProps {
 }
 
 const Overspend = (props: OverspendProps) => {
-  return <StyledOverspendingDiv>Overforbruk: { props.overspend } <Label size="mini">Kr</Label></StyledOverspendingDiv>
+  return <StyledOverspendingDiv>Månedlig overforbruk: { props.overspend } <Label size="mini">kr</Label></StyledOverspendingDiv>
 }
 
-const Saving = (props: SavingsProps) => <StyledSavingDiv>Sparepotensiale: { props.savings } <Label size="mini">Kr</Label></StyledSavingDiv>
+const Saving = (props: SavingsProps) => <StyledSavingDiv>Månedlig sparepotensiale: { props.savings } <Label size="mini">kr</Label></StyledSavingDiv>
 
 export default function ComparisonGraph(props: ComparisonGraphProps) {
   const { outTotal, outPercent, inTotal, inPercent, goal } = props;
@@ -45,7 +45,7 @@ export default function ComparisonGraph(props: ComparisonGraphProps) {
   return (
     <FixedBottomDiv>
       <Container>
-        <StyledComparisonContainer>
+        <StyledComparisonContainer overspending={overspend > 0}>
           {/* <div>
             <StyledBarTotal>
               {outTotal} <Label size="mini">Kr</Label>
@@ -66,17 +66,17 @@ export default function ComparisonGraph(props: ComparisonGraphProps) {
           </StyledOverspendingContainer>
 
           {goal.name !== "" || (
-            <div>
-              <h3>
+            <StyledOverspendingContainer>
+              {/* <h3>
                 Sparemål: {goal.name}, krever: {goal.amount}{" "}
                 <Label size="mini">Kr</Label>
-              </h3>
+              </h3> */}
               {goalMonths < 0 ? (
                 <p>Du må spare mer for å nå sparemålet</p>
               ) : (
-                <p>Du vil nå sparemålet om {goalMonths} måneder</p>
+                <p>Hvis du setter til side dette beløpet hver måned vil nå sparemålet om {goalMonths} måneder</p>
               )}
-            </div>) }
+            </StyledOverspendingContainer>) }
           {/* // ) 
           // : (
           //   <div>
@@ -99,13 +99,11 @@ export const StyledOverspendingContainer = styled.div`
 const StyledSavingDiv = styled.div`
   line-height: 20px;
   width: 300px;
-  background-color: green;
 `;
 
 const StyledOverspendingDiv = styled.div`
   line-height: 20px;
   width: 300px;
-  background-color: red;
 `;
 
 const FixedBottomDiv = styled.div`
@@ -119,10 +117,15 @@ const FixedBottomDiv = styled.div`
   padding: 0;
 `;
 
-const StyledComparisonContainer = styled.div`
+interface StyledComparisonContainerProps {
+  overspending: boolean;
+}
+
+const StyledComparisonContainer = styled.div<StyledComparisonContainerProps>`
   padding: 30px;
   text-align: left;
-  background-color: red;
+  background-color: ${(props) => (props.overspending ? "#FDEEEE" : "#E7FFE3")};
+  margin: 20px;
 `;
 
 const StyledBarTotal = styled.h3`
