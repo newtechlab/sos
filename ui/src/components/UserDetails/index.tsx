@@ -144,7 +144,7 @@ export default function UserDetails(props: UserDetailsProps) {
 
           </StyledHeadingDiv>
 
-          <StyledHeadingDiv>
+          {/* <StyledHeadingDiv>
             <h1>Andre eiendeler?</h1>
 
             <Grid columns={1}>
@@ -162,7 +162,7 @@ export default function UserDetails(props: UserDetailsProps) {
                 />
               </Grid.Column>
             </Grid>
-          </StyledHeadingDiv>
+          </StyledHeadingDiv> */}
 
           <StyledHeadingDiv>
             <h1>Har familien et sparemål?</h1>
