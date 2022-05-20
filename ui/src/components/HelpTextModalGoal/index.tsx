@@ -41,6 +41,7 @@ export default function OpenHelpTextModal(props: AddHelpTextModalProps) {
             right: "0",
             position: "fixed",
             top: "0",
+            bottom: "0",
             zIndex: 1000,
           }}
         >
