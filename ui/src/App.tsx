@@ -26,6 +26,7 @@ import { goBackStep, progressStep } from "./data/StepProgressor";
 import ResultatInteract from "./components/ResultatInteract";
 // import { Container } from "semantic-ui-react";
 import Home from "./components/Home";
+import MoneyOutDebt from "./components/MoneyOutDebt";
 // import { useEffect } from "react";
 
 export interface FamilyMember {
@@ -53,9 +54,9 @@ export enum TransactionCategory {
   // Undefined = "UNDEFINED",
 
   Income = "INCOME",
-  Childcare_other ="AKS/SFO",
+  Childcare_other = "AKS/SFO",
   Kindergarden = "Barnehage",
-  Insurance = "Forsikring", 
+  Insurance = "Forsikring",
   Debt = "Gjeld",
   Rent = "Husleie",
   Phone = "Telefonabonnement",
@@ -77,11 +78,12 @@ export enum TransactionCategory {
   Regular_Income = "Fast jobb",
   Part_Time_Income = "Deltidsjobb",
   Social_Support = "NAV-støtte",
-  Private_Funding = "Privat bidrag",  
-  Undefined = "UNDEFINED"  
+  Private_Funding = "Privat bidrag",
+  Undefined = "UNDEFINED",
 }
 
-export const AllTransactionCategories: Array<string> = Object.values(TransactionCategory);
+export const AllTransactionCategories: Array<string> =
+  Object.values(TransactionCategory);
 
 export interface LedgerRow {
   id: string;
@@ -111,8 +113,8 @@ ChartJS.register(
 );
 
 export enum HouseSituation {
-  OWN="OWN",
-  RENT="RENT"
+  OWN = "OWN",
+  RENT = "RENT",
 }
 
 export interface UserInformation {
@@ -126,16 +128,19 @@ export const InitialUserInfo: UserInformation = {
   goal: { name: "", amount: 0 },
   car: { own: false },
   house: HouseSituation.RENT,
-  otherAssets: ""
-}
+  otherAssets: "",
+};
 
 function App() {
   const navigate = useNavigate();
   const [previousData, setPreviousData] = useState<any[]>([]);
-  const [steps, setSteps] = useState<StepsState>(InitialSteps(window.location.pathname));
+  const [steps, setSteps] = useState<StepsState>(
+    InitialSteps(window.location.pathname)
+  );
   const [familyMembers, setFamilyMembers] = useState<Array<FamilyMember>>([]);
   const [ledger, setLedger] = useState<Array<LedgerRow>>([]);
-  const [userDetails, setUserDetails] = useState<UserInformation>(InitialUserInfo);
+  const [userDetails, setUserDetails] =
+    useState<UserInformation>(InitialUserInfo);
 
   const purpleMonkeyDishWasher = (familyMember: FamilyMember) => {
     setFamilyMembers(familyMembers.concat(familyMember));
@@ -254,7 +259,7 @@ function App() {
             <Route
               path="/gjeld"
               element={
-                <MoneyOut
+                <MoneyOutDebt
                   ledger={ledger}
                   addLedgerRow={addLedgerRow}
                   removeLedgerRow={deleteLedgerRow}
@@ -277,7 +282,13 @@ function App() {
                   goBack={goBack}
                   activeStep={activeStep}
                   steps={steps}
-                  categories={new Set(AllTransactionCategories.filter(c => c !== TransactionCategory.Debt.toString()))}
+                  categories={
+                    new Set(
+                      AllTransactionCategories.filter(
+                        (c) => c !== TransactionCategory.Debt.toString()
+                      )
+                    )
+                  }
                 />
               }
             />
