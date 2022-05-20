@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Container, Grid, Icon } from "semantic-ui-react";
+import { Button, Container, Grid, Icon, StepContent } from "semantic-ui-react";
 import { LedgerRow } from "../../App";
 
 import AddMoneyOutModal from "../AddMoneyOutModal";
@@ -72,12 +72,13 @@ export default function MoneyOut(props: MoneyOutProps) {
               categories={categories}
             />
           )}
-
-          <h1>Gjeld</h1>
-          <HelpTextModalDebt
-            open={addHelpTextDebtModalOpen}
-            setOpen={OpenHelpTextDebtModal}
-          />
+          <StyledDiv>
+            <h1>Gjeld</h1>
+            <HelpTextModalDebt
+              open={addHelpTextDebtModalOpen}
+              setOpen={OpenHelpTextDebtModal}
+            />
+          </StyledDiv>
           <StyledBoxSection>
             <StyledGrid>
               {filteredLedger.length > 0 && (
@@ -178,5 +179,9 @@ const StyledHeader = styled.div`
 `;
 
 const StyledContainer = styled(Container)`
+  position: relative;
+`;
+
+const StyledDiv = styled.div`
   position: relative;
 `;
