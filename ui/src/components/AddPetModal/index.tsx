@@ -13,12 +13,6 @@ interface AddPetProps {
   setPets: (_: Array<Pet>) => void;
 }
 
-interface DropDownItem {
-  key: string;
-  text: string;
-  value: string;
-}
-
 export default function AddPetModal(props: AddPetProps) {
   const [pet, setPet] = useState<string | undefined>(undefined);
   const { open, setOpen, pets, setPets } = props;
@@ -26,10 +20,8 @@ export default function AddPetModal(props: AddPetProps) {
   return (
     <Modal
       onClose={() => setOpen(false)}
-      // onOpen={() => setOpen(true)}
       open={open}
       pets={pets}
-      // trigger={<AddPetCard><CenterTextDiv>+ Legg til</CenterTextDiv></AddPetCard>}    
     >
       <Modal.Header>Legg til nytt dyr</Modal.Header>
       {/* <Modal.Content>

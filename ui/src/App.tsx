@@ -175,6 +175,14 @@ function App() {
     setLedger(filtered);
   };
 
+  const deletePet = (id: string) => {
+    const filtered = pets.filter((row) => {
+      return row.id !== id;
+    });
+
+    setPets(filtered);
+  };  
+
   useEffect(() => {
     localStorage.setItem('previousData', JSON.stringify(Array.from(previousData)));
     localStorage.setItem('steps', JSON.stringify(steps));
@@ -268,6 +276,7 @@ function App() {
                   userDetails={userDetails}
                   pets={pets}
                   setPets={setPets}
+                  deletePet={deletePet}
                 />
               }
             />
@@ -344,6 +353,7 @@ function App() {
                   userDetails={userDetails}
                   previousData={previousData}
                   goBack={goBack}
+                  pets={pets}
                 />
               }
             />

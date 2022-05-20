@@ -12,12 +12,15 @@ import StepHeader from "../StepHeader";
 import { StepDefinition, StepsState } from "../Steps";
 import AddPetModal from "../AddPetModal";
 import { StyledGridRow } from "../MoneyIn";
+import { StyledCard } from "../StyledFamilyCard";
+import PetMemberCard from "../PetCard";
 
 export interface UserDetailsProps {
   familyMembers: Array<FamilyMember>;
   addFamilyMember: (_: FamilyMember) => void;
   setUserDetails: (_: UserInformation) => void;
   setPets: (_: Array<Pet>) => void; 
+  deletePet: (id: string) => void;
   pets: Array<Pet>;
   userDetails: UserInformation;
   completeStep: () => void;
@@ -41,7 +44,8 @@ export default function UserDetails(props: UserDetailsProps) {
     userDetails,
     setUserDetails,
     pets,
-    setPets
+    setPets,
+    deletePet
   } = props;
   return (
     <StyledBackgroundColour>
@@ -122,24 +126,21 @@ export default function UserDetails(props: UserDetailsProps) {
 
           <StyledHeadingDiv>
             <h1>Har familien dyr?</h1>
+            <Card.Group>
+            {pets.map((p) => {
+                return <PetMemberCard key={p.id} id={p.id} name={p.name} deletePet={deletePet} />;
+              })}              
+              <StyledCard
+                 onClick={() => setAddPetModalOpen(true)}><CenterTextDiv>+ Legg til</CenterTextDiv>
+              </StyledCard>
+            </Card.Group>
 
             <AddPetModal
               open={addPetModalOpen}
               setOpen={setAddPetModalOpen}
               pets={pets}
               setPets={setPets}
-            />                      
-
-            <Grid columns={1}>
-              <Grid.Column width={16}>
-                <DottedDiv onClick={() => setAddPetModalOpen(true)}>+ Legg til</DottedDiv>
-              </Grid.Column>
-              { pets.map((p) => {
-                return <Grid.Column width={16}>
-                  { p.name }
-                </Grid.Column>
-              }) }
-            </Grid>
+            />
 
           </StyledHeadingDiv>
 
@@ -250,3 +251,10 @@ const StyledHeadingDiv = styled.div`
   position: relative;
   margin-bottom: 4em;
 `;
+
+const CenterTextDiv = styled.div`
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+`
