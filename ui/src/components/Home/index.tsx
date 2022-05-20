@@ -5,6 +5,7 @@ import { Button, Container, Image, Icon } from "semantic-ui-react";
 import styled from "styled-components";
 import { FamilyMember, InitialUserInfo, LedgerRow, UserInformation } from "../../App";
 import PdfConverter from "../../services/PdfService/PdfConverter";
+import { AdjustmentAmountPercent, LedgerRowId } from "../ResultatInteract";
 import { StyledBoxSection } from "../StyledBoxSection";
 import frontpage_family from "./frontpage_family.png";
 
@@ -13,6 +14,7 @@ export interface HomProps {
   setFamilyMembers: (_: Array<FamilyMember>) => void;
   setLedger: (_: Array<LedgerRow>) => void;
   setUserDetails(_: UserInformation): void;
+  setAdjustments(_: Map<LedgerRowId, AdjustmentAmountPercent>): void;
 }
 
 export const firstStep = "/family";
@@ -22,11 +24,12 @@ export interface PdfFormat {
   familyMembers: Array<FamilyMember>;
   ledger: Array<LedgerRow>;
   userDetails: UserInformation | undefined;
+  adjustments: Map<LedgerRowId, AdjustmentAmountPercent>;
 }
 
 export default function Home(props: HomProps) {
   const navigate = useNavigate();
-  const { setFamilyMembers, setLedger, setUserDetails, setPreviousData } = props;
+  const { setFamilyMembers, setLedger, setUserDetails, setPreviousData, setAdjustments } = props;
   const onDrop = useCallback((acceptedFiles) => {
     const fileReader = new FileReader();
     fileReader.onload = async (event) => {
@@ -36,6 +39,7 @@ export default function Home(props: HomProps) {
         setFamilyMembers(attachments.familyMembers);
         setLedger(attachments.ledger);
         setUserDetails(attachments.userDetails || InitialUserInfo);
+        setAdjustments(attachments.adjustments)
       }
       navigate(firstStep);
     };
