@@ -63,11 +63,14 @@ export default function MoneyOut(props: MoneyOutProps) {
   useEffect(() => {
     setFilteredLedger(
       sortedLedger.filter((row) => {
-        return row.accountFrom === "user";
+        return row.accountFrom === "user" && categories.has(row.category)
       })
     );
-    setMoneyOut(calculateMoneyOut(sortedLedger))
   }, [sortedLedger]);
+
+  useEffect(() => {
+    setMoneyOut(calculateMoneyOut(filteredLedger))
+  }, [filteredLedger]);
 
   return (
     <StyledBackgroundColour>
