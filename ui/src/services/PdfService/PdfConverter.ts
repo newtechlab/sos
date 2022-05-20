@@ -25,8 +25,8 @@ class PdfConverter {
         attachmentsAsObject.map((attachment: any) => {
             if (attachment.history) {
               const a = attachment.history as Array<PdfFormat>;
-              const mostRecentRecord = (a.length < 0) ? a[a.length - 1] : undefined;
-              
+              const mostRecentRecord = (a.length > 0) ? a[a.length - 1] : undefined;
+
               if (mostRecentRecord) {
                 if (mostRecentRecord.familyMembers) {
                     familyMembers = mostRecentRecord.familyMembers
