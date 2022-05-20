@@ -4,11 +4,15 @@ export const chartOptions = {
     plugins: {
       title: {
         display: false,
-        text: 'Chart.js Bar Chart - Stacked',
+        text: 'Overview',
+      },
+      legend: {
+        display: false,
       },
     },
     // responsive: true,
     maintainAspectRatio : false,
+    indexAxis: 'y' as const,
     scales: {
       x: {
         stacked: true,
