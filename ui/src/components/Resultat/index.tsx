@@ -22,6 +22,7 @@ import {
   CreatePdfProps,
   PdfWriterService,
 } from "../../services/PdfService/PdfWriterService";
+import { AdjustmentAmountPercent, LedgerRowId } from "../ResultatInteract";
 
 interface ResultatProps {
   ledger: Array<LedgerRow>;
@@ -31,6 +32,7 @@ interface ResultatProps {
   goBack: () => void;
   userDetails: UserInformation;
   previousData: any[];
+  adjustments: Map<LedgerRowId, AdjustmentAmountPercent>;
 }
 
 const createPdf = async (props: CreatePdfProps) => {
@@ -50,7 +52,7 @@ export default function Resultat(props: ResultatProps) {
   const [graphData, setGraphData] = useState<
     ChartData<"bar", number[], unknown>
   >(graphDataInitialState);
-  const { ledger, familyMembers, userDetails, previousData, completeStep, goBack } = props;
+  const { ledger, familyMembers, userDetails, previousData, adjustments, completeStep, goBack } = props;
 
   useEffect(() => {
     const data = {
@@ -98,7 +100,7 @@ export default function Resultat(props: ResultatProps) {
           circular
           color="blue"
           onClick={() => {
-            createPdf({ ledger, familyMembers, userDetails, previousData, addImage: true });
+            createPdf({ ledger, familyMembers, adjustments, userDetails, previousData, addImage: true });
             completeStep();
           }}
         >

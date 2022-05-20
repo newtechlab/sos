@@ -1,5 +1,6 @@
 import { CreatePdfProps } from "./PdfWriterService";
 import { HouseSituation } from "../../App";
+import { AdjustmentAmountPercent, LedgerRowId } from "../../components/ResultatInteract";
 global.TextEncoder= require("util").TextEncoder;
 
 
@@ -13,6 +14,7 @@ describe("The PdfConverter", ()=>{
                 name: "name",
                 age: "age"
               }],
+            adjustments: new Map<LedgerRowId, AdjustmentAmountPercent>(),
             userDetails: {
                 goal: {
                     name: "name",

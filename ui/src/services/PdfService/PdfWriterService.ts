@@ -1,12 +1,14 @@
 import { PDFDocument } from "pdf-lib";
 import { FamilyMember, LedgerRow, UserInformation } from "../../App";
 import Pd from 'frontpage.png'
+import { AdjustmentAmountPercent, LedgerRowId } from "../../components/ResultatInteract";
 
 
 export interface CreatePdfProps {
     ledger: Array<LedgerRow>;
     familyMembers: Array<FamilyMember>;
     userDetails: UserInformation;
+    adjustments: Map<LedgerRowId, AdjustmentAmountPercent>;
     previousData: any[];
     addImage: boolean;
 }
@@ -20,11 +22,14 @@ export class PdfWriterService {
             timestamp: Date.now(),
             familyMembers: props.familyMembers,
             ledger: props.ledger,
-            userDetails: props.userDetails
+            userDetails: props.userDetails,
+            adjustments: Array.from(props.adjustments.entries())
         }
-        props.previousData.push(objectToAttach)
+        const previous = props.previousData || []
+        console.log("objectToAttach", objectToAttach);
+        previous.push(objectToAttach)
         const history = {
-            history: props.previousData
+            history: previous
         }
         const uint8array: Uint8Array = new TextEncoder().encode(JSON.stringify(history));
         pdfDoc.attach(uint8array, "sos_state")

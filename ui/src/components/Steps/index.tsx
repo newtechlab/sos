@@ -41,7 +41,7 @@ export default function Steps(props: StepsProps) {
     return <Step.Group widths={4}>
             { stepsArray.map(([stepGroupId, stepGroup]) => {
                 const step = steps.steps[steps.activeStepId];
-                const isActive = stepGroupId === step.group;
+                const isActive = stepGroupId === (step?.group || StepGroupType.FAMILY);
                 return <Step key={stepGroupId} active={isActive}>
                     {  isActive && <Icon name={ActiveIcon} color="teal" /> }
                     {  !isActive && steps.completedGroups.has(stepGroupId) && <Icon name={CompleteIcon} color="green" /> } 
