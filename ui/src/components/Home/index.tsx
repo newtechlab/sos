@@ -3,7 +3,7 @@ import { useDropzone } from "react-dropzone";
 import { useNavigate } from "react-router-dom";
 import { Button, Container, Image, Icon } from "semantic-ui-react";
 import styled from "styled-components";
-import { FamilyMember, InitialUserInfo, LedgerRow, UserInformation } from "../../App";
+import { FamilyMember, InitialUserInfo, LedgerRow, Pet, UserInformation } from "../../App";
 import PdfConverter from "../../services/PdfService/PdfConverter";
 import { AdjustmentAmountPercent, LedgerRowId } from "../ResultatInteract";
 import { StyledBoxSection } from "../StyledBoxSection";
@@ -15,6 +15,7 @@ export interface HomProps {
   setLedger: (_: Array<LedgerRow>) => void;
   setUserDetails(_: UserInformation): void;
   setAdjustments(_: Map<LedgerRowId, AdjustmentAmountPercent>): void;
+  setPets: (_: Array<Pet>) => void; 
 }
 
 export const firstStep = "/family";
@@ -25,11 +26,12 @@ export interface PdfFormat {
   ledger: Array<LedgerRow>;
   userDetails: UserInformation | undefined;
   adjustments: Map<LedgerRowId, AdjustmentAmountPercent>;
+  pets: Array<Pet>;
 }
 
 export default function Home(props: HomProps) {
   const navigate = useNavigate();
-  const { setFamilyMembers, setLedger, setUserDetails, setPreviousData, setAdjustments } = props;
+  const { setFamilyMembers, setLedger, setUserDetails, setPreviousData, setAdjustments, setPets } = props;
   const onDrop = useCallback((acceptedFiles) => {
     const fileReader = new FileReader();
     fileReader.onload = async (event) => {
@@ -39,7 +41,8 @@ export default function Home(props: HomProps) {
         setFamilyMembers(attachments.familyMembers);
         setLedger(attachments.ledger);
         setUserDetails(attachments.userDetails || InitialUserInfo);
-        setAdjustments(attachments.adjustments)
+        setAdjustments(attachments.adjustments);
+        setPets(attachments.pets);
       }
       navigate(firstStep);
     };

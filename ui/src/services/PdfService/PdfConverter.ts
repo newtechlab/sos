@@ -1,5 +1,5 @@
 
-import { FamilyMember, LedgerRow, UserInformation } from '../../App';
+import { FamilyMember, LedgerRow, Pet, UserInformation } from '../../App';
 import { PdfFormat } from '../../components/Home';
 import { AdjustmentAmountPercent, LedgerRowId } from '../../components/ResultatInteract';
 import PdfHandler from './PdfService';
@@ -8,6 +8,7 @@ class PdfConverter {
    
     public static getAttachmentAsObject = async (data: string | ArrayBuffer | null): Promise<PdfFormat> => {
         let familyMembers: Array<FamilyMember> = [];
+        let pets: Array<Pet> = [];
         let ledger: Array<LedgerRow> = []
         let adjustments = new Map<LedgerRowId, AdjustmentAmountPercent>();
         let userDetails: UserInformation | undefined = undefined
@@ -46,6 +47,11 @@ class PdfConverter {
                     userDetails = mostRecentRecord.userDetails
                 //   setUserDetails(mostRecentRecord.userDetails);
                 }
+
+                if (mostRecentRecord.pets) {
+                  pets = mostRecentRecord.pets
+              //   setUserDetails(mostRecentRecord.userDetails);
+              }                
               }
             }
           });
@@ -55,7 +61,8 @@ class PdfConverter {
             ledger,
             userDetails,
             previousData: attachmentsAsObject,
-            adjustments
+            adjustments,
+            pets
           }
 
       } 

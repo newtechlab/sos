@@ -220,7 +220,7 @@ function App() {
       "adjustments",
       JSON.stringify(Array.from(adjustments.entries()))
     );
-  }, [previousData, steps, familyMembers, ledger, userDetails, adjustments]);
+  }, [previousData, steps, familyMembers, ledger, userDetails, adjustments, pets]);
 
   // This is kept as it is useful for local testing
   // useEffect(() => {
@@ -288,6 +288,7 @@ function App() {
                   setLedger={setLedger}
                   setUserDetails={setUserDetails}
                   setAdjustments={setAdjustments}
+                  setPets={setPets}
                 />
               }
             />
