@@ -4,7 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import "semantic-ui-css/semantic.min.css";
 import { StepsState } from "./components/Steps";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import UserDetails from "./components/UserDetails";
 import { InitialSteps } from "./data/StepsInitialState";
 import MoneyIn from "./components/MoneyIn";
@@ -131,16 +131,28 @@ export const InitialUserInfo: UserInformation = {
   otherAssets: "",
 };
 
+function rehydrate<T>(name: string, ifEmpty: T): T {
+  const item = localStorage.getItem(name);
+  return item ? (JSON.parse(item) as T) : ifEmpty; // ? setPreviousData();
+}
+
 function App() {
   const navigate = useNavigate();
-  const [previousData, setPreviousData] = useState<any[]>([]);
+  const [previousData, setPreviousData] = useState<any[]>(
+    rehydrate("previousData", [])
+  );
   const [steps, setSteps] = useState<StepsState>(
     InitialSteps(window.location.pathname)
   );
-  const [familyMembers, setFamilyMembers] = useState<Array<FamilyMember>>([]);
-  const [ledger, setLedger] = useState<Array<LedgerRow>>([]);
-  const [userDetails, setUserDetails] =
-    useState<UserInformation>(InitialUserInfo);
+  const [familyMembers, setFamilyMembers] = useState<Array<FamilyMember>>(
+    rehydrate("familyMembers", [])
+  );
+  const [ledger, setLedger] = useState<Array<LedgerRow>>(
+    rehydrate("ledger", [])
+  );
+  const [userDetails, setUserDetails] = useState<UserInformation>(
+    rehydrate("userDetails", InitialUserInfo)
+  );
 
   const purpleMonkeyDishWasher = (familyMember: FamilyMember) => {
     setFamilyMembers(familyMembers.concat(familyMember));
@@ -157,6 +169,14 @@ function App() {
 
     setLedger(filtered);
   };
+
+  useEffect(() => {
+    localStorage.setItem("previousData", JSON.stringify(previousData));
+    localStorage.setItem("steps", JSON.stringify(steps));
+    localStorage.setItem("familyMembers", JSON.stringify(familyMembers));
+    localStorage.setItem("ledger", JSON.stringify(ledger));
+    localStorage.setItem("userDetails", JSON.stringify(userDetails));
+  }, [previousData, steps, familyMembers, ledger, userDetails]);
 
   // This is kept as it is useful for local testing
   // useEffect(() => {
