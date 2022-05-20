@@ -38,6 +38,8 @@ interface ResultatInteractProps {
   goal: Goal;
   activeStep: StepDefinition | undefined;
   steps: StepsState;
+  adjustments: Map<LedgerRowId, AdjustmentAmountPercent>;
+  setAdjustments: (_: Map<LedgerRowId, AdjustmentAmountPercent>) => void;
 }
 
 interface Adjustments {
@@ -45,14 +47,11 @@ interface Adjustments {
   adjustment: string;
 }
 
-type LedgerRowId = string;
+export type LedgerRowId = string;
 export type AdjustmentAmountPercent = string;
 
 export default function ResultatInteract(props: ResultatInteractProps) {
   const [sortedLedger, setSortedLedger] = useState<LedgerRow[]>([]);
-  const [adjustments, setAdjustments] = useState<
-    Map<LedgerRowId, AdjustmentAmountPercent>
-  >(new Map<LedgerRowId, AdjustmentAmountPercent>());
   const [moneyOut, setMoneyOut] = useState<LedgerRow[]>([]);
   const [inTotal, setInTotal] = useState<number>(0);
   const [inPercent, setInPercent] = useState<number>(0);
@@ -61,7 +60,7 @@ export default function ResultatInteract(props: ResultatInteractProps) {
   const [graphData, setGraphData] = useState<
     ChartData<"bar", number[], unknown>
   >(graphDataInitialState);
-  const { ledger, completeStep, activeStep, steps, goBack } = props;
+  const { ledger, completeStep, activeStep, steps, goBack, adjustments, setAdjustments } = props;
 
   const labels = ["Penger Inn", "Penger Ut"];
 

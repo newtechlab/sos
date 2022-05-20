@@ -23,7 +23,7 @@ import {
 import Resultat from "./components/Resultat";
 import styled from "styled-components";
 import { goBackStep, progressStep } from "./data/StepProgressor";
-import ResultatInteract from "./components/ResultatInteract";
+import ResultatInteract, { AdjustmentAmountPercent, LedgerRowId } from "./components/ResultatInteract";
 // import { Container } from "semantic-ui-react";
 import Home from "./components/Home";
 // import { useEffect } from "react";
@@ -136,7 +136,17 @@ export const InitialUserInfo: UserInformation = {
 
 function rehydrate<T>(name: string, ifEmpty: T): T {
   const item = localStorage.getItem(name);
-  return item ? JSON.parse(item) as T : ifEmpty; // ? setPreviousData();
+  return item ? JSON.parse(item) as T : ifEmpty;
+}
+
+function rehydrateMap<A, B>(name: string, ifEmpty: Map<A, B>): Map<A, B> {
+  const item = localStorage.getItem(name);
+
+  if (item) {
+     return new Map<A, B>(JSON.parse(item));
+  }
+
+  return ifEmpty;
 }
 
 function App() {
@@ -147,6 +157,7 @@ function App() {
   const [pets, setPets] = useState<Array<Pet>>(rehydrate("pets", []));
   const [ledger, setLedger] = useState<Array<LedgerRow>>(rehydrate("ledger", []));
   const [userDetails, setUserDetails] = useState<UserInformation>(rehydrate("userDetails", InitialUserInfo));
+  const [adjustments, setAdjustments] = useState<Map<LedgerRowId, AdjustmentAmountPercent>>(rehydrateMap<LedgerRowId, AdjustmentAmountPercent>("adjustments", new Map<LedgerRowId, AdjustmentAmountPercent>()));
 
   const purpleMonkeyDishWasher = (familyMember: FamilyMember) => {
     setFamilyMembers(familyMembers.concat(familyMember));
@@ -165,14 +176,14 @@ function App() {
   };
 
   useEffect(() => {
-    localStorage.setItem('previousData', JSON.stringify(previousData));
+    localStorage.setItem('previousData', JSON.stringify(Array.from(previousData)));
     localStorage.setItem('steps', JSON.stringify(steps));
     localStorage.setItem('familyMembers', JSON.stringify(familyMembers));
     localStorage.setItem('ledger', JSON.stringify(ledger));
     localStorage.setItem('userDetails', JSON.stringify(userDetails));
-    localStorage.setItem('pets', JSON.stringify(pets));    
-    console.log('pets', pets)
-  }, [previousData, steps, familyMembers, ledger, userDetails, pets]);
+    localStorage.setItem('pets', JSON.stringify(pets));   
+    localStorage.setItem('adjustments', JSON.stringify(Array.from(adjustments.entries()))); 
+  }, [previousData, steps, familyMembers, ledger, userDetails, pets, adjustments]);
 
   // This is kept as it is useful for local testing
   // useEffect(() => {
@@ -239,6 +250,7 @@ function App() {
                   setFamilyMembers={setFamilyMembers}
                   setLedger={setLedger}
                   setUserDetails={setUserDetails}
+                  setAdjustments={setAdjustments}
                 />
               }
             />
@@ -315,6 +327,8 @@ function App() {
                   goBack={goBack}
                   activeStep={activeStep}
                   steps={steps}
+                  adjustments={adjustments}
+                  setAdjustments={setAdjustments}
                 />
               }
             />
@@ -324,6 +338,7 @@ function App() {
                 <Resultat
                   ledger={ledger}
                   familyMembers={familyMembers}
+                  adjustments={adjustments}
                   removeLedgerRow={deleteLedgerRow}
                   completeStep={completeStep}
                   userDetails={userDetails}
