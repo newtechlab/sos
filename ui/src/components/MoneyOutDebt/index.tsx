@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Container, Grid, Icon } from "semantic-ui-react";
+import { Button, Container, Grid, Icon, StepContent } from "semantic-ui-react";
 import { LedgerRow } from "../../App";
 
 import AddMoneyOutModal from "../AddMoneyOutModal";
@@ -11,6 +11,7 @@ import { StepDefinition, StepsState } from "../Steps";
 import StepHeader from "../StepHeader";
 import styled from "styled-components";
 import MoneyTotal from "../MoneyTotal";
+import HelpTextModalDebt from "../HelpTextModalDebt";
 
 interface MoneyOutProps {
   ledger: Array<LedgerRow>;
@@ -30,6 +31,8 @@ export default function MoneyOut(props: MoneyOutProps) {
   const [filteredLedger, setFilteredLedger] = useState<LedgerRow[]>([]);
   const [moneyOut, setMoneyOut] = useState<number>(0);
   // const [graphData, setGraphData] = useState<ChartData<"bar", number[], unknown>>(graphDataInitialState);
+  const [addHelpTextDebtModalOpen, OpenHelpTextDebtModal] =
+    useState<boolean>(false);
   const {
     ledger,
     addLedgerRow,
@@ -38,23 +41,8 @@ export default function MoneyOut(props: MoneyOutProps) {
     goBack,
     activeStep,
     steps,
-    categories
+    categories,
   } = props;
-
-  // useEffect(() => {
-  //     const data = {
-  //         labels: chartLabels,
-  //         datasets: [
-  //           {
-  //             label: 'Penger Ut',
-  //             data: pengerUt(chartLabels, sortedLedger),
-  //             backgroundColor: PengerUtColour,
-  //           },
-  //         ],
-  //       };
-
-  //       setGraphData(data);
-  //   }, [sortedLedger]);
 
   useEffect(() => {
     setSortedLedger(sortLedger(ledger));
@@ -77,7 +65,7 @@ export default function MoneyOut(props: MoneyOutProps) {
       <StyledHeader>
         <StepHeader activeStep={activeStep} steps={steps} />
       </StyledHeader>
-      <Container>
+      <StyledContainer>
         <StyledContainerSpace>
           {addMoneyOutModalOpen && (
             <AddMoneyOutModal
@@ -87,8 +75,13 @@ export default function MoneyOut(props: MoneyOutProps) {
               categories={categories}
             />
           )}
-
-          <h1>Utgifter</h1>
+          <StyledDiv>
+            <h1>Gjeld</h1>
+            <HelpTextModalDebt
+              open={addHelpTextDebtModalOpen}
+              setOpen={OpenHelpTextDebtModal}
+            />
+          </StyledDiv>
           <StyledBoxSection>
             <StyledGrid>
               {filteredLedger.length > 0 && (
@@ -111,7 +104,6 @@ export default function MoneyOut(props: MoneyOutProps) {
                 </Grid.Row>
               )}
               {filteredLedger.map((row) => {
-                if (categories.has(row.category) && row.accountFrom === "user") {
                   return (
                     <StyledGridRow key={row.id}>
                       <Grid.Column width={6}>{row.accountTo}</Grid.Column>
@@ -129,10 +121,8 @@ export default function MoneyOut(props: MoneyOutProps) {
                       </Grid.Column>
                     </StyledGridRow>
                   );
-                } else {
-                  return null;
                 }
-              })}
+              )}
               <StyledGridRowBottom>
                 <Grid.Column width={16}>
                   <Button
@@ -148,8 +138,7 @@ export default function MoneyOut(props: MoneyOutProps) {
                 </Grid.Column>
               </StyledGridRowBottom>
 
-              <MoneyTotal text="Utgifter og gjeld" total={moneyOut} />          
-
+              <MoneyTotal text="Utgifter og gjeld" total={moneyOut} />
             </StyledGrid>
           </StyledBoxSection>
 
@@ -164,7 +153,7 @@ export default function MoneyOut(props: MoneyOutProps) {
             completeStep={completeStep}
           />
         </StyledContainerSpace>
-      </Container>
+      </StyledContainer>
     </StyledBackgroundColour>
   );
 }
@@ -184,4 +173,12 @@ const StyledContainerSpace = styled.div`
 const StyledHeader = styled.div`
   background-color: #ffffff;
   width: 100%;
+`;
+
+const StyledContainer = styled(Container)`
+  position: relative;
+`;
+
+const StyledDiv = styled.div`
+  position: relative;
 `;
