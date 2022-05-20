@@ -51,11 +51,14 @@ export default function MoneyOut(props: MoneyOutProps) {
   useEffect(() => {
     setFilteredLedger(
       sortedLedger.filter((row) => {
-        return row.accountFrom === "user";
+        return row.accountFrom === "user" && categories.has(row.category)
       })
     );
-    setMoneyOut(calculateMoneyOut(sortedLedger));
   }, [sortedLedger]);
+
+  useEffect(() => {
+    setMoneyOut(calculateMoneyOut(filteredLedger))
+  }, [filteredLedger]);
 
   return (
     <StyledBackgroundColour>
@@ -101,10 +104,6 @@ export default function MoneyOut(props: MoneyOutProps) {
                 </Grid.Row>
               )}
               {filteredLedger.map((row) => {
-                if (
-                  categories.has(row.category) &&
-                  row.accountFrom === "user"
-                ) {
                   return (
                     <StyledGridRow key={row.id}>
                       <Grid.Column width={6}>{row.accountTo}</Grid.Column>
@@ -122,10 +121,8 @@ export default function MoneyOut(props: MoneyOutProps) {
                       </Grid.Column>
                     </StyledGridRow>
                   );
-                } else {
-                  return null;
                 }
-              })}
+              )}
               <StyledGridRowBottom>
                 <Grid.Column width={16}>
                   <Button
