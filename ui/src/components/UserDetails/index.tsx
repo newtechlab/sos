@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Card, Container, Grid, Input } from "semantic-ui-react";
+import { Card, Container, Grid, Icon, Input } from "semantic-ui-react";
 import styled from "styled-components";
-import { FamilyMember, HouseSituation, UserInformation } from "../../App";
+import { FamilyMember, HouseSituation, Pet, UserInformation } from "../../App";
 import AddFamilyMemberCard from "../AddFamilyMemberCard";
 import AddFamilyMemberModal from "../AddFamilyMemberModal";
 import BackForwardControls from "../BackForwardControls";
@@ -10,11 +10,15 @@ import HelpTextModalGoal from "../HelpTextModalGoal";
 import { JaNei } from "../JaNei";
 import StepHeader from "../StepHeader";
 import { StepDefinition, StepsState } from "../Steps";
+import AddPetModal from "../AddPetModal";
+import { StyledGridRow } from "../MoneyIn";
 
 export interface UserDetailsProps {
   familyMembers: Array<FamilyMember>;
   addFamilyMember: (_: FamilyMember) => void;
   setUserDetails: (_: UserInformation) => void;
+  setPets: (_: Array<Pet>) => void; 
+  pets: Array<Pet>;
   userDetails: UserInformation;
   completeStep: () => void;
   goBack: () => void;
@@ -24,6 +28,7 @@ export interface UserDetailsProps {
 
 export default function UserDetails(props: UserDetailsProps) {
   const [addFamilyModalOpen, setAddFamilyModalOpen] = useState<boolean>(false);
+  const [addPetModalOpen, setAddPetModalOpen] = useState<boolean>(false);
   const [addHelpTextGoalModalOpen, OpenHelpTextGoalModal] =
     useState<boolean>(false);
   const {
@@ -34,7 +39,9 @@ export default function UserDetails(props: UserDetailsProps) {
     activeStep,
     steps,
     userDetails,
-    setUserDetails
+    setUserDetails,
+    pets,
+    setPets
   } = props;
   return (
     <StyledBackgroundColour>
@@ -116,11 +123,24 @@ export default function UserDetails(props: UserDetailsProps) {
           <StyledHeadingDiv>
             <h1>Har familien dyr?</h1>
 
+            <AddPetModal
+              open={addPetModalOpen}
+              setOpen={setAddPetModalOpen}
+              pets={pets}
+              setPets={setPets}
+            />                      
+
             <Grid columns={1}>
               <Grid.Column width={16}>
-                <DottedDiv>+ Legg til</DottedDiv>
+                <DottedDiv onClick={() => setAddPetModalOpen(true)}>+ Legg til</DottedDiv>
               </Grid.Column>
+              { pets.map((p) => {
+                return <Grid.Column width={16}>
+                  { p.name }
+                </Grid.Column>
+              }) }
             </Grid>
+
           </StyledHeadingDiv>
 
           <StyledHeadingDiv>

@@ -34,6 +34,11 @@ export interface FamilyMember {
   age: string;
 }
 
+export interface Pet {
+  id: string;
+  name: string;
+}
+
 export enum TransactionCategory {
   // Housing = "HOUSING",
   // Transportation = "TRANSPORTATION",
@@ -139,6 +144,7 @@ function App() {
   const [previousData, setPreviousData] = useState<any[]>(rehydrate("previousData", []));
   const [steps, setSteps] = useState<StepsState>(InitialSteps(window.location.pathname));
   const [familyMembers, setFamilyMembers] = useState<Array<FamilyMember>>(rehydrate("familyMembers", []));
+  const [pets, setPets] = useState<Array<Pet>>(rehydrate("pets", []));
   const [ledger, setLedger] = useState<Array<LedgerRow>>(rehydrate("ledger", []));
   const [userDetails, setUserDetails] = useState<UserInformation>(rehydrate("userDetails", InitialUserInfo));
 
@@ -164,7 +170,9 @@ function App() {
     localStorage.setItem('familyMembers', JSON.stringify(familyMembers));
     localStorage.setItem('ledger', JSON.stringify(ledger));
     localStorage.setItem('userDetails', JSON.stringify(userDetails));
-  }, [previousData, steps, familyMembers, ledger, userDetails]);
+    localStorage.setItem('pets', JSON.stringify(pets));    
+    console.log('pets', pets)
+  }, [previousData, steps, familyMembers, ledger, userDetails, pets]);
 
   // This is kept as it is useful for local testing
   // useEffect(() => {
@@ -246,6 +254,8 @@ function App() {
                   goBack={goBack}
                   setUserDetails={setUserDetails}
                   userDetails={userDetails}
+                  pets={pets}
+                  setPets={setPets}
                 />
               }
             />
