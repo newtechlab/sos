@@ -1,5 +1,6 @@
 import { PDFDocument } from "pdf-lib";
 import { FamilyMember, LedgerRow, UserInformation } from "../../App";
+import Pd from 'frontpage.png'
 
 
 export interface CreatePdfProps {
@@ -7,6 +8,7 @@ export interface CreatePdfProps {
     familyMembers: Array<FamilyMember>;
     userDetails: UserInformation;
     previousData: any[];
+    addImage: boolean;
 }
 
 export class PdfWriterService {
@@ -24,20 +26,23 @@ export class PdfWriterService {
         const history = {
             history: props.previousData
         }
-        const uint8array = new TextEncoder().encode(JSON.stringify(history));
+        const uint8array: Uint8Array = new TextEncoder().encode(JSON.stringify(history));
         pdfDoc.attach(uint8array, "sos_state")
         const page = pdfDoc.addPage()
-        const FrontPageBytes = await fetch('frontpage.png').then(res => res.arrayBuffer())
-        const FrontPageImage = await pdfDoc.embedPng(FrontPageBytes)
-        const FrontPageDims = FrontPageImage.scale(0.5)
-        page.drawImage(FrontPageImage, {
-            x: 100,
-            y: 300,
-            width: FrontPageDims.width,
-            height: FrontPageDims.height,
-            // rotate: degrees(30),
-            // opacity: 0.75,
-          })
+        
+        if (props.addImage) {
+            const FrontPageBytes = await fetch('frontpage.png').then(res => res.arrayBuffer())
+            const FrontPageImage = await pdfDoc.embedPng(FrontPageBytes)
+            const FrontPageDims = FrontPageImage.scale(0.5)
+            page.drawImage(FrontPageImage, {
+                x: 100,
+                y: 300,
+                width: FrontPageDims.width,
+                height: FrontPageDims.height,
+                // rotate: degrees(30),
+                // opacity: 0.75,
+            })
+        }
     
         page.drawText('Keep this document for next time')
         const pdfBytes = await pdfDoc.save()

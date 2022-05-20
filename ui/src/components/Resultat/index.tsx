@@ -50,7 +50,7 @@ export default function Resultat(props: ResultatProps) {
   const [graphData, setGraphData] = useState<
     ChartData<"bar", number[], unknown>
   >(graphDataInitialState);
-  const { ledger, familyMembers, userDetails, previousData, completeStep } = props;
+  const { ledger, familyMembers, userDetails, previousData, completeStep, goBack } = props;
 
   useEffect(() => {
     const data = {
@@ -98,7 +98,7 @@ export default function Resultat(props: ResultatProps) {
           circular
           color="blue"
           onClick={() => {
-            createPdf({ ledger, familyMembers, userDetails, previousData });
+            createPdf({ ledger, familyMembers, userDetails, previousData, addImage: true });
             completeStep();
           }}
         >

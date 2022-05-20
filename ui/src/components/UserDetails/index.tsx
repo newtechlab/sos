@@ -4,10 +4,10 @@ import styled from "styled-components";
 import { FamilyMember, HouseSituation, UserInformation } from "../../App";
 import AddFamilyMemberCard from "../AddFamilyMemberCard";
 import AddFamilyMemberModal from "../AddFamilyMemberModal";
+import BackForwardControls from "../BackForwardControls";
 import FamilyMemberCard from "../FamilyMemberCard";
 import HelpTextModalGoal from "../HelpTextModalGoal";
 import { JaNei } from "../JaNei";
-import NextButton from "../NextButton";
 import StepHeader from "../StepHeader";
 import { StepDefinition, StepsState } from "../Steps";
 
@@ -17,6 +17,7 @@ export interface UserDetailsProps {
   setUserDetails: (_: UserInformation) => void;
   userDetails: UserInformation;
   completeStep: () => void;
+  goBack: () => void;
   activeStep: StepDefinition | undefined;
   steps: StepsState;
 }
@@ -29,6 +30,7 @@ export default function UserDetails(props: UserDetailsProps) {
     addFamilyMember,
     familyMembers,
     completeStep,
+    goBack,
     activeStep,
     steps,
     userDetails,
@@ -185,13 +187,17 @@ export default function UserDetails(props: UserDetailsProps) {
             </Grid>
           </StyledHeadingDiv>
 
-          <StyledBControlsDiv>
+          {/* <StyledBControlsDiv> */}
             {/* <Button onClick={() => {
           setAddFamilyModalOpen(true);
         }}>Add Family Member</Button> */}
 
-            <NextButton completeStep={() => completeStep()} />
-          </StyledBControlsDiv>
+            <BackForwardControls
+                goBack={() => goBack()}
+                completeStep={completeStep}
+              />
+
+          {/* </StyledBControlsDiv> */}
         </StyledContainerSpace>
       </Container>
     </StyledBackgroundColour>
@@ -210,12 +216,6 @@ export const StyledContainerSpace = styled.div`
 export const StyledHeader = styled.div`
   background-color: #ffffff;
   width: 100%;
-`;
-
-const StyledBControlsDiv = styled.div`
-  text-align: right;
-  padding-top: 40px;
-  padding-bottom: 40px;
 `;
 
 const DottedDiv = styled.div`

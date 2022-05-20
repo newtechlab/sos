@@ -2,13 +2,13 @@ import { Button, Dropdown, Grid, Icon, Input, Modal } from "semantic-ui-react";
 import { LedgerRow, TransactionCategory } from "../../App";
 import { v4 as uuidv4 } from "uuid";
 import { useEffect, useState } from "react";
-import { getDaysOfMonthDropdown } from "../../data/DaysOfMonth";
 import { StyledGrid, StyledGridRowBottom } from "../MoneyIn";
 
 interface AddMoneyOutModalProps {
   open: boolean;
   setOpen: (_: boolean) => void;
   addLedgerRow: (_: LedgerRow) => void;
+  categories: Set<string>;
 }
 
 interface MoneyOutAndCategory {
@@ -30,7 +30,7 @@ const convertDropdownItem = (item: MoneyOutAndCategory): DropDownItem => {
   };
 };
 
-export default function AddMoneyInModal(props: AddMoneyOutModalProps) {
+export default function AddMoneyOutModal(props: AddMoneyOutModalProps) {
   const [to, setTo] = useState<string | undefined>(undefined);
   const [moneyOutItems, setMoneyOutItems] = useState<
     Map<string, MoneyOutAndCategory>
@@ -110,10 +110,13 @@ export default function AddMoneyInModal(props: AddMoneyOutModalProps) {
   }, []);
 
   useEffect(() => {
-    const dropDownItems: DropDownItem[] = [];
+    const dropDownItems: DropDownItem[] = [];    
     moneyOutItems.forEach((value) => {
-      const i = convertDropdownItem(value);
-      dropDownItems.push(i);
+      if (props.categories.has(value.category)) {
+        const i = convertDropdownItem(value);
+        dropDownItems.push(i);
+      }
+      
     });
     setDropDownItems(dropDownItems);
   }, [moneyOutItems]);

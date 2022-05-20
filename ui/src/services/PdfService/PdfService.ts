@@ -55,6 +55,19 @@ class PdfHandler {
             });
         });
     }
+
+    public static getAttachmentAsObject = async (data: string | ArrayBuffer | null) => {
+        console.log(data);
+        const typedarray = new Uint8Array(data as ArrayBuffer);
+        const pdfHandler = new PdfHandler(typedarray);
+        const attachments = await pdfHandler.getAttachments();
+        const attachmentsAsObject: any[] = attachments.map((a) => {
+          const decoded = new TextDecoder().decode(a.data);
+          const previousData: any = JSON.parse(decoded);
+          return previousData;
+        });
+        return attachmentsAsObject;
+      } 
     
 }
 

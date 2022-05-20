@@ -25,6 +25,7 @@ describe("The PdfHandler", ()=>{
     });
     test("it should decode the correct attachment name", async ()=>{
         const attachment = await getAttachment(0);
+        
         expect(attachment.name).toBe(attachmentName);
     });
     test("it should read attachments correctly", async ()=>{

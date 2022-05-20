@@ -28,6 +28,7 @@ import {
   StyledHeader,
 } from "../UserDetails";
 import ComparisonGraph from "../ComparisonGraph";
+import BackForwardControls from "../BackForwardControls";
 
 interface ResultatInteractProps {
   ledger: Array<LedgerRow>;
@@ -60,7 +61,7 @@ export default function ResultatInteract(props: ResultatInteractProps) {
   const [graphData, setGraphData] = useState<
     ChartData<"bar", number[], unknown>
   >(graphDataInitialState);
-  const { ledger, completeStep, activeStep, steps } = props;
+  const { ledger, completeStep, activeStep, steps, goBack } = props;
 
   const labels = ["Penger Inn", "Penger Ut"];
 
@@ -140,7 +141,7 @@ export default function ResultatInteract(props: ResultatInteractProps) {
       <StyledContainer>
         <StyledContainerSpace>
           <StyledBoxSection>
-            <h1>Balanseoversikt</h1>
+            <h1>Balanse</h1>
           </StyledBoxSection>
 
           <StyledBoxSection>
@@ -149,8 +150,6 @@ export default function ResultatInteract(props: ResultatInteractProps) {
             <StyledGraphContainer>
               <Bar options={chartOptions} data={graphData} />
             </StyledGraphContainer>
-
-            <div>Over or under section</div>
 
             <PaddedSection>
               {moneyOut.length > 0 ? (
@@ -183,13 +182,13 @@ export default function ResultatInteract(props: ResultatInteractProps) {
                 </StyledColumn>
               </StyledRow>
             </PaddedSection>
-
-            <NextButton
-              completeStep={() => {
-                completeStep();
-              }}
-            />
           </StyledBoxSection>
+
+          <BackForwardControls
+                goBack={() => goBack()}
+                completeStep={completeStep}
+              />        
+
         </StyledContainerSpace>
       </StyledContainer>
 
@@ -235,5 +234,5 @@ const StyledColumn = styled.div`
 `;
 
 const StyledGraphContainer = styled.div`
-  height: 100px;
+  height: 150px;
 `;

@@ -3,8 +3,8 @@ import { useDropzone } from "react-dropzone";
 import { useNavigate } from "react-router-dom";
 import { Button, Container, Image, Icon } from "semantic-ui-react";
 import styled from "styled-components";
-import { FamilyMember, LedgerRow, UserInformation } from "../../App";
-import PdfHandler from "../../services/PdfService/PdfService";
+import { FamilyMember, InitialUserInfo, LedgerRow, UserInformation } from "../../App";
+import PdfConverter from "../../services/PdfService/PdfConverter";
 import { StyledBoxSection } from "../StyledBoxSection";
 import frontpage_family from "./frontpage_family.png";
 
@@ -17,10 +17,11 @@ export interface HomProps {
 
 export const firstStep = "/family";
 
-interface PdfFormat {
+export interface PdfFormat {
+  previousData: any[]; // previous / historical sessions
   familyMembers: Array<FamilyMember>;
   ledger: Array<LedgerRow>;
-  userDetails: UserInformation;
+  userDetails: UserInformation | undefined;
 }
 
 export default function Home(props: HomProps) {
@@ -30,36 +31,11 @@ export default function Home(props: HomProps) {
     const fileReader = new FileReader();
     fileReader.onload = async (event) => {
       if (event?.target?.readyState === FileReader.DONE) {
-        const typedarray = new Uint8Array(event.target.result as ArrayBuffer);
-        const pdfHandler = new PdfHandler(typedarray);
-        const attachments = await pdfHandler.getAttachments();
-        const attachmentsAsObject: any[] = attachments.map((a) => {
-          const decoded = new TextDecoder().decode(a.data);
-          const previousData: any = JSON.parse(decoded);
-          return previousData;
-        });
-        setPreviousData(attachmentsAsObject);
-
-        attachmentsAsObject.map((attachment: any) => {
-          if (attachment.history) {
-            const a = attachment.history as Array<PdfFormat>;
-            const mostRecentRecord = a.at(-1);
-
-            if (mostRecentRecord) {
-              if (mostRecentRecord.familyMembers) {
-                setFamilyMembers(mostRecentRecord.familyMembers);
-              }
-
-              if (mostRecentRecord.ledger) {
-                setLedger(mostRecentRecord.ledger);
-              }
-
-              if (mostRecentRecord.userDetails) {
-                setUserDetails(mostRecentRecord.userDetails);
-              }
-            }
-          }
-        });
+        const attachments = await PdfConverter.getAttachmentAsObject(event.target.result);
+        setPreviousData(attachments.previousData);
+        setFamilyMembers(attachments.familyMembers);
+        setLedger(attachments.ledger);
+        setUserDetails(attachments.userDetails || InitialUserInfo);
       }
       navigate(firstStep);
     };

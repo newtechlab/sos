@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Container, Grid, Icon, Table } from "semantic-ui-react";
+import { Button, Container, Grid, Icon } from "semantic-ui-react";
 import { LedgerRow } from "../../App";
 
 import AddMoneyOutModal from "../AddMoneyOutModal";
@@ -20,6 +20,7 @@ interface MoneyOutProps {
   goBack: () => void;
   activeStep: StepDefinition | undefined;
   steps: StepsState;
+  categories: Set<string>;
 }
 
 export default function MoneyOut(props: MoneyOutProps) {
@@ -37,6 +38,7 @@ export default function MoneyOut(props: MoneyOutProps) {
     goBack,
     activeStep,
     steps,
+    categories
   } = props;
 
   // useEffect(() => {
@@ -79,6 +81,7 @@ export default function MoneyOut(props: MoneyOutProps) {
               open={addMoneyOutModalOpen}
               setOpen={setAddMoneyOutModalOpen}
               addLedgerRow={addLedgerRow}
+              categories={categories}
             />
           )}
 
@@ -105,7 +108,7 @@ export default function MoneyOut(props: MoneyOutProps) {
                 </Grid.Row>
               )}
               {filteredLedger.map((row) => {
-                if (row.accountFrom === "user") {
+                if (categories.has(row.category) && row.accountFrom === "user") {
                   return (
                     <StyledGridRow key={row.id}>
                       <Grid.Column width={6}>{row.accountTo}</Grid.Column>

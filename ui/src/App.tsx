@@ -81,6 +81,8 @@ export enum TransactionCategory {
   Undefined = "UNDEFINED"  
 }
 
+export const AllTransactionCategories: Array<string> = Object.values(TransactionCategory);
+
 export interface LedgerRow {
   id: string;
   dayOfMonth: number;
@@ -120,7 +122,7 @@ export interface UserInformation {
   otherAssets: string;
 }
 
-const InitialUserInfo: UserInformation = {
+export const InitialUserInfo: UserInformation = {
   goal: { name: "", amount: 0 },
   car: { own: false },
   house: HouseSituation.RENT,
@@ -130,7 +132,7 @@ const InitialUserInfo: UserInformation = {
 function App() {
   const navigate = useNavigate();
   const [previousData, setPreviousData] = useState<any[]>([]);
-  const [steps, setSteps] = useState<StepsState>(InitialSteps);
+  const [steps, setSteps] = useState<StepsState>(InitialSteps(window.location.pathname));
   const [familyMembers, setFamilyMembers] = useState<Array<FamilyMember>>([]);
   const [ledger, setLedger] = useState<Array<LedgerRow>>([]);
   const [userDetails, setUserDetails] = useState<UserInformation>(InitialUserInfo);
@@ -145,13 +147,13 @@ function App() {
 
   const deleteLedgerRow = (id: string) => {
     const filtered = ledger.filter((row) => {
-      row.id === id;
+      return row.id !== id;
     });
 
     setLedger(filtered);
   };
 
-  // // This is kept as it is useful for local testing
+  // This is kept as it is useful for local testing
   // useEffect(() => {
   //   setLedger([
   //     {
@@ -168,7 +170,7 @@ function App() {
   //       amount: 100,
   //       accountFrom: "user",
   //       accountTo: "netflix",
-  //       category: TransactionCategory.Entertainment
+  //       category: TransactionCategory.Cafe
   //     },
   //     {
   //       id: uuidv4(),
@@ -176,7 +178,7 @@ function App() {
   //       amount: 1000,
   //       accountFrom: "user",
   //       accountTo: "coffee",
-  //       category: TransactionCategory.Food
+  //       category: TransactionCategory.Furniture
   //     },
   //     {
   //       id: uuidv4(),
@@ -184,7 +186,7 @@ function App() {
   //       amount: 167,
   //       accountFrom: "user",
   //       accountTo: "pony",
-  //       category: TransactionCategory.Food
+  //       category: TransactionCategory.Childcare_other
   //     },
   //   ]);
   // }, []);
@@ -228,6 +230,7 @@ function App() {
                   activeStep={activeStep}
                   steps={steps}
                   completeStep={completeStep}
+                  goBack={goBack}
                   setUserDetails={setUserDetails}
                   userDetails={userDetails}
                 />
@@ -249,6 +252,21 @@ function App() {
               }
             />
             <Route
+              path="/gjeld"
+              element={
+                <MoneyOut
+                  ledger={ledger}
+                  addLedgerRow={addLedgerRow}
+                  removeLedgerRow={deleteLedgerRow}
+                  completeStep={completeStep}
+                  goBack={goBack}
+                  activeStep={activeStep}
+                  steps={steps}
+                  categories={new Set([TransactionCategory.Debt])}
+                />
+              }
+            />
+            <Route
               path="/penger-ut"
               element={
                 <MoneyOut
@@ -259,6 +277,7 @@ function App() {
                   goBack={goBack}
                   activeStep={activeStep}
                   steps={steps}
+                  categories={new Set(AllTransactionCategories.filter(c => c !== TransactionCategory.Debt.toString()))}
                 />
               }
             />
