@@ -38,6 +38,11 @@ export interface FamilyMember {
   age: string;
 }
 
+export interface Pet {
+  id: string;
+  name: string;
+}
+
 export enum TransactionCategory {
   // Housing = "HOUSING",
   // Transportation = "TRANSPORTATION",
@@ -152,7 +157,7 @@ function rehydrateMap<A, B>(name: string, ifEmpty: Map<A, B>): Map<A, B> {
 
 function App() {
   const navigate = useNavigate();
-
+  const [pets, setPets] = useState<Array<Pet>>(rehydrate("pets", []));
   const [previousData, setPreviousData] = useState<any[]>(
     rehydrate("previousData", [])
   );
@@ -193,6 +198,14 @@ function App() {
     setLedger(filtered);
   };
 
+  const deletePet = (id: string) => {
+    const filtered = pets.filter((row) => {
+      return row.id !== id;
+    });
+
+    setPets(filtered);
+  };  
+
   useEffect(() => {
     localStorage.setItem(
       "previousData",
@@ -202,6 +215,7 @@ function App() {
     localStorage.setItem("familyMembers", JSON.stringify(familyMembers));
     localStorage.setItem("ledger", JSON.stringify(ledger));
     localStorage.setItem("userDetails", JSON.stringify(userDetails));
+    localStorage.setItem('pets', JSON.stringify(pets));   
     localStorage.setItem(
       "adjustments",
       JSON.stringify(Array.from(adjustments.entries()))
@@ -289,6 +303,9 @@ function App() {
                   goBack={goBack}
                   setUserDetails={setUserDetails}
                   userDetails={userDetails}
+                  pets={pets}
+                  setPets={setPets}
+                  deletePet={deletePet}
                 />
               }
             />
@@ -371,6 +388,7 @@ function App() {
                   userDetails={userDetails}
                   previousData={previousData}
                   goBack={goBack}
+                  pets={pets}
                 />
               }
             />

@@ -9,4 +9,9 @@ export const StyledCard = styled.div`
     position: relative;
     border-radius: 5px;
     cursor: pointer;
+    &:hover {
+        background-color: #ffffff;
+        border: 3px solid #3d8eb1;
+        cursor: pointer;
+      }
 `

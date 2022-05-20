@@ -1,5 +1,5 @@
 import { PDFDocument } from "pdf-lib";
-import { FamilyMember, LedgerRow, UserInformation } from "../../App";
+import { FamilyMember, LedgerRow, Pet, UserInformation } from "../../App";
 import Pd from 'frontpage.png'
 import { AdjustmentAmountPercent, LedgerRowId } from "../../components/ResultatInteract";
 
@@ -11,6 +11,7 @@ export interface CreatePdfProps {
     adjustments: Map<LedgerRowId, AdjustmentAmountPercent>;
     previousData: any[];
     addImage: boolean;
+    pets: Array<Pet>;
 }
 
 export class PdfWriterService {
@@ -23,7 +24,8 @@ export class PdfWriterService {
             familyMembers: props.familyMembers,
             ledger: props.ledger,
             userDetails: props.userDetails,
-            adjustments: Array.from(props.adjustments.entries())
+            adjustments: Array.from(props.adjustments.entries()),
+            pets: props.pets
         }
         const previous = props.previousData || []
         console.log("objectToAttach", objectToAttach);

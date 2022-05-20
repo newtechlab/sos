@@ -8,6 +8,10 @@ describe("The PdfConverter", ()=>{
     
     test("it should be able to read attachments from a valid array buffer", async ()=>{
         const props: CreatePdfProps = {
+            pets: [{ 
+                id: "id",
+                name: "foo"
+            }],
             ledger: [],
             familyMembers: [{
                 id: "id",
