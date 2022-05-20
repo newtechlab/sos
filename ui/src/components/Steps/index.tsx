@@ -39,14 +39,15 @@ export default function Steps(props: StepsProps) {
     const CompleteIcon = "check circle";
     const stepsArray = Array.from( steps.stepGroups )
     return <Step.Group widths={4}>
-            { stepsArray.map(([id, step]) => {
-                const isActive = steps.activeStepId === id;
-                return <Step key={id} active={isActive}>
+            { stepsArray.map(([stepGroupId, stepGroup]) => {
+                const step = steps.steps[steps.activeStepId];
+                const isActive = stepGroupId === step.group;
+                return <Step key={stepGroupId} active={isActive}>
                     {  isActive && <Icon name={ActiveIcon} color="teal" /> }
-                    {  !isActive && steps.completedGroups.has(id) && <Icon name={CompleteIcon} color="green" /> } 
+                    {  !isActive && steps.completedGroups.has(stepGroupId) && <Icon name={CompleteIcon} color="green" /> } 
                     <Step.Content>
-                    <Step.Title>{ steps.stepGroups.get(id)?.title }</Step.Title>
-                    <Step.Description> { steps.stepGroups.get(id)?.description }</Step.Description>
+                    <Step.Title>{ steps.stepGroups.get(stepGroupId)?.title }</Step.Title>
+                    <Step.Description> { steps.stepGroups.get(stepGroupId)?.description }</Step.Description>
                     </Step.Content>
                 </Step>
             })}
