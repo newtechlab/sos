@@ -195,7 +195,7 @@ export default function UserDetails(props: UserDetailsProps) {
               </Grid.Column>
               <Grid.Column width={6}>
                 <Input
-                  placeholder="ca beløp (f.eks. 40 000)"
+                  placeholder="ca beløp"
                   value={props.userDetails.goal?.amount || ""}
                   onChange={(_, data) => {
                     props.setUserDetails({
