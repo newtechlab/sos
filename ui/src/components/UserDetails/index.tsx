@@ -19,7 +19,7 @@ export interface UserDetailsProps {
   familyMembers: Array<FamilyMember>;
   addFamilyMember: (_: FamilyMember) => void;
   setUserDetails: (_: UserInformation) => void;
-  setPets: (_: Array<Pet>) => void; 
+  setPets: (_: Array<Pet>) => void;
   deletePet: (id: string) => void;
   pets: Array<Pet>;
   userDetails: UserInformation;
@@ -45,7 +45,7 @@ export default function UserDetails(props: UserDetailsProps) {
     setUserDetails,
     pets,
     setPets,
-    deletePet
+    deletePet,
   } = props;
   return (
     <StyledBackgroundColour>
@@ -87,7 +87,7 @@ export default function UserDetails(props: UserDetailsProps) {
               optionOneClick={() => {
                 setUserDetails({
                   ...userDetails,
-                  car: { own: true }
+                  car: { own: true },
                 });
               }}
               optionTwoSelected={userDetails.car?.own !== true}
@@ -95,7 +95,7 @@ export default function UserDetails(props: UserDetailsProps) {
               optionTwoClick={() => {
                 setUserDetails({
                   ...userDetails,
-                  car: { own: false }
+                  car: { own: false },
                 });
               }}
             />
@@ -110,7 +110,7 @@ export default function UserDetails(props: UserDetailsProps) {
               optionOneClick={() => {
                 setUserDetails({
                   ...userDetails,
-                  house: HouseSituation.OWN
+                  house: HouseSituation.OWN,
                 });
               }}
               optionTwoSelected={userDetails.house === HouseSituation.RENT}
@@ -118,7 +118,7 @@ export default function UserDetails(props: UserDetailsProps) {
               optionTwoClick={() => {
                 setUserDetails({
                   ...userDetails,
-                  house: HouseSituation.RENT
+                  house: HouseSituation.RENT,
                 });
               }}
             />
@@ -127,11 +127,18 @@ export default function UserDetails(props: UserDetailsProps) {
           <StyledHeadingDiv>
             <h1>Har familien dyr?</h1>
             <Card.Group>
-            {pets.map((p) => {
-                return <PetMemberCard key={p.id} id={p.id} name={p.name} deletePet={deletePet} />;
-              })}              
-              <StyledCard
-                 onClick={() => setAddPetModalOpen(true)}><CenterTextDiv>+ Legg til</CenterTextDiv>
+              {pets.map((p) => {
+                return (
+                  <PetMemberCard
+                    key={p.id}
+                    id={p.id}
+                    name={p.name}
+                    deletePet={deletePet}
+                  />
+                );
+              })}
+              <StyledCard onClick={() => setAddPetModalOpen(true)}>
+                <CenterTextDiv>+ Legg til</CenterTextDiv>
               </StyledCard>
             </Card.Group>
 
@@ -141,7 +148,6 @@ export default function UserDetails(props: UserDetailsProps) {
               pets={pets}
               setPets={setPets}
             />
-
           </StyledHeadingDiv>
 
           {/* <StyledHeadingDiv>
@@ -173,31 +179,31 @@ export default function UserDetails(props: UserDetailsProps) {
             <Grid columns={2}>
               <Grid.Column width={10}>
                 <Input
-                  placeholder="Skriv inn målet her (f.eks Tur til Kreta)"
+                  placeholder="Skriv inn målet her (f.eks ferietur)"
                   value={props.userDetails.goal?.name}
                   onChange={(_, data) => {
                     props.setUserDetails({
-                      ... props.userDetails,
+                      ...props.userDetails,
                       goal: {
                         name: data.value?.toString(),
                         amount: props.userDetails.goal?.amount || 0,
-                      }
-                  });
+                      },
+                    });
                   }}
                   style={{ width: "100%" }}
                 />
               </Grid.Column>
               <Grid.Column width={6}>
                 <Input
-                  placeholder="ca beløp (f.eks. 40 000)"
+                  placeholder="ca beløp"
                   value={props.userDetails.goal?.amount || ""}
                   onChange={(_, data) => {
                     props.setUserDetails({
-                      ... props.userDetails,
+                      ...props.userDetails,
                       goal: {
                         name: props.userDetails.goal?.name || "",
                         amount: parseInt(data.value),
-                      }
+                      },
                     });
                   }}
                   label="Kr"
@@ -209,14 +215,14 @@ export default function UserDetails(props: UserDetailsProps) {
           </StyledHeadingDiv>
 
           {/* <StyledBControlsDiv> */}
-            {/* <Button onClick={() => {
+          {/* <Button onClick={() => {
           setAddFamilyModalOpen(true);
         }}>Add Family Member</Button> */}
 
-            <BackForwardControls
-                goBack={() => goBack()}
-                completeStep={completeStep}
-              />
+          <BackForwardControls
+            goBack={() => goBack()}
+            completeStep={completeStep}
+          />
 
           {/* </StyledBControlsDiv> */}
         </StyledContainerSpace>
@@ -253,8 +259,8 @@ const StyledHeadingDiv = styled.div`
 `;
 
 const CenterTextDiv = styled.div`
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`;

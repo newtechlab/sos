@@ -47,7 +47,7 @@ export default function OpenHelpTextModal(props: AddHelpTextModalProps) {
           </Button>
           <StyledModalSidebar>
             <StyledDiv>
-              <Header>Usikker på din egen gjelddsituasjon?</Header>
+              <Header>Usikker på din egen gjeldssituasjon?</Header>
               <StyledParagraph>
                 Under finner du de vanligste tjenestene for å finne ut hvilken
                 gjeld du har. Husk å sjekke med din egen bank også.
