@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Card, Container, Grid, Icon, Input } from "semantic-ui-react";
 import styled from "styled-components";
-import { FamilyMember, HouseSituation, Pet, UserInformation } from "../../App";
+import { Car, FamilyMember, HouseSituation, Pet, UserInformation } from "../../App";
 import AddFamilyMemberCard from "../AddFamilyMemberCard";
 import AddFamilyMemberModal from "../AddFamilyMemberModal";
 import BackForwardControls from "../BackForwardControls";
@@ -84,20 +84,20 @@ export default function UserDetails(props: UserDetailsProps) {
             <h1>Eier familien bil(er)?</h1>
 
             <JaNei
-              optionOneSelected={userDetails.car?.own === true}
+              optionOneSelected={userDetails.car === Car.OWN}
               optionOneText="Ja"
               optionOneClick={() => {
                 setUserDetails({
                   ...userDetails,
-                  car: { own: true },
+                  car: Car.OWN,
                 });
               }}
-              optionTwoSelected={userDetails.car?.own !== true}
+              optionTwoSelected={userDetails.car === Car.NOTOWN}
               optionTwoText="Nei"
               optionTwoClick={() => {
                 setUserDetails({
                   ...userDetails,
-                  car: { own: false },
+                  car: Car.NOTOWN,
                 });
               }}
             />

@@ -16,13 +16,15 @@ export default function FamilyMemberCard(props: FamilyMemberCardProps) {
         <StyledImage src={userImage} wrapped ui={false} />
         <StyledNameDiv>
             {familyMember.name} 
+            <IconDiv>
             <Icon
             onClick={() => {
                 deleteFamilyMember(familyMember.id);
             }}
             name="trash alternate outline"
-            color="blue"        
-            />         
+            color="blue"                    
+            />       
+            </IconDiv>  
         </StyledNameDiv>
     </StyledFamilyMemberCard>
 }
@@ -43,7 +45,7 @@ const StyledAgeDiv = styled.div`
 `
 
 const StyledNameDiv = styled.div`
-    position: absolute;
+    position: relative;
     bottom: 0px;
     height: 40px;
     width: 212px;
@@ -60,4 +62,6 @@ const StyledImage = styled(Image)`
         height: 167px !important;
     }
 `
-
+const IconDiv = styled.div`
+  float: right; 
+`;

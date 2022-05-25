@@ -107,8 +107,10 @@ export interface Goal {
   amount: number;
 }
 
-export interface Car {
-  own: boolean;
+export enum Car {
+  OWN = "OWN",
+  NOTOWN = "RENT",
+  UNDEFINED= "UNDEFINED"
 }
 
 ChartJS.register(
@@ -123,6 +125,7 @@ ChartJS.register(
 export enum HouseSituation {
   OWN = "OWN",
   RENT = "RENT",
+  UNDEFINED= "UNDEFINED"
 }
 
 export interface UserInformation {
@@ -134,8 +137,8 @@ export interface UserInformation {
 
 export const InitialUserInfo: UserInformation = {
   goal: { name: "", amount: 0 },
-  car: { own: false },
-  house: HouseSituation.RENT,
+  car: Car.UNDEFINED,
+  house: HouseSituation.UNDEFINED,
   otherAssets: "",
 };
 

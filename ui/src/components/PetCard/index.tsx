@@ -14,15 +14,18 @@ export default function PetMemberCard(props: PetMemberCardProps) {
   return (
     <StyledPetCard>
       <StyledImage src={pets} wrapped ui={false} />
-      <StyledNameDiv>
+      <StyledNameDiv>        
         {name}
+        <IconDiv>
         <Icon
-          onClick={() => {
-            deletePet(id);
-          }}
-          name="trash alternate outline"
-          color="blue"
-        />
+        onClick={() => {
+          deletePet(id);
+        }}
+        name="trash alternate outline"
+        color="blue"        
+        />  
+        </IconDiv>
+      
       </StyledNameDiv>
     </StyledPetCard>
   );
@@ -49,6 +52,12 @@ const StyledNameDiv = styled.div`
   line-height: 40px;
   border-bottom-right-radius: 5px;
   border-bottom-left-radius: 5px;
+`;
+
+const IconDiv = styled.div`
+  float: right; 
+  position: relative;
+  padding-right: 5px;
 `;
 
 const StyledImage = styled(Image)`
