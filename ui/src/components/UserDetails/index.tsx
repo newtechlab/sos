@@ -21,6 +21,7 @@ export interface UserDetailsProps {
   setUserDetails: (_: UserInformation) => void;
   setPets: (_: Array<Pet>) => void;
   deletePet: (id: string) => void;
+  deleteFamilyMember: (id: string) => void;
   pets: Array<Pet>;
   userDetails: UserInformation;
   completeStep: () => void;
@@ -46,6 +47,7 @@ export default function UserDetails(props: UserDetailsProps) {
     pets,
     setPets,
     deletePet,
+    deleteFamilyMember,
   } = props;
   return (
     <StyledBackgroundColour>
@@ -67,7 +69,7 @@ export default function UserDetails(props: UserDetailsProps) {
             <h3>Hvem består familien av?</h3>
             <Card.Group>
               {familyMembers.map((fm) => {
-                return <FamilyMemberCard key={fm.id} familyMember={fm} />;
+                return <FamilyMemberCard key={fm.id} familyMember={fm} deleteFamilyMember={deleteFamilyMember}/>;
               })}
               <AddFamilyMemberCard
                 key="ADD_NEW_MEMBER"

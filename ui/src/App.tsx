@@ -206,6 +206,14 @@ function App() {
     setPets(filtered);
   };  
 
+  const deleteFamilyMember = (id: string) => {
+    const filtered = familyMembers.filter((row) => {
+      return row.id !== id;
+    });
+
+    setFamilyMembers(filtered);
+  };   
+
   useEffect(() => {
     localStorage.setItem(
       "previousData",
@@ -307,6 +315,7 @@ function App() {
                   pets={pets}
                   setPets={setPets}
                   deletePet={deletePet}
+                  deleteFamilyMember={deleteFamilyMember}
                 />
               }
             />

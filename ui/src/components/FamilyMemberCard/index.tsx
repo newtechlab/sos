@@ -1,19 +1,29 @@
-import { Image } from "semantic-ui-react";
+import { Icon, Image } from "semantic-ui-react";
 import styled from "styled-components";
 import { FamilyMember } from "../../App";
 import userImage from './person.png'
 
 interface FamilyMemberCardProps {
     familyMember: FamilyMember;
+    deleteFamilyMember: (id: string) => void;
 }
 
 export default function FamilyMemberCard(props: FamilyMemberCardProps) {
-    const { familyMember } = props;
+    const { familyMember, deleteFamilyMember } = props;
 
     return <StyledFamilyMemberCard>
         <StyledAgeDiv>{familyMember.age}</StyledAgeDiv>
         <StyledImage src={userImage} wrapped ui={false} />
-        <StyledNameDiv>{familyMember.name} </StyledNameDiv>
+        <StyledNameDiv>
+            {familyMember.name} 
+            <Icon
+            onClick={() => {
+                deleteFamilyMember(familyMember.id);
+            }}
+            name="trash alternate outline"
+            color="blue"        
+            />         
+        </StyledNameDiv>
     </StyledFamilyMemberCard>
 }
 
