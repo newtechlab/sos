@@ -6,7 +6,7 @@
 trigger:
   branches:
     include:
-    - 'master'
+    - 'release-pipeline'
   paths:
     include:
     - ui
@@ -25,8 +25,13 @@ steps:
   - script: |
       yarn install
       yarn lint
+      yarn build
     workingDirectory: ui
     displayName: Linter
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathToPublish: './build'
+      artifactName: sosui    
   - task: DockerInstaller@0
     inputs:
       dockerVersion: '17.09.0-ce'
