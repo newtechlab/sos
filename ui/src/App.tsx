@@ -402,6 +402,7 @@ function App() {
                   previousData={previousData}
                   goBack={goBack}
                   pets={pets}
+                  setSteps={setSteps}
                 />
               }
             />

@@ -1,6 +1,6 @@
 import { StepDefinition, StepGroup, StepGroupType, StepsState } from "../components/Steps";
 
-const StepsInitialState: Array<StepDefinition> = [
+export const StepsInitialState: Array<StepDefinition> = [
     {
         id: 0,
         group: StepGroupType.FAMILY,
@@ -51,7 +51,7 @@ const StepsInitialState: Array<StepDefinition> = [
 
 
 
-const StepGroups = (): Map<StepGroupType, StepGroup> => {
+export const StepGroups = (): Map<StepGroupType, StepGroup> => {
     const stepGroups: Map<StepGroupType, StepGroup> = new Map<StepGroupType, StepGroup>();
     stepGroups.set(StepGroupType.FAMILY, {
         title: "Familie",
