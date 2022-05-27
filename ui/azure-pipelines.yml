@@ -27,10 +27,10 @@ steps:
       yarn lint
       yarn build
     workingDirectory: ui
-    displayName: Linter
+    displayName: Lint and Build
   - task: PublishBuildArtifacts@1
     inputs:
-      pathToPublish: './build'
+      pathToPublish: './ui/build'
       artifactName: sosui    
   - task: DockerInstaller@0
     inputs:
