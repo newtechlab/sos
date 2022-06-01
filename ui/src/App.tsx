@@ -56,7 +56,9 @@ export enum TransactionCategory {
   // Entertainment = "ENTERTAINMENT",
   // Undefined = "UNDEFINED",
 
-  Income = "INCOME",
+  Income = "Income",
+  Housing_Benefit = "Housing_Benefit",
+  Government_Income = "Government_Income",
   Childcare_other = "AKS/SFO",
   Kindergarden = "Barnehage",
   Insurance = "Forsikring",
