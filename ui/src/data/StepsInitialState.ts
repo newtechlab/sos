@@ -72,26 +72,20 @@ export const StepGroups = (): Map<StepGroupType, StepGroup> => {
     return stepGroups;
 }
 
-export const InitialSteps = (path: string | undefined): StepsState => {
-
-    const current = StepsInitialState.find((s) => s.path === path)
-
-    if (current) {
-        return {
-            activeStepId: current.id,
-            steps: StepsInitialState,
-            stepGroups: StepGroups(),
-            completedGroups: new Set<StepGroupType>()
-        }
-    } 
-
-    return {
+export const InitialStepsWithoutPath: StepsState = {
         activeStepId: 0,
         steps: StepsInitialState,
         stepGroups: StepGroups(),
         completedGroups: new Set<StepGroupType>()
-    }
+}
 
-    
+export const InitialStepsWithPath = (path: string): StepsState => {
+    const steps = InitialStepsWithoutPath;
+    const current = StepsInitialState.find((s) => s.path === path)
+
+    return {
+        ... steps, 
+        activeStepId: current?.id || 0,
+    }
 }
 

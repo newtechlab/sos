@@ -203,7 +203,7 @@ export default function ResultatInteract(props: ResultatInteractProps) {
 }
 
 const StyledContainer = styled(Container)`
-  margin-bottom: 200px;
+  padding-bottom: 150px;
 `;
 
 const ResetDialsDiv = styled.div`

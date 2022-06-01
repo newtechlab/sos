@@ -6,7 +6,6 @@ import "semantic-ui-css/semantic.min.css";
 import { StepsState } from "./components/Steps";
 import { useEffect, useState } from "react";
 import UserDetails from "./components/UserDetails";
-import { InitialSteps } from "./data/StepsInitialState";
 import MoneyIn from "./components/MoneyIn";
 import MoneyOut from "./components/MoneyOut";
 // import { v4 as uuidv4 } from "uuid";
@@ -30,6 +29,8 @@ import ResultatInteract, {
 // import { Container } from "semantic-ui-react";
 import Home from "./components/Home";
 import MoneyOutDebt from "./components/MoneyOutDebt";
+import { Container } from "semantic-ui-react";
+import { InitialStepsWithPath } from "./data/StepsInitialState";
 // import { useEffect } from "react";
 
 export interface FamilyMember {
@@ -61,7 +62,9 @@ export enum TransactionCategory {
   // Entertainment = "ENTERTAINMENT",
   // Undefined = "UNDEFINED",
 
-  Income = "INCOME",
+  Income = "Income",
+  Housing_Benefit = "Housing_Benefit",
+  Government_Income = "Government_Income",
   Childcare_other = "AKS/SFO",
   Kindergarden = "Barnehage",
   Insurance = "Forsikring",
@@ -165,7 +168,7 @@ function App() {
     rehydrate("previousData", [])
   );
   const [steps, setSteps] = useState<StepsState>(
-    InitialSteps(window.location.pathname)
+    InitialStepsWithPath(window.location.pathname)
   );
   const [familyMembers, setFamilyMembers] = useState<Array<FamilyMember>>(
     rehydrate("familyMembers", [])
@@ -428,15 +431,18 @@ export const StyledOverridesDiv = styled.div`
 `;
 
 export const StyledRootDiv = styled.div`
-  // background-color: #f1f8f8;
+  background-color: #f1f8f8;
   height: 100%;
   min-height: 100vh;
 `;
 
 const StyledBodyDiv = styled.div`
   text-align: left;
-  padding-top: 40px;
-  padding-bottom: 40px;
+`;
+
+const StyledRootContainer = styled(Container)`
+  margin-bottom: 0;
+  padding-bottom: 100px;
 `;
 
 export default App;

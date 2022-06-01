@@ -7,6 +7,10 @@ interface BackForwardControlsProps {
     goBack: () => void
 }
 
+interface LastPageBackForwardControlsProps {
+    goBack: () => void
+}
+
 export default function BackForwardControls(props: BackForwardControlsProps) {
     const { completeStep, goBack } = props;
 
@@ -18,4 +22,10 @@ export default function BackForwardControls(props: BackForwardControlsProps) {
             <NextButton completeStep={() => completeStep()} />
         </Grid.Column>
     </Grid>
+}
+
+export function LastPageBackForwardControls(props: LastPageBackForwardControlsProps) {
+    const { goBack } = props;
+
+ return <BackButton goBack={() => goBack()} />
 }
