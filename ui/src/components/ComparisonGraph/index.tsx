@@ -16,20 +16,27 @@ interface OverspendProps {
 }
 
 interface SavingsProps {
-  savings:number;
+  savings: number;
 }
 
 const Overspend = (props: OverspendProps) => {
-  return <StyledOverspendingDiv>Månedlig overforbruk: { props.overspend } <Label size="mini">kr</Label></StyledOverspendingDiv>
-}
+  return (
+    <StyledOverspendingDiv>
+      <StyledH3Red>Månedlig overforbruk: {props.overspend},-</StyledH3Red>
+    </StyledOverspendingDiv>
+  );
+};
 
-const Saving = (props: SavingsProps) => <StyledSavingDiv>Månedlig sparepotensiale: { props.savings } <Label size="mini">kr</Label></StyledSavingDiv>
+const Saving = (props: SavingsProps) => (
+  <StyledSavingDiv>
+    <StyledH3>Månedlig sparepotensiale: {props.savings},-</StyledH3>
+  </StyledSavingDiv>
+);
 
 export default function ComparisonGraph(props: ComparisonGraphProps) {
   const { outTotal, outPercent, inTotal, inPercent, goal } = props;
   const [savings, setSavings] = useState<number>(inTotal - outTotal);
   const [overspend, setOverspend] = useState<number>(outTotal - inTotal);
-  
 
   const [goalMonths, setGoalMonths] = useState<number>(0);
 
@@ -62,7 +69,11 @@ export default function ComparisonGraph(props: ComparisonGraphProps) {
           </div> */}
 
           <StyledOverspendingContainer>
-            { (outTotal > inTotal) ? <Overspend overspend={overspend} /> : <Saving savings={savings}  /> }
+            {outTotal > inTotal ? (
+              <Overspend overspend={overspend} />
+            ) : (
+              <Saving savings={savings} />
+            )}
           </StyledOverspendingContainer>
 
           {goal.name !== "" || (
@@ -71,12 +82,20 @@ export default function ComparisonGraph(props: ComparisonGraphProps) {
                 Sparemål: {goal.name}, krever: {goal.amount}{" "}
                 <Label size="mini">Kr</Label>
               </h3> */}
-              {goalMonths < 0 ? (
-                <p>Du må spare mer for å nå sparemålet</p>
+              {Number.isNaN(goalMonths) ||
+              goalMonths === 0 ||
+              goalMonths < 0 ? (
+                ""
               ) : (
-                <p>Hvis du setter til side dette beløpet hver måned vil nå sparemålet om {goalMonths} måneder</p>
+                <p>
+                  Hvis du setter til side dette beløpet hver måned vil nå
+                  sparemålet om {goalMonths} måneder
+                </p>
               )}
-            </StyledOverspendingContainer>) }
+            </StyledOverspendingContainer>
+          )}
+
+          {console.log(goalMonths)}
           {/* // ) 
           // : (
           //   <div>
@@ -89,12 +108,21 @@ export default function ComparisonGraph(props: ComparisonGraphProps) {
   );
 }
 
+export const StyledH3 = styled.h3`
+  font-weight: bold !important;
+  color: #00343e;
+`;
+export const StyledH3Red = styled.h3`
+  font-weight: bold !important;
+  color: red;
+`;
+
 export const StyledOverspendingContainer = styled.div`
-    text-align: center;
-    align-items: center;
-    justify-content: center;
-    display: flex;
-`
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+`;
 
 const StyledSavingDiv = styled.div`
   line-height: 20px;

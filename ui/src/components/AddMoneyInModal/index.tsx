@@ -11,6 +11,7 @@ import { v4 as uuidv4 } from "uuid";
 import { useEffect, useState } from "react";
 import DaySelector from "../DaySelector";
 import styled from "styled-components";
+import ErrorBar from "../ErrorBar";
 
 interface AddMoneyInModalProps {
   open: boolean;
@@ -37,6 +38,12 @@ const convertDropdownItem = (item: MoneyInAndCategory): DropDownItem => {
   };
 };
 
+let belopError = false;
+const validateInput = (inputvalue: string) => {
+  const validNumber = RegExp(/^[0-9\b]+$/);
+  validNumber.test(inputvalue) ? (belopError = false) : (belopError = true);
+};
+
 export default function AddMoneyInModal(props: AddMoneyInModalProps) {
   const [category, setCategory] = useState<string | undefined>(undefined);
   const [subcategories, setSubcategories] = useState<Array<DropDownItem>>([]);
@@ -48,6 +55,9 @@ export default function AddMoneyInModal(props: AddMoneyInModalProps) {
   const [amount, setAmount] = useState<number | undefined>(undefined);
   const [day, setDay] = useState<number | undefined>(undefined);
   const { open, setOpen, addLedgerRow } = props;
+  const [belopEndError, setBelopEndError] = useState<boolean>(false);
+  const [dateError, setDateError] = useState<boolean>(false);
+  const [typeError, setTypeError] = useState<boolean>(false);
 
   const Categories = [{
     key: TransactionCategory.Income,
@@ -224,6 +234,7 @@ export default function AddMoneyInModal(props: AddMoneyInModalProps) {
                   det kommer inn jevnlig og derfor ikke bør regnes med i et
                   budsjett.
                 </StyledIngress>
+
                 <Grid columns={2}>
                   <Grid.Column width={2}>Type</Grid.Column>
                   <Grid.Column width={14}>
@@ -234,9 +245,14 @@ export default function AddMoneyInModal(props: AddMoneyInModalProps) {
                       options={Categories}
                       onChange={(_, data) => {
                         setCategory(data.value?.toString())
-                        // setFrom(data.value?.toString());
+                        setTypeError(false);
                       }}
                     />
+                    {typeError ? (
+                      <ErrorBar msg="Vennligst velg en innteksttype" />
+                    ) : (
+                      ""
+                    )}
                   </Grid.Column>
 
                  { (category && subcategories.length > 1 ) && <>
@@ -248,7 +264,6 @@ export default function AddMoneyInModal(props: AddMoneyInModalProps) {
                         placeholder="Sub Category"
                         options={subcategories}
                         onChange={(_, data) => {
-                          // setCategory(data.value?.toString())
                           setFrom(data.value?.toString());
                         }}
                       />
@@ -260,17 +275,27 @@ export default function AddMoneyInModal(props: AddMoneyInModalProps) {
                     <Input
                       placeholder="f.eks 10 000"
                       onChange={(_, data) => {
+                        validateInput(data.value);
                         setAmount(parseInt(data.value?.toString() || "0", 10));
                       }}
                     />
+                    {belopError || belopEndError ? (
+                      <ErrorBar msg="Vennligst skriv inn et nummer" />
+                    ) : (
+                      ""
+                    )}
                   </Grid.Column>
                 </Grid>
+
                 <br />
                 <DaySelector
                   itemSelected={(day) => {
                     setDay(day);
+                    setDateError(false);
                   }}
                 />
+                {dateError ? <ErrorBar msg="Vennligst velg en dato" /> : ""}
+
                 <br />
                 <Grid columns={2}>
                   <Grid.Column>
@@ -299,6 +324,15 @@ export default function AddMoneyInModal(props: AddMoneyInModalProps) {
                             category: TransactionCategory.Income,
                           });
                           setOpen(false);
+                        }
+                        if (!day) {
+                          setDateError(true);
+                        }
+                        if (!from) {
+                          setTypeError(true);
+                        }
+                        if (!amount) {
+                          setBelopEndError(true);
                         } else {
                           console.log("missing var", from);
                           console.log("missing var", amount);

@@ -1,5 +1,5 @@
 import { CreatePdfProps } from "./PdfWriterService";
-import { HouseSituation } from "../../App";
+import { HouseSituation, Car } from "../../App";
 import { AdjustmentAmountPercent, LedgerRowId } from "../../components/ResultatInteract";
 global.TextEncoder= require("util").TextEncoder;
 
@@ -8,6 +8,10 @@ describe("The PdfConverter", ()=>{
     
     test("it should be able to read attachments from a valid array buffer", async ()=>{
         const props: CreatePdfProps = {
+            pets: [{ 
+                id: "id",
+                name: "foo"
+            }],
             ledger: [],
             familyMembers: [{
                 id: "id",
@@ -20,9 +24,7 @@ describe("The PdfConverter", ()=>{
                     name: "name",
                     amount: 123
                 },
-                car: {
-                    own: false
-                },
+                car: Car.NOTOWN,
                 house: HouseSituation.OWN,
                 otherAssets: "",
               },

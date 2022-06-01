@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Card, Container, Grid, Input } from "semantic-ui-react";
+import { Card, Container, Grid, Icon, Input } from "semantic-ui-react";
 import styled from "styled-components";
-import { FamilyMember, HouseSituation, UserInformation } from "../../App";
+import { Car, FamilyMember, HouseSituation, Pet, UserInformation } from "../../App";
 import AddFamilyMemberCard from "../AddFamilyMemberCard";
 import AddFamilyMemberModal from "../AddFamilyMemberModal";
 import BackForwardControls from "../BackForwardControls";
@@ -10,11 +10,19 @@ import HelpTextModalGoal from "../HelpTextModalGoal";
 import { JaNei } from "../JaNei";
 import StepHeader from "../StepHeader";
 import { StepDefinition, StepsState } from "../Steps";
+import AddPetModal from "../AddPetModal";
+import { StyledGridRow } from "../MoneyIn";
+import { StyledCard } from "../StyledFamilyCard";
+import PetMemberCard from "../PetCard";
 
 export interface UserDetailsProps {
   familyMembers: Array<FamilyMember>;
   addFamilyMember: (_: FamilyMember) => void;
   setUserDetails: (_: UserInformation) => void;
+  setPets: (_: Array<Pet>) => void;
+  deletePet: (id: string) => void;
+  deleteFamilyMember: (id: string) => void;
+  pets: Array<Pet>;
   userDetails: UserInformation;
   completeStep: () => void;
   goBack: () => void;
@@ -24,6 +32,7 @@ export interface UserDetailsProps {
 
 export default function UserDetails(props: UserDetailsProps) {
   const [addFamilyModalOpen, setAddFamilyModalOpen] = useState<boolean>(false);
+  const [addPetModalOpen, setAddPetModalOpen] = useState<boolean>(false);
   const [addHelpTextGoalModalOpen, OpenHelpTextGoalModal] =
     useState<boolean>(false);
   const {
@@ -34,7 +43,11 @@ export default function UserDetails(props: UserDetailsProps) {
     activeStep,
     steps,
     userDetails,
-    setUserDetails
+    setUserDetails,
+    pets,
+    setPets,
+    deletePet,
+    deleteFamilyMember,
   } = props;
   return (
     <StyledBackgroundColour>
@@ -56,7 +69,7 @@ export default function UserDetails(props: UserDetailsProps) {
             <h3>Hvem består familien av?</h3>
             <Card.Group>
               {familyMembers.map((fm) => {
-                return <FamilyMemberCard key={fm.id} familyMember={fm} />;
+                return <FamilyMemberCard key={fm.id} familyMember={fm} deleteFamilyMember={deleteFamilyMember}/>;
               })}
               <AddFamilyMemberCard
                 key="ADD_NEW_MEMBER"
@@ -71,20 +84,20 @@ export default function UserDetails(props: UserDetailsProps) {
             <h1>Eier familien bil(er)?</h1>
 
             <JaNei
-              optionOneSelected={userDetails.car?.own === true}
+              optionOneSelected={userDetails.car === Car.OWN}
               optionOneText="Ja"
               optionOneClick={() => {
                 setUserDetails({
                   ...userDetails,
-                  car: { own: true }
+                  car: Car.OWN,
                 });
               }}
-              optionTwoSelected={userDetails.car?.own !== true}
+              optionTwoSelected={userDetails.car === Car.NOTOWN}
               optionTwoText="Nei"
               optionTwoClick={() => {
                 setUserDetails({
                   ...userDetails,
-                  car: { own: false }
+                  car: Car.NOTOWN,
                 });
               }}
             />
@@ -99,7 +112,7 @@ export default function UserDetails(props: UserDetailsProps) {
               optionOneClick={() => {
                 setUserDetails({
                   ...userDetails,
-                  house: HouseSituation.OWN
+                  house: HouseSituation.OWN,
                 });
               }}
               optionTwoSelected={userDetails.house === HouseSituation.RENT}
@@ -107,7 +120,7 @@ export default function UserDetails(props: UserDetailsProps) {
               optionTwoClick={() => {
                 setUserDetails({
                   ...userDetails,
-                  house: HouseSituation.RENT
+                  house: HouseSituation.RENT,
                 });
               }}
             />
@@ -115,15 +128,31 @@ export default function UserDetails(props: UserDetailsProps) {
 
           <StyledHeadingDiv>
             <h1>Har familien dyr?</h1>
+            <Card.Group>
+              {pets.map((p) => {
+                return (
+                  <PetMemberCard
+                    key={p.id}
+                    id={p.id}
+                    name={p.name}
+                    deletePet={deletePet}
+                  />
+                );
+              })}
+              <StyledCard onClick={() => setAddPetModalOpen(true)}>
+                <CenterTextDiv>+ Legg til</CenterTextDiv>
+              </StyledCard>
+            </Card.Group>
 
-            <Grid columns={1}>
-              <Grid.Column width={16}>
-                <DottedDiv>+ Legg til</DottedDiv>
-              </Grid.Column>
-            </Grid>
+            <AddPetModal
+              open={addPetModalOpen}
+              setOpen={setAddPetModalOpen}
+              pets={pets}
+              setPets={setPets}
+            />
           </StyledHeadingDiv>
 
-          <StyledHeadingDiv>
+          {/* <StyledHeadingDiv>
             <h1>Andre eiendeler?</h1>
 
             <Grid columns={1}>
@@ -141,7 +170,7 @@ export default function UserDetails(props: UserDetailsProps) {
                 />
               </Grid.Column>
             </Grid>
-          </StyledHeadingDiv>
+          </StyledHeadingDiv> */}
 
           <StyledHeadingDiv>
             <h1>Har familien et sparemål?</h1>
@@ -152,31 +181,31 @@ export default function UserDetails(props: UserDetailsProps) {
             <Grid columns={2}>
               <Grid.Column width={10}>
                 <Input
-                  placeholder="Skriv inn målet her (f.eks Tur til Kreta)"
+                  placeholder="Skriv inn målet her (f.eks ferietur)"
                   value={props.userDetails.goal?.name}
                   onChange={(_, data) => {
                     props.setUserDetails({
-                      ... props.userDetails,
+                      ...props.userDetails,
                       goal: {
                         name: data.value?.toString(),
                         amount: props.userDetails.goal?.amount || 0,
-                      }
-                  });
+                      },
+                    });
                   }}
                   style={{ width: "100%" }}
                 />
               </Grid.Column>
               <Grid.Column width={6}>
                 <Input
-                  placeholder="ca beløp (f.eks. 40 000)"
+                  placeholder="ca beløp"
                   value={props.userDetails.goal?.amount || ""}
                   onChange={(_, data) => {
                     props.setUserDetails({
-                      ... props.userDetails,
+                      ...props.userDetails,
                       goal: {
                         name: props.userDetails.goal?.name || "",
                         amount: parseInt(data.value),
-                      }
+                      },
                     });
                   }}
                   label="Kr"
@@ -188,14 +217,14 @@ export default function UserDetails(props: UserDetailsProps) {
           </StyledHeadingDiv>
 
           {/* <StyledBControlsDiv> */}
-            {/* <Button onClick={() => {
+          {/* <Button onClick={() => {
           setAddFamilyModalOpen(true);
         }}>Add Family Member</Button> */}
 
-            <BackForwardControls
-                goBack={() => goBack()}
-                completeStep={completeStep}
-              />
+          <BackForwardControls
+            goBack={() => goBack()}
+            completeStep={completeStep}
+          />
 
           {/* </StyledBControlsDiv> */}
         </StyledContainerSpace>
@@ -229,4 +258,11 @@ const DottedDiv = styled.div`
 const StyledHeadingDiv = styled.div`
   position: relative;
   margin-bottom: 4em;
+`;
+
+const CenterTextDiv = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 `;
