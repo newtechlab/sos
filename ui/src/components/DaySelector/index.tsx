@@ -12,9 +12,12 @@ export default function DaySelector(props: DaySelectorProps) {
     const [selected, setSelected] = useState<number | undefined>(undefined);
 
     return <div>
-        <h1>Velg dag for utbetaling </h1>
+        <StyledHeaderDiv>
+            <h1>Velg dag for utbetaling </h1>
+            <p>Hvis du ikke vet nøyaktig dato kan du  velge en ca. dato</p>
+        </StyledHeaderDiv>
 
-        <Table celled structured textAlign="center">
+        <StyledTable celled structured textAlign="center">
             <Table.Body>
             { _.range(0,4).map((a) => {
                 return <Table.Row key={`row${a}`}>
@@ -32,10 +35,23 @@ export default function DaySelector(props: DaySelectorProps) {
                 </Table.Row> 
             })}
             </Table.Body>
-        </Table>
+        </StyledTable>
     </div>
     }
 
+export const StyledTable = styled(Table)`
+    margin-top: 0 !important;
+`;
+
 export const StyledCell = styled(Table.Cell)`
   padding: 20px !important;
+`;
+
+export const StyledHeaderDiv = styled.div`
+  background-color: white;
+  padding: 2em;
+  text-align: center;
+  border-top: 1px solid #DDD;
+  border-right: 1px solid #DDD;
+  border-left: 1px solid #DDD;
 `;

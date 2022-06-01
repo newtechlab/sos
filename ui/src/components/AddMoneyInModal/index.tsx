@@ -45,6 +45,8 @@ const validateInput = (inputvalue: string) => {
 };
 
 export default function AddMoneyInModal(props: AddMoneyInModalProps) {
+  const [category, setCategory] = useState<string | undefined>(undefined);
+  const [subcategories, setSubcategories] = useState<Array<DropDownItem>>([]);
   const [from, setFrom] = useState<string | undefined>(undefined);
   const [moneyInItems, setMoneyInItems] = useState<
     Map<string, MoneyInAndCategory>
@@ -57,26 +59,137 @@ export default function AddMoneyInModal(props: AddMoneyInModalProps) {
   const [dateError, setDateError] = useState<boolean>(false);
   const [typeError, setTypeError] = useState<boolean>(false);
 
-  useEffect(() => {
-    const items = new Map<string, MoneyInAndCategory>();
-    items.set("Salary", {
-      name: "Fast jobb",
-      category: TransactionCategory.Income,
-    });
-    items.set("Part_time", {
-      name: "Deltidsjobb",
-      category: TransactionCategory.Income,
-    });
-    items.set("Benefits", {
-      name: "NAV-støtte",
-      category: TransactionCategory.Income,
-    });
-    //     items.set("Private", {
-    //   name: "Privat bidrag",
-    //   category: TransactionCategory.Income,
-    // });
-    setMoneyInItems(items);
-  }, []);
+  const Categories = [{
+    key: TransactionCategory.Income,
+    text: "Salary",
+    value: TransactionCategory.Income,
+  },
+  {
+    key: TransactionCategory.Housing_Benefit,
+    text: "Husbanken",
+    value: TransactionCategory.Housing_Benefit,
+  },
+  {
+    key: TransactionCategory.Government_Income,
+    text: "NAV",
+    value: TransactionCategory.Government_Income,
+  }]
+
+  const incomeTypes: Map<string, Array<DropDownItem>> = new Map<string, Array<DropDownItem>>();
+  incomeTypes.set("Housing_Benefit", [{
+    key: "Housbanken",
+    text: "Housbanken",
+    value: "Housbanken",
+  }
+  ])
+  incomeTypes.set("Income", [{
+    key: "Salary",
+    text: "Salary",
+    value: "Salary",
+  }
+ ])
+
+ incomeTypes.set("Government_Income", [{
+    key: "Sosialhjelp",
+    text: "Sosialhjelp",
+    value: "Sosialhjelp",
+  },
+  {
+    key: "Barnetrygd",
+    text: "Barnetrygd",
+    value: "Barnetrygd",
+  },
+  {
+    key: "Dagpenger",
+    text: "Dagpenger",
+    value: "Dagpenger",
+  },
+  {
+    key: "Sykepenger",
+    text: "Sykepenger",
+    value: "Sykepenger",
+  },
+  {
+    key: "Foreldrepenger",
+    text: "Foreldrepenger",
+    value: "Foreldrepenger",
+  },
+  {
+    key: "Kontantstøtte",
+    text: "Kontantstøtte",
+    value: "Kontantstøtte",
+  },
+  {
+    key: "Pensjon",
+    text: "Pensjon",
+    value: "Pensjon",
+  },
+  {
+    key: "Arbeidsavklaringspenger",
+    text: "Arbeidsavklaringspenger",
+    value: "Arbeidsavklaringspenger",
+  },
+  {
+    key: "Tiltakspenger",
+    text: "Tiltakspenger",
+    value: "Tiltakspenger",
+  },
+  {
+    key: "Uførepensjon",
+    text: "Uførepensjon",
+    value: "Uførepensjon",
+  },
+  {
+    key: "Kvalifiseringsstønad",
+    text: "Kvalifiseringsstønad",
+    value: "Kvalifiseringsstønad",
+  },
+  {
+    key: "Overgangsstønad",
+    text: "Overgangsstønad",
+    value: "Overgangsstønad",
+  },
+  {
+    key: "Barnebidrag",
+    text: "Barnebidrag",
+    value: "Barnebidrag",
+  },
+  {
+    key: "Forskuddsbidrag",
+    text: "Forskuddsbidrag",
+    value: "Forskuddsbidrag",
+  },
+  {
+    key: "Introduksjonsstønad",
+    text: "Introduksjonsstønad",
+    value: "Introduksjonsstønad",
+  },
+  {
+    key: "Grunnstønad",
+    text: "Grunnstønad",
+    value: "Grunnstønad",
+  },
+  {
+    key: "Hjelpestønad",
+    text: "Hjelpestønad",
+    value: "Hjelpestønad",
+  },
+  {
+    key: "Engangsstønad",
+    text: "Engangsstønad",
+    value: "Engangsstønad",
+  },
+  {
+    key: "Omsorgslønn",
+    text: "Omsorgslønn",
+    value: "Omsorgslønn",
+  },
+  {
+    key: "Barnetilsyn",
+    text: "Barnetilsyn",
+    value: "Barnetilsyn",
+  }
+  ])
 
   useEffect(() => {
     const dropDownItems: DropDownItem[] = [];
@@ -86,6 +199,19 @@ export default function AddMoneyInModal(props: AddMoneyInModalProps) {
     });
     setDropDownItems(dropDownItems);
   }, [moneyInItems]);
+
+  useEffect(() => {
+    if (category) {
+      const items = incomeTypes.get(category);
+      if (items) {
+        if (items?.length === 1) {
+          setFrom(items[0].value)
+        }
+        setSubcategories(items);
+      }
+    }
+    
+  }, [category]);
 
   return (
     <Modal
@@ -98,7 +224,7 @@ export default function AddMoneyInModal(props: AddMoneyInModalProps) {
         <StyledOverridesDiv>
           <Container>
             <StyledContainerSpace>
-              <h1> Ny inntekt </h1>
+              <ModalHeader> <h1>Ny inntekt</h1> </ModalHeader>
 
               <StyledModalBody>
                 <StyledIngress>
@@ -113,10 +239,12 @@ export default function AddMoneyInModal(props: AddMoneyInModalProps) {
                   <Grid.Column width={2}>Type</Grid.Column>
                   <Grid.Column width={14}>
                     <Dropdown
-                      placeholder="f.eks. Lønn"
-                      options={dropDownItems}
+                      search
+                      selection
+                      placeholder="Category"
+                      options={Categories}
                       onChange={(_, data) => {
-                        setFrom(data.value?.toString());
+                        setCategory(data.value?.toString())
                         setTypeError(false);
                       }}
                     />
@@ -126,6 +254,22 @@ export default function AddMoneyInModal(props: AddMoneyInModalProps) {
                       ""
                     )}
                   </Grid.Column>
+
+                 { (category && subcategories.length > 1 ) && <>
+                  <Grid.Column width={2}>Sub Category</Grid.Column>
+                  <Grid.Column width={14}>
+                      <Dropdown
+                        search
+                        selection
+                        placeholder="Sub Category"
+                        options={subcategories}
+                        onChange={(_, data) => {
+                          setFrom(data.value?.toString());
+                        }}
+                      />
+                    </Grid.Column>
+                  </>   }     
+
                   <Grid.Column width={2}>Beløp</Grid.Column>
                   <Grid.Column width={14}>
                     <Input
@@ -224,13 +368,16 @@ export const StyledModalContent = styled(Modal.Content)`
   padding: 0 !important;
 `;
 
-export const StyledModalBody = styled.div`
-  background-color: #ffffff;
-  padding: 20px;
+export const ModalHeader = styled.div`  
+  padding: 3em;
 `;
 
-const StyledContainerSpace = styled.div`
+export const StyledModalBody = styled.div`
+  background-color: #F1F8F8;
   padding: 3em;
+`;
+
+const StyledContainerSpace = styled.div`  
 `;
 const StyledIngress = styled.div`
   padding-bottom: 2em;
