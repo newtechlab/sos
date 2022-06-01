@@ -181,39 +181,6 @@ export default function AddMoneyInModal(props: AddMoneyInModalProps) {
   }
   ])
 
-  const Nav = [
-  {
-    key: TransactionCategory.Government_Income,
-    text: "Nav 1",
-    value: TransactionCategory.Government_Income,
-  },
-  {
-    key: TransactionCategory.Government_Income,
-    text: "Nav 2",
-    value: TransactionCategory.Government_Income,
-  }]
-
-  // useEffect(() => {
-  //   const items = new Map<string, MoneyInAndCategory>();
-  //   items.set("Salary", {
-  //     name: "Fast jobb",
-  //     category: TransactionCategory.Income,
-  //   });
-  //   items.set("Part_time", {
-  //     name: "Deltidsjobb",
-  //     category: TransactionCategory.Income,
-  //   });
-  //   items.set("Benefits", {
-  //     name: "NAV-støtte",
-  //     category: TransactionCategory.Income,
-  //   });
-  //   //     items.set("Private", {
-  //   //   name: "Privat bidrag",
-  //   //   category: TransactionCategory.Income,
-  //   // });
-  //   setMoneyInItems(items);
-  // }, []);
-
   useEffect(() => {
     const dropDownItems: DropDownItem[] = [];
     moneyInItems.forEach((value) => {
@@ -224,10 +191,6 @@ export default function AddMoneyInModal(props: AddMoneyInModalProps) {
   }, [moneyInItems]);
 
   useEffect(() => {
-
-    console.log("incomeTypes", incomeTypes);
-    console.log("category", category);
-
     if (category) {
       const items = incomeTypes.get(category);
       if (items) {
