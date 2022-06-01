@@ -30,6 +30,7 @@ import ResultatInteract, {
 // import { Container } from "semantic-ui-react";
 import Home from "./components/Home";
 import MoneyOutDebt from "./components/MoneyOutDebt";
+import { Container } from "semantic-ui-react";
 // import { useEffect } from "react";
 
 export interface FamilyMember {
@@ -429,15 +430,18 @@ export const StyledOverridesDiv = styled.div`
 `;
 
 export const StyledRootDiv = styled.div`
-  // background-color: #f1f8f8;
+  background-color: #f1f8f8;
   height: 100%;
   min-height: 100vh;
 `;
 
 const StyledBodyDiv = styled.div`
   text-align: left;
-  padding-top: 40px;
-  padding-bottom: 40px;
+`;
+
+const StyledRootContainer = styled(Container)`
+  margin-bottom: 0;
+  padding-bottom: 100px;
 `;
 
 export default App;
