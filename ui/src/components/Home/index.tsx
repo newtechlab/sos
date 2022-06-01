@@ -51,26 +51,30 @@ export default function Home(props: HomProps) {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   return (
-    <Container>
-      <StyledBoxSection>
+    <StyledOuterDiv>
+      <Container>
         <Image size="large" src={frontpage_family} wrapped />
         <Styledtitle>Økonomiveilederen</Styledtitle>
 
+        
         <StyledParagraph>
           Velkommen til økonomiveilederen! Målet med dette verktøyet er å gi deg
           bedre oversikt over din pengebruk. Ved å få bedre oversikt, tror vi at
           det blir enklere å ta nødvendige grep for å få en trygg økonomi og en
           enklere hverdag.{" "}
         </StyledParagraph>
+        
 
-        <StyledNBParagraph>
-          <StyledIcon>
-            <Icon name="info circle" />
-          </StyledIcon>
-          NB! Før vi begynner ber vi deg gjøre klar Bank-ID da vi vil be deg om
-          å logge på forskjellige nettsteder for å få full oversikt over din
-          økonomisk situasjon
-        </StyledNBParagraph>
+        <StyledCenterDiv>
+          <StyledNBParagraph>
+            <StyledIcon>
+              <Icon name="info circle" />
+            </StyledIcon>
+            NB! Før vi begynner ber vi deg gjøre klar Bank-ID da vi vil be deg om
+            å logge på forskjellige nettsteder for å få full oversikt over din
+            økonomisk situasjon
+          </StyledNBParagraph>
+        </StyledCenterDiv>
 
         <StyledSpace {...getRootProps()}>
           <input {...getInputProps()} />
@@ -95,10 +99,17 @@ export default function Home(props: HomProps) {
             Begynn ny kartlegging
           </Button>
         </StyledSpace>
-      </StyledBoxSection>
-    </Container>
+      </Container>
+    </StyledOuterDiv>
   );
 }
+
+const StyledCenterDiv = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1em;
+`;
 
 const StyledSpace = styled.div`
   padding: 1em !important;
@@ -127,6 +138,7 @@ const StyledNBParagraph = styled.p`
   text-align: left;
   border-radius: 3px;
   margin-bottom: 2em;
+  max-width: 800px;
 `;
 const StyledIcon = styled.p`
   background-color: #f1f8f8 !important;
@@ -141,3 +153,13 @@ const StyledIcon = styled.p`
 const StyledParagraph = styled.p`
   margin-bottom: 3em;
 `;
+
+export const StyledOuterDiv = styled.div`
+    background-color: #FFF;
+    padding: 40px;
+    margin-bottom: 40px;
+    text-align: center;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+`
