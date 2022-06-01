@@ -25,8 +25,13 @@ steps:
   - script: |
       yarn install
       yarn lint
+      yarn build
     workingDirectory: ui
-    displayName: Linter
+    displayName: Lint and Build
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathToPublish: './ui/build'
+      artifactName: sosui    
   - task: DockerInstaller@0
     inputs:
       dockerVersion: '17.09.0-ce'
