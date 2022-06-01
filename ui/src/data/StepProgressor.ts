@@ -1,6 +1,6 @@
 import _ from "lodash";
 import { StepGroupType, StepDefinition, StepsState } from "../components/Steps";
-import { InitialSteps } from "./StepsInitialState";
+import { InitialStepsWithoutPath } from "./StepsInitialState";
 
 const reducerF = (s: Set<StepGroupType>, stepDefinition: StepDefinition): Set<StepGroupType> => {
     if (!stepDefinition.completed)
@@ -21,7 +21,7 @@ export const progressStep = (state: StepsState): StepsState => {
     return {
       activeStepId: nextActiveId,
       steps: newSteps,
-      stepGroups: InitialSteps(undefined).stepGroups,
+      stepGroups: InitialStepsWithoutPath.stepGroups,
       completedGroups: _.reduce(newSteps, reducerF, new Set<StepGroupType>(Array.from(state.stepGroups.keys())))
     }
 }
@@ -30,7 +30,7 @@ export const goBackStep = (state: StepsState): StepsState => {
   return {
     activeStepId: state.activeStepId - 1,
     steps: state.steps,
-    stepGroups: InitialSteps(undefined).stepGroups,
+    stepGroups: InitialStepsWithoutPath.stepGroups,
     completedGroups: state.completedGroups
   }
 }

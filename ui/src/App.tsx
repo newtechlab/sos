@@ -6,7 +6,6 @@ import "semantic-ui-css/semantic.min.css";
 import { StepsState } from "./components/Steps";
 import { useEffect, useState } from "react";
 import UserDetails from "./components/UserDetails";
-import { InitialSteps } from "./data/StepsInitialState";
 import MoneyIn from "./components/MoneyIn";
 import MoneyOut from "./components/MoneyOut";
 // import { v4 as uuidv4 } from "uuid";
@@ -31,6 +30,7 @@ import ResultatInteract, {
 import Home from "./components/Home";
 import MoneyOutDebt from "./components/MoneyOutDebt";
 import { Container } from "semantic-ui-react";
+import { InitialStepsWithPath } from "./data/StepsInitialState";
 // import { useEffect } from "react";
 
 export interface FamilyMember {
@@ -168,7 +168,7 @@ function App() {
     rehydrate("previousData", [])
   );
   const [steps, setSteps] = useState<StepsState>(
-    InitialSteps(window.location.pathname)
+    InitialStepsWithPath(window.location.pathname)
   );
   const [familyMembers, setFamilyMembers] = useState<Array<FamilyMember>>(
     rehydrate("familyMembers", [])
@@ -405,6 +405,7 @@ function App() {
                   previousData={previousData}
                   goBack={goBack}
                   pets={pets}
+                  setSteps={setSteps}
                 />
               }
             />

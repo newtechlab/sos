@@ -1,12 +1,15 @@
 import { Button, Container, Image } from "semantic-ui-react";
 import { FamilyMember, LedgerRow, Pet, UserInformation } from "../../App";
 import congratulations from "./congratulations.png";
+import { useNavigate } from "react-router-dom";
 
 import {
   CreatePdfProps,
   PdfWriterService,
 } from "../../services/PdfService/PdfWriterService";
 import { AdjustmentAmountPercent, LedgerRowId } from "../ResultatInteract";
+import { StepsState } from "../Steps";
+import { InitialStepsWithoutPath } from "../../data/StepsInitialState";
 import { LastPageBackForwardControls } from "../BackForwardControls";
 import styled from "styled-components";
 
@@ -16,6 +19,7 @@ interface ResultatProps {
   removeLedgerRow: (id: string) => void;
   completeStep: () => void;
   goBack: () => void;
+  setSteps: (steps: StepsState) => void;
   userDetails: UserInformation;
   previousData: any[];
   adjustments: Map<LedgerRowId, AdjustmentAmountPercent>;
@@ -31,7 +35,14 @@ const createPdf = async (props: CreatePdfProps) => {
 };
 
 export default function Resultat(props: ResultatProps) {
-  const { ledger, familyMembers, userDetails, pets, previousData, adjustments, completeStep, goBack } = props;
+  const { ledger, familyMembers, userDetails, pets, previousData, adjustments, goBack, setSteps } = props;
+  const navigate = useNavigate();
+
+  const ResetStep = () => {
+    const newState = InitialStepsWithoutPath;
+    setSteps(newState);
+    navigate("/");
+  };
 
   return (
     <StyledFullScreenDiv>
@@ -50,7 +61,7 @@ export default function Resultat(props: ResultatProps) {
           color="blue"
           onClick={() => {
             createPdf({ ledger, familyMembers, adjustments, pets, userDetails, previousData, addImage: true });
-            completeStep();
+            ResetStep();
           }}
         >
           Fullfør og last ned rapport
