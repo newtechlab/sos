@@ -7,6 +7,7 @@ import {
   PdfWriterService,
 } from "../../services/PdfService/PdfWriterService";
 import { AdjustmentAmountPercent, LedgerRowId } from "../ResultatInteract";
+import { LastPageBackForwardControls } from "../BackForwardControls";
 import styled from "styled-components";
 
 interface ResultatProps {
@@ -39,6 +40,10 @@ export default function Resultat(props: ResultatProps) {
           <div>
           <Image size="big" src={congratulations} wrapped />
           </div>
+
+          <LastPageBackForwardControls
+            goBack={() => goBack()}
+          />          
 
         <Button
           circular
