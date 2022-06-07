@@ -175,15 +175,6 @@ const StyledLinkButton = styled.button`
   }
 `;
 
-const StyledCloseButton = styled.button`
-  border: 1px solid #a5c8d7;
-  border-radius: 2em;
-  background-color: #f1f8f8;
-  padding: 0.5em;
-
-  color: #3d8eb1;
-  text-align: center;
-`;
 const IconDiv = styled.div`
   float: right;
 `;

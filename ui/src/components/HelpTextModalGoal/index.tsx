@@ -2,6 +2,7 @@ import styled from "styled-components";
 import {
   Button,
   Header,
+  Icon,
   Segment,
   TransitionablePortal,
 } from "semantic-ui-react";
@@ -11,13 +12,6 @@ interface AddHelpTextModalProps {
   open: boolean;
   setOpen: (_: boolean) => void;
 }
-
-// export const DEFAULT_PROPS = {
-//   transition: {
-//     animation: "scale",
-//     duration: 300
-//   }
-// };
 
 export default function OpenHelpTextModal(props: AddHelpTextModalProps) {
   const { open, setOpen } = props;
@@ -45,20 +39,20 @@ export default function OpenHelpTextModal(props: AddHelpTextModalProps) {
             zIndex: 1000,
           }}
         >
+          <Button icon circular color="blue" onClick={() => setOpen(false)}>
+            <Icon name="close" />
+          </Button>
           <StyledModalSidebar>
-            <Header>Hva mener vi med sparemål</Header>
-            <p>Med sparemål så mener vi om du har noe du sparer til?</p>
-            <p>
-              Har du en drøm om å kjøpe en bil, ta med familien på ferie eller
-              noe annet som krever at du må spare penger?
-            </p>
-            <p>
-              Ønsker du ganske enkelt bare å spare litt til framtiden? Legg inn
-              et beløp som vi kan hjelpe deg å nå.
-            </p>
-            <Button circular basic color="blue" onClick={() => setOpen(false)}>
-              Lukk
-            </Button>
+            <StyledDiv>
+              <Header>Hva mener vi med sparemål?</Header>
+              <StyledParagraph>
+                Med sparemål så mener vi om du har noe du sparer til? Har du en
+                drøm om å kjøpe en bil, ta med familien på ferie eller noe annet
+                som krever at du må spare penger? Ønsker du ganske enkelt bare å
+                spare litt til framtiden?
+              </StyledParagraph>
+              <p>Legg inn et beløp som vi kan hjelpe deg å nå.</p>
+            </StyledDiv>
           </StyledModalSidebar>
         </Segment>
 
@@ -103,5 +97,10 @@ const LabelButton = styled.button`
 const StyledModalSidebar = styled.div`
   padding: 3em;
 `;
+const StyledDiv = styled.div`
+  width: 40em;
+`;
 
-// Modal.defaultProps = DEFAULT_PROPS;
+const StyledParagraph = styled.p`
+  padding-top: 1em;
+`;
