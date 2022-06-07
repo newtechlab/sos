@@ -59,137 +59,145 @@ export default function AddMoneyInModal(props: AddMoneyInModalProps) {
   const [dateError, setDateError] = useState<boolean>(false);
   const [typeError, setTypeError] = useState<boolean>(false);
 
-  const Categories = [{
-    key: TransactionCategory.Income,
-    text: "Salary",
-    value: TransactionCategory.Income,
-  },
-  {
-    key: TransactionCategory.Housing_Benefit,
-    text: "Husbanken",
-    value: TransactionCategory.Housing_Benefit,
-  },
-  {
-    key: TransactionCategory.Government_Income,
-    text: "NAV",
-    value: TransactionCategory.Government_Income,
-  }]
+  const Categories = [
+    {
+      key: TransactionCategory.Income,
+      text: "Lønn",
+      value: TransactionCategory.Income,
+    },
+    {
+      key: TransactionCategory.Housing_Benefit,
+      text: "Husbanken",
+      value: TransactionCategory.Housing_Benefit,
+    },
+    {
+      key: TransactionCategory.Government_Income,
+      text: "NAV",
+      value: TransactionCategory.Government_Income,
+    },
+  ];
 
-  const incomeTypes: Map<string, Array<DropDownItem>> = new Map<string, Array<DropDownItem>>();
-  incomeTypes.set("Housing_Benefit", [{
-    key: "Housbanken",
-    text: "Housbanken",
-    value: "Housbanken",
-  }
-  ])
-  incomeTypes.set("Income", [{
-    key: "Salary",
-    text: "Salary",
-    value: "Salary",
-  }
- ])
+  const incomeTypes: Map<string, Array<DropDownItem>> = new Map<
+    string,
+    Array<DropDownItem>
+  >();
+  incomeTypes.set("Housing_Benefit", [
+    {
+      key: "Housbanken",
+      text: "Housbanken",
+      value: "Housbanken",
+    },
+  ]);
+  incomeTypes.set("Income", [
+    {
+      key: "Lønn",
+      text: "Lønn",
+      value: "Lønn",
+    },
+  ]);
 
- incomeTypes.set("Government_Income", [{
-    key: "Sosialhjelp",
-    text: "Sosialhjelp",
-    value: "Sosialhjelp",
-  },
-  {
-    key: "Barnetrygd",
-    text: "Barnetrygd",
-    value: "Barnetrygd",
-  },
-  {
-    key: "Dagpenger",
-    text: "Dagpenger",
-    value: "Dagpenger",
-  },
-  {
-    key: "Sykepenger",
-    text: "Sykepenger",
-    value: "Sykepenger",
-  },
-  {
-    key: "Foreldrepenger",
-    text: "Foreldrepenger",
-    value: "Foreldrepenger",
-  },
-  {
-    key: "Kontantstøtte",
-    text: "Kontantstøtte",
-    value: "Kontantstøtte",
-  },
-  {
-    key: "Pensjon",
-    text: "Pensjon",
-    value: "Pensjon",
-  },
-  {
-    key: "Arbeidsavklaringspenger",
-    text: "Arbeidsavklaringspenger",
-    value: "Arbeidsavklaringspenger",
-  },
-  {
-    key: "Tiltakspenger",
-    text: "Tiltakspenger",
-    value: "Tiltakspenger",
-  },
-  {
-    key: "Uførepensjon",
-    text: "Uførepensjon",
-    value: "Uførepensjon",
-  },
-  {
-    key: "Kvalifiseringsstønad",
-    text: "Kvalifiseringsstønad",
-    value: "Kvalifiseringsstønad",
-  },
-  {
-    key: "Overgangsstønad",
-    text: "Overgangsstønad",
-    value: "Overgangsstønad",
-  },
-  {
-    key: "Barnebidrag",
-    text: "Barnebidrag",
-    value: "Barnebidrag",
-  },
-  {
-    key: "Forskuddsbidrag",
-    text: "Forskuddsbidrag",
-    value: "Forskuddsbidrag",
-  },
-  {
-    key: "Introduksjonsstønad",
-    text: "Introduksjonsstønad",
-    value: "Introduksjonsstønad",
-  },
-  {
-    key: "Grunnstønad",
-    text: "Grunnstønad",
-    value: "Grunnstønad",
-  },
-  {
-    key: "Hjelpestønad",
-    text: "Hjelpestønad",
-    value: "Hjelpestønad",
-  },
-  {
-    key: "Engangsstønad",
-    text: "Engangsstønad",
-    value: "Engangsstønad",
-  },
-  {
-    key: "Omsorgslønn",
-    text: "Omsorgslønn",
-    value: "Omsorgslønn",
-  },
-  {
-    key: "Barnetilsyn",
-    text: "Barnetilsyn",
-    value: "Barnetilsyn",
-  }
-  ])
+  incomeTypes.set("Government_Income", [
+    {
+      key: "Sosialhjelp",
+      text: "Sosialhjelp",
+      value: "Sosialhjelp",
+    },
+    {
+      key: "Barnetrygd",
+      text: "Barnetrygd",
+      value: "Barnetrygd",
+    },
+    {
+      key: "Dagpenger",
+      text: "Dagpenger",
+      value: "Dagpenger",
+    },
+    {
+      key: "Sykepenger",
+      text: "Sykepenger",
+      value: "Sykepenger",
+    },
+    {
+      key: "Foreldrepenger",
+      text: "Foreldrepenger",
+      value: "Foreldrepenger",
+    },
+    {
+      key: "Kontantstøtte",
+      text: "Kontantstøtte",
+      value: "Kontantstøtte",
+    },
+    {
+      key: "Pensjon",
+      text: "Pensjon",
+      value: "Pensjon",
+    },
+    {
+      key: "Arbeidsavklaringspenger",
+      text: "Arbeidsavklaringspenger",
+      value: "Arbeidsavklaringspenger",
+    },
+    {
+      key: "Tiltakspenger",
+      text: "Tiltakspenger",
+      value: "Tiltakspenger",
+    },
+    {
+      key: "Uførepensjon",
+      text: "Uførepensjon",
+      value: "Uførepensjon",
+    },
+    {
+      key: "Kvalifiseringsstønad",
+      text: "Kvalifiseringsstønad",
+      value: "Kvalifiseringsstønad",
+    },
+    {
+      key: "Overgangsstønad",
+      text: "Overgangsstønad",
+      value: "Overgangsstønad",
+    },
+    {
+      key: "Barnebidrag",
+      text: "Barnebidrag",
+      value: "Barnebidrag",
+    },
+    {
+      key: "Forskuddsbidrag",
+      text: "Forskuddsbidrag",
+      value: "Forskuddsbidrag",
+    },
+    {
+      key: "Introduksjonsstønad",
+      text: "Introduksjonsstønad",
+      value: "Introduksjonsstønad",
+    },
+    {
+      key: "Grunnstønad",
+      text: "Grunnstønad",
+      value: "Grunnstønad",
+    },
+    {
+      key: "Hjelpestønad",
+      text: "Hjelpestønad",
+      value: "Hjelpestønad",
+    },
+    {
+      key: "Engangsstønad",
+      text: "Engangsstønad",
+      value: "Engangsstønad",
+    },
+    {
+      key: "Omsorgslønn",
+      text: "Omsorgslønn",
+      value: "Omsorgslønn",
+    },
+    {
+      key: "Barnetilsyn",
+      text: "Barnetilsyn",
+      value: "Barnetilsyn",
+    },
+  ]);
 
   useEffect(() => {
     const dropDownItems: DropDownItem[] = [];
@@ -205,12 +213,11 @@ export default function AddMoneyInModal(props: AddMoneyInModalProps) {
       const items = incomeTypes.get(category);
       if (items) {
         if (items?.length === 1) {
-          setFrom(items[0].value)
+          setFrom(items[0].value);
         }
         setSubcategories(items);
       }
     }
-    
   }, [category]);
 
   return (
@@ -224,7 +231,10 @@ export default function AddMoneyInModal(props: AddMoneyInModalProps) {
         <StyledOverridesDiv>
           <Container>
             <StyledContainerSpace>
-              <ModalHeader> <h1>Ny inntekt</h1> </ModalHeader>
+              <ModalHeader>
+                {" "}
+                <h1>Ny inntekt</h1>{" "}
+              </ModalHeader>
 
               <StyledModalBody>
                 <StyledIngress>
@@ -241,10 +251,10 @@ export default function AddMoneyInModal(props: AddMoneyInModalProps) {
                     <Dropdown
                       search
                       selection
-                      placeholder="Category"
+                      placeholder="Kategori"
                       options={Categories}
                       onChange={(_, data) => {
-                        setCategory(data.value?.toString())
+                        setCategory(data.value?.toString());
                         setTypeError(false);
                       }}
                     />
@@ -255,20 +265,22 @@ export default function AddMoneyInModal(props: AddMoneyInModalProps) {
                     )}
                   </Grid.Column>
 
-                 { (category && subcategories.length > 1 ) && <>
-                  <Grid.Column width={2}>Sub Category</Grid.Column>
-                  <Grid.Column width={14}>
-                      <Dropdown
-                        search
-                        selection
-                        placeholder="Sub Category"
-                        options={subcategories}
-                        onChange={(_, data) => {
-                          setFrom(data.value?.toString());
-                        }}
-                      />
-                    </Grid.Column>
-                  </>   }     
+                  {category && subcategories.length > 1 && (
+                    <>
+                      <Grid.Column width={2}>Ordning</Grid.Column>
+                      <Grid.Column width={14}>
+                        <Dropdown
+                          search
+                          selection
+                          placeholder="Ordning"
+                          options={subcategories}
+                          onChange={(_, data) => {
+                            setFrom(data.value?.toString());
+                          }}
+                        />
+                      </Grid.Column>
+                    </>
+                  )}
 
                   <Grid.Column width={2}>Beløp</Grid.Column>
                   <Grid.Column width={14}>
@@ -368,17 +380,16 @@ export const StyledModalContent = styled(Modal.Content)`
   padding: 0 !important;
 `;
 
-export const ModalHeader = styled.div`  
+export const ModalHeader = styled.div`
   padding: 3em;
 `;
 
 export const StyledModalBody = styled.div`
-  background-color: #F1F8F8;
+  background-color: #f1f8f8;
   padding: 3em;
 `;
 
-const StyledContainerSpace = styled.div`  
-`;
+const StyledContainerSpace = styled.div``;
 const StyledIngress = styled.div`
   padding-bottom: 2em;
 `;

@@ -38,7 +38,7 @@ export default function MoneyOut(props: MoneyOutProps) {
     goBack,
     activeStep,
     steps,
-    categories
+    categories,
   } = props;
 
   // useEffect(() => {
@@ -63,13 +63,13 @@ export default function MoneyOut(props: MoneyOutProps) {
   useEffect(() => {
     setFilteredLedger(
       sortedLedger.filter((row) => {
-        return row.accountFrom === "user" && categories.has(row.category)
+        return row.accountFrom === "user" && categories.has(row.category);
       })
     );
   }, [sortedLedger]);
 
   useEffect(() => {
-    setMoneyOut(calculateMoneyOut(filteredLedger))
+    setMoneyOut(calculateMoneyOut(filteredLedger));
   }, [filteredLedger]);
 
   return (
@@ -85,6 +85,8 @@ export default function MoneyOut(props: MoneyOutProps) {
               setOpen={setAddMoneyOutModalOpen}
               addLedgerRow={addLedgerRow}
               categories={categories}
+              header="utgift"
+              ingresstext="Penger du bruker hver måned på utgifter som varierer fra måned til måned. For eksempel regninger, matvarer, restaurantbesøk osv."
             />
           )}
 
@@ -111,7 +113,10 @@ export default function MoneyOut(props: MoneyOutProps) {
                 </Grid.Row>
               )}
               {filteredLedger.map((row) => {
-                if (categories.has(row.category) && row.accountFrom === "user") {
+                if (
+                  categories.has(row.category) &&
+                  row.accountFrom === "user"
+                ) {
                   return (
                     <StyledGridRow key={row.id}>
                       <Grid.Column width={6}>{row.accountTo}</Grid.Column>
@@ -148,8 +153,7 @@ export default function MoneyOut(props: MoneyOutProps) {
                 </Grid.Column>
               </StyledGridRowBottom>
 
-              <MoneyTotal text="Utgifter og gjeld" total={moneyOut} />          
-
+              <MoneyTotal text="Utgifter" total={moneyOut} />
             </StyledGrid>
           </StyledBoxSection>
 

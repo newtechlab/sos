@@ -1,14 +1,31 @@
-import { Button, Dropdown, Grid, Icon, Input, Modal } from "semantic-ui-react";
+import {
+  Button,
+  Dropdown,
+  Grid,
+  GridColumn,
+  GridRow,
+  Icon,
+  Input,
+  Modal,
+} from "semantic-ui-react";
 import { LedgerRow, TransactionCategory } from "../../App";
 import { v4 as uuidv4 } from "uuid";
 import { useEffect, useState } from "react";
 import { StyledGrid, StyledGridRowBottom } from "../MoneyIn";
+import ErrorBar from "../ErrorBar";
 
+let belopError = false;
+const validateInput = (inputvalue: string) => {
+  const validNumber = RegExp(/^[0-9\b]+$/);
+  validNumber.test(inputvalue) ? (belopError = false) : (belopError = true);
+};
 interface AddMoneyOutModalProps {
   open: boolean;
   setOpen: (_: boolean) => void;
   addLedgerRow: (_: LedgerRow) => void;
   categories: Set<string>;
+  header: string;
+  ingresstext: string;
 }
 
 interface MoneyOutAndCategory {
@@ -48,12 +65,12 @@ export default function AddMoneyOutModal(props: AddMoneyOutModalProps) {
     });
     items.set("Sport, trening og fritid", {
       name: "Sport, trening og fritid",
-      category: TransactionCategory.Debt,
+      category: TransactionCategory.Recreation,
     });
     items.set("Transport (trikk, tog, buss)", {
       name: "Transport (trikk, tog, buss)",
       category: TransactionCategory.Travel_Expenses,
-    });    
+    });
     items.set("Huslån", {
       name: "Huslån",
       category: TransactionCategory.Debt,
@@ -61,7 +78,7 @@ export default function AddMoneyOutModal(props: AddMoneyOutModalProps) {
     items.set("Husleie", {
       name: "Husleie",
       category: TransactionCategory.Debt,
-    });    
+    });
     items.set("Reise (Fly, hotell)", {
       name: "Reise (Fly, hotell)",
       category: TransactionCategory.Travel_Expenses,
@@ -101,7 +118,7 @@ export default function AddMoneyOutModal(props: AddMoneyOutModalProps) {
     items.set("Billån", {
       name: "Billån",
       category: TransactionCategory.Debt,
-    });    
+    });
     items.set("Faste donasjoner", {
       name: "Faste donasjoner",
       category: TransactionCategory.Personal_Care,
@@ -110,13 +127,12 @@ export default function AddMoneyOutModal(props: AddMoneyOutModalProps) {
   }, []);
 
   useEffect(() => {
-    const dropDownItems: DropDownItem[] = [];    
+    const dropDownItems: DropDownItem[] = [];
     moneyOutItems.forEach((value) => {
       if (props.categories.has(value.category)) {
         const i = convertDropdownItem(value);
         dropDownItems.push(i);
       }
-      
     });
     setDropDownItems(dropDownItems);
   }, [moneyOutItems]);
@@ -128,11 +144,8 @@ export default function AddMoneyOutModal(props: AddMoneyOutModalProps) {
       open={open}
       trigger={<Button>Show Modal</Button>}
     >
-      <Modal.Header>Legg til ny utgift</Modal.Header>
-      <Modal.Content>
-        Penger du bruker hver måned på utgifter. For eksempel gjeld, regninger,
-        matvarer, restaurantbesøk osv.
-      </Modal.Content>
+      <Modal.Header>Legg til ny {props.header}</Modal.Header>
+      <Modal.Content>{props.ingresstext}</Modal.Content>
       <Modal.Actions>
         <StyledGrid>
           <StyledGridRowBottom>
@@ -164,8 +177,14 @@ export default function AddMoneyOutModal(props: AddMoneyOutModalProps) {
                 placeholder="Beløp"
                 onChange={(_, data) => {
                   setAmount(parseInt(data.value?.toString() || "0", 10));
+                  validateInput(data.value);
                 }}
               />
+              {belopError ? (
+                <ErrorBar msg="Vennligst skriv inn et nummer" />
+              ) : (
+                ""
+              )}
             </Grid.Column>
             {/* <Dropdown
                 placeholder='Day of Month'

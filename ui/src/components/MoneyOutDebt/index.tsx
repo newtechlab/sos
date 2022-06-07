@@ -51,13 +51,13 @@ export default function MoneyOut(props: MoneyOutProps) {
   useEffect(() => {
     setFilteredLedger(
       sortedLedger.filter((row) => {
-        return row.accountFrom === "user" && categories.has(row.category)
+        return row.accountFrom === "user" && categories.has(row.category);
       })
     );
   }, [sortedLedger]);
 
   useEffect(() => {
-    setMoneyOut(calculateMoneyOut(filteredLedger))
+    setMoneyOut(calculateMoneyOut(filteredLedger));
   }, [filteredLedger]);
 
   return (
@@ -73,6 +73,8 @@ export default function MoneyOut(props: MoneyOutProps) {
               setOpen={setAddMoneyOutModalOpen}
               addLedgerRow={addLedgerRow}
               categories={categories}
+              header="gjeld"
+              ingresstext="Penger du bruker hver måned på å betale på gjeld og/eller husleie"
             />
           )}
           <StyledDiv>
@@ -104,25 +106,24 @@ export default function MoneyOut(props: MoneyOutProps) {
                 </Grid.Row>
               )}
               {filteredLedger.map((row) => {
-                  return (
-                    <StyledGridRow key={row.id}>
-                      <Grid.Column width={6}>{row.accountTo}</Grid.Column>
-                      <Grid.Column width={6}>{row.category}</Grid.Column>
-                      <Grid.Column width={3}>{row.amount}</Grid.Column>
-                      {/* <Grid.Column width={3}>{row.dayOfMonth}</Grid.Column> */}
-                      <Grid.Column width={1}>
-                        <Icon
-                          onClick={() => {
-                            removeLedgerRow(row.id);
-                          }}
-                          name="trash alternate outline"
-                          color="blue"
-                        />
-                      </Grid.Column>
-                    </StyledGridRow>
-                  );
-                }
-              )}
+                return (
+                  <StyledGridRow key={row.id}>
+                    <Grid.Column width={6}>{row.accountTo}</Grid.Column>
+                    <Grid.Column width={6}>{row.category}</Grid.Column>
+                    <Grid.Column width={3}>{row.amount}</Grid.Column>
+                    {/* <Grid.Column width={3}>{row.dayOfMonth}</Grid.Column> */}
+                    <Grid.Column width={1}>
+                      <Icon
+                        onClick={() => {
+                          removeLedgerRow(row.id);
+                        }}
+                        name="trash alternate outline"
+                        color="blue"
+                      />
+                    </Grid.Column>
+                  </StyledGridRow>
+                );
+              })}
               <StyledGridRowBottom>
                 <Grid.Column width={16}>
                   <Button
@@ -133,12 +134,12 @@ export default function MoneyOut(props: MoneyOutProps) {
                     }}
                   >
                     <Icon name="plus" />
-                    Legg til kostnader
+                    Legg til gjeld
                   </Button>
                 </Grid.Column>
               </StyledGridRowBottom>
 
-              <MoneyTotal text="Utgifter og gjeld" total={moneyOut} />
+              <MoneyTotal text="Gjeld" total={moneyOut} />
             </StyledGrid>
           </StyledBoxSection>
 

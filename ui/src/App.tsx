@@ -113,7 +113,7 @@ export interface Goal {
 export enum Car {
   OWN = "OWN",
   NOTOWN = "RENT",
-  UNDEFINED= "UNDEFINED"
+  UNDEFINED = "UNDEFINED",
 }
 
 ChartJS.register(
@@ -128,7 +128,7 @@ ChartJS.register(
 export enum HouseSituation {
   OWN = "OWN",
   RENT = "RENT",
-  UNDEFINED= "UNDEFINED"
+  UNDEFINED = "UNDEFINED",
 }
 
 export interface UserInformation {
@@ -210,7 +210,7 @@ function App() {
     });
 
     setPets(filtered);
-  };  
+  };
 
   const deleteFamilyMember = (id: string) => {
     const filtered = familyMembers.filter((row) => {
@@ -218,7 +218,7 @@ function App() {
     });
 
     setFamilyMembers(filtered);
-  };   
+  };
 
   useEffect(() => {
     localStorage.setItem(
@@ -229,12 +229,20 @@ function App() {
     localStorage.setItem("familyMembers", JSON.stringify(familyMembers));
     localStorage.setItem("ledger", JSON.stringify(ledger));
     localStorage.setItem("userDetails", JSON.stringify(userDetails));
-    localStorage.setItem('pets', JSON.stringify(pets));   
+    localStorage.setItem("pets", JSON.stringify(pets));
     localStorage.setItem(
       "adjustments",
       JSON.stringify(Array.from(adjustments.entries()))
     );
-  }, [previousData, steps, familyMembers, ledger, userDetails, adjustments, pets]);
+  }, [
+    previousData,
+    steps,
+    familyMembers,
+    ledger,
+    userDetails,
+    adjustments,
+    pets,
+  ]);
 
   // This is kept as it is useful for local testing
   // useEffect(() => {
@@ -243,7 +251,7 @@ function App() {
   //       id: uuidv4(),
   //       dayOfMonth: 1,
   //       amount: 1000,
-  //       accountFrom: "salary",
+  //       accountFrom: "lønn",
   //       accountTo: "user",
   //       category: TransactionCategory.Income
   //     },
