@@ -37,16 +37,12 @@ interface ResultatInteractProps {
   removeLedgerRow: (id: string) => void;
   completeStep: () => void;
   goBack: () => void;
+  goToStep: (step: StepDefinition) => void
   goal: Goal;
   activeStep: StepDefinition | undefined;
   steps: StepsState;
   adjustments: Map<LedgerRowId, AdjustmentAmountPercent>;
   setAdjustments: (_: Map<LedgerRowId, AdjustmentAmountPercent>) => void;
-}
-
-interface Adjustments {
-  ledgerRowId: string;
-  adjustment: string;
 }
 
 export type LedgerRowId = string;
@@ -62,7 +58,7 @@ export default function ResultatInteract(props: ResultatInteractProps) {
   const [graphData, setGraphData] = useState<
     ChartData<"bar", number[], unknown>
   >(graphDataInitialState);
-  const { ledger, completeStep, activeStep, steps, goBack, adjustments, setAdjustments } = props;
+  const { ledger, completeStep, activeStep, steps, goBack, adjustments, setAdjustments, goToStep } = props;
 
   const labels = ["Penger Inn", "Penger Ut"];
 
@@ -104,7 +100,7 @@ export default function ResultatInteract(props: ResultatInteractProps) {
           backgroundColor: PengerInnColour,
         },
         {
-          label: "Penger Ut",
+          label: "Total expense amount",
           data: [0, outTotal],
           backgroundColor: PengerUtColour,
         },
@@ -142,7 +138,7 @@ export default function ResultatInteract(props: ResultatInteractProps) {
       <StyledContainer>
         <StyledContainerSpace>
           <CenteredContentSection>
-            <ResultSubSectionTab items={StepsInitialState.filter((i) => i.group === activeStep?.group)} selectedItem={activeStep} />
+            <ResultSubSectionTab goToStep={goToStep} items={StepsInitialState.filter((i) => i.group === activeStep?.group)} selectedItem={activeStep} />
           </CenteredContentSection>
 
           <StyledBoxSection>

@@ -3,7 +3,7 @@ import { Route, Routes } from "react-router-dom";
 
 import { useNavigate } from "react-router-dom";
 import "semantic-ui-css/semantic.min.css";
-import { StepsState } from "./components/Steps";
+import { StepDefinition, StepsState } from "./components/Steps";
 import { useEffect, useState } from "react";
 import UserDetails from "./components/UserDetails";
 import MoneyIn from "./components/MoneyIn";
@@ -20,7 +20,7 @@ import {
 } from "chart.js";
 import Resultat from "./components/Resultat";
 import styled from "styled-components";
-import { goBackStep, progressStep } from "./data/StepProgressor";
+import { goBackStep, goToSpecificStep, progressStep } from "./data/StepProgressor";
 import ResultatInteract, {
   AdjustmentAmountPercent,
   LedgerRowId,
@@ -294,6 +294,12 @@ function App() {
     navigate(newState.steps[newState.activeStepId]?.path || "/");
   };
 
+  const goToStep = (step: StepDefinition) => {
+    const newState = goToSpecificStep(step, steps);
+    setSteps(newState);
+    navigate(newState.steps[newState.activeStepId]?.path || "/");
+  };
+
   const resetSession = () => {
     // clear previous sessions
     localStorage.clear()
@@ -409,7 +415,7 @@ function App() {
                   activeStep={activeStep}
                   steps={steps}
                   adjustments={adjustments}
-                  setAdjustments={setAdjustments}
+                  goToStep={goToStep}
                 />
               }
             />
@@ -424,6 +430,7 @@ function App() {
                   goBack={goBack}
                   activeStep={activeStep}
                   steps={steps}
+                  goToStep={goToStep}
                 />
               }
             />
@@ -440,6 +447,7 @@ function App() {
                   steps={steps}
                   adjustments={adjustments}
                   setAdjustments={setAdjustments}
+                  goToStep={goToStep}
                 />
               }
             />

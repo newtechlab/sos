@@ -25,7 +25,6 @@ import {
   StyledContainerSpace,
   StyledHeader,
 } from "../UserDetails";
-import ComparisonGraph from "../ComparisonGraph";
 import BackForwardControls from "../BackForwardControls";
 import ResultSubSectionTab from "../ResultSubSectionTab";
 import { StepsInitialState } from "../../data/StepsInitialState";
@@ -35,11 +34,11 @@ interface ResultatBalanceProps {
   removeLedgerRow: (id: string) => void;
   completeStep: () => void;
   goBack: () => void;
+  goToStep: (step: StepDefinition) => void
   goal: Goal;
   activeStep: StepDefinition | undefined;
   steps: StepsState;
   adjustments: Map<LedgerRowId, AdjustmentAmountPercent>;
-  setAdjustments: (_: Map<LedgerRowId, AdjustmentAmountPercent>) => void;
 }
 
 export type LedgerRowId = string;
@@ -55,7 +54,7 @@ export default function ResultatBalance(props: ResultatBalanceProps) {
   const [graphData, setGraphData] = useState<
     ChartData<"bar", number[], unknown>
   >(graphDataInitialState);
-  const { ledger, completeStep, activeStep, steps, goBack, adjustments, setAdjustments } = props;
+  const { ledger, completeStep, activeStep, steps, goBack, adjustments, goToStep } = props;
 
   const labels = ["Penger Inn", "Penger Ut"];
 
@@ -129,7 +128,7 @@ export default function ResultatBalance(props: ResultatBalanceProps) {
       <StyledContainer>
         <StyledContainerSpace>
           <CenteredContentSection>
-            <ResultSubSectionTab items={StepsInitialState.filter((i) => i.group === activeStep?.group)} selectedItem={activeStep} />
+            <ResultSubSectionTab goToStep={goToStep} items={StepsInitialState.filter((i) => i.group === activeStep?.group)} selectedItem={activeStep} />
           </CenteredContentSection>
 
           <StyledBoxSection>

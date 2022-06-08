@@ -34,3 +34,12 @@ export const goBackStep = (state: StepsState): StepsState => {
     completedGroups: state.completedGroups
   }
 }
+
+export const goToSpecificStep = (step: StepDefinition, state: StepsState): StepsState => {
+  return {
+    activeStepId: step.id,
+    steps: state.steps,
+    stepGroups: InitialStepsWithoutPath.stepGroups,
+    completedGroups: state.completedGroups
+  }
+}

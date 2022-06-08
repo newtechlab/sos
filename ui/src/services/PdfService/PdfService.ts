@@ -57,7 +57,6 @@ class PdfHandler {
     }
 
     public static getAttachmentAsObject = async (data: string | ArrayBuffer | null) => {
-        console.log(data);
         const typedarray = new Uint8Array(data as ArrayBuffer);
         const pdfHandler = new PdfHandler(typedarray);
         const attachments = await pdfHandler.getAttachments();
