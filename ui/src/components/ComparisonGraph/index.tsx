@@ -76,23 +76,19 @@ export default function ComparisonGraph(props: ComparisonGraphProps) {
             )}
           </StyledOverspendingContainer>
 
-          {goal.name !== "" || (
+          {goal.name !== "" ? (
             <StyledOverspendingContainer>
-              {/* <h3>
-                Sparemål: {goal.name}, krever: {goal.amount}{" "}
-                <Label size="mini">Kr</Label>
-              </h3> */}
-              {Number.isNaN(goalMonths) ||
-              goalMonths === 0 ||
-              goalMonths < 0 ? (
-                ""
+              {goalMonths > 0 ? (
+                <StyledParagraph>
+                  Sparemålet: "{goal.name}", kan nås om {goalMonths} måneder,
+                  ved å spare dette beløpet hver måned.
+                </StyledParagraph>
               ) : (
-                <p>
-                  Hvis du setter til side dette beløpet hver måned vil nå
-                  sparemålet om {goalMonths} måneder
-                </p>
+                ""
               )}
             </StyledOverspendingContainer>
+          ) : (
+            ""
           )}
 
           {console.log(goalMonths)}
@@ -127,6 +123,9 @@ export const StyledOverspendingContainer = styled.div`
 const StyledSavingDiv = styled.div`
   line-height: 20px;
   width: 300px;
+`;
+const StyledParagraph = styled.p`
+  padding: 1em;
 `;
 
 const StyledOverspendingDiv = styled.div`
