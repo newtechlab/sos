@@ -250,10 +250,11 @@ function App() {
     const moneyOut = calculateMoneyOut(ledger);
     
     setStateSummary({
+      familyMemberCount: familyMembers.length > 0 ? familyMembers.length : undefined,
       moneyIn: moneyIn > 0 ? moneyIn.toString() : undefined,
       moneyOut: moneyOut > 0 ? moneyOut.toString() : undefined,
     })
-  }, [ ledger ]);
+  }, [ ledger, familyMembers ]);
 
   useEffect(() => {
     setSteps( updateSteps(steps, stateSummary))
