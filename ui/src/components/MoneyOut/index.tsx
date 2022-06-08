@@ -29,7 +29,6 @@ export default function MoneyOut(props: MoneyOutProps) {
   const [sortedLedger, setSortedLedger] = useState<LedgerRow[]>([]);
   const [filteredLedger, setFilteredLedger] = useState<LedgerRow[]>([]);
   const [moneyOut, setMoneyOut] = useState<number>(0);
-  // const [graphData, setGraphData] = useState<ChartData<"bar", number[], unknown>>(graphDataInitialState);
   const {
     ledger,
     addLedgerRow,
@@ -40,21 +39,6 @@ export default function MoneyOut(props: MoneyOutProps) {
     steps,
     categories,
   } = props;
-
-  // useEffect(() => {
-  //     const data = {
-  //         labels: chartLabels,
-  //         datasets: [
-  //           {
-  //             label: 'Penger Ut',
-  //             data: pengerUt(chartLabels, sortedLedger),
-  //             backgroundColor: PengerUtColour,
-  //           },
-  //         ],
-  //       };
-
-  //       setGraphData(data);
-  //   }, [sortedLedger]);
 
   useEffect(() => {
     setSortedLedger(sortLedger(ledger));
@@ -75,7 +59,7 @@ export default function MoneyOut(props: MoneyOutProps) {
   return (
     <StyledBackgroundColour>
       <StyledHeader>
-        <StepHeader activeStep={activeStep} steps={steps} />
+        <StepHeader steps={steps} />
       </StyledHeader>
       <Container>
         <StyledContainerSpace>

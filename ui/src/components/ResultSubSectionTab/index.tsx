@@ -1,24 +1,25 @@
-import { Grid, ItemDescription } from "semantic-ui-react";
+import { Grid } from "semantic-ui-react";
 import styled from "styled-components";
 import { StepDefinition } from "../Steps";
 
 interface ResultSubSectionTabProps {
     items: StepDefinition[];
     selectedItem: StepDefinition | undefined;
+    goToStep: (step: StepDefinition) => void
 }
 
 export default function ResultSubSectionTab(props: ResultSubSectionTabProps) {
-    const { items, selectedItem } = props;
+    const { items, selectedItem, goToStep } = props;
 
     return <StyledContainerDiv>
-            <StyledGrid columns={items.length}>
+            <StyledGrid celled='internally' columns={items.length}>
             { items.map((i: StepDefinition) => {
 
                 if (i.heading === selectedItem?.heading) {
-                    return <StyledGridSelectedColumn>{i.heading}</StyledGridSelectedColumn>
+                    return <StyledGridSelectedColumn key={i.id}>{i.heading}</StyledGridSelectedColumn>
                 }
 
-                return <StyledGridColumn>{i.heading}</StyledGridColumn>
+                return <StyledGridColumn key={i.id} onClick={() => { goToStep(i); }}>{i.heading}</StyledGridColumn>
             })} 
         </StyledGrid>
     </StyledContainerDiv>
@@ -30,14 +31,18 @@ const StyledContainerDiv = styled.div`
 `
 
 const StyledGrid = styled(Grid)`
+    border: 1px solid #CCC;
 `
 
 const StyledGridSelectedColumn = styled(Grid.Column)`
-    border: 1px solid #CCC;
     background-color: white;
+    font-weight: bold !important;
 `
 
 const StyledGridColumn = styled(Grid.Column)`
-    border: 1px solid #CCC;
-    background-color: #CCC;
+    background-color: #F1F8F8;
+
+    &:hover {
+        cursor: pointer;
+    }
 `

@@ -1,3 +1,4 @@
+import MoneyOut from "../components/MoneyOut";
 import { StepDefinition, StepGroup, StepGroupType, StepsState } from "../components/Steps";
 
 export const StepsInitialState: Array<StepDefinition> = [
@@ -63,9 +64,17 @@ export const StepsInitialState: Array<StepDefinition> = [
     },
 ];
 
+export interface StateSummary {
+    moneyIn: string | undefined;
+    moneyOut: string | undefined;
+}
 
+export const DefaultStateSummary: StateSummary = {
+    moneyIn: undefined,
+    moneyOut: undefined,
+}
 
-export const StepGroups = (): Map<StepGroupType, StepGroup> => {
+export const StepGroups = (stateSummary: StateSummary): Map<StepGroupType, StepGroup> => {
     const stepGroups: Map<StepGroupType, StepGroup> = new Map<StepGroupType, StepGroup>();
     stepGroups.set(StepGroupType.FAMILY, {
         title: "Familie",
@@ -73,11 +82,11 @@ export const StepGroups = (): Map<StepGroupType, StepGroup> => {
     })
     stepGroups.set(StepGroupType.MONEY_IN, {
         title: "Penger inn",
-        description: "Lønn og andre støtteordninger",
+        description: `${stateSummary.moneyIn} kr` || "Lønn og andre støtteordninger",
     })
     stepGroups.set(StepGroupType.MONEY_OUT, {
         title: "Penger ut",
-        description: "Oversikt over familen",
+        description: `${stateSummary.moneyOut} kr` || "Oversikt over familen",
     })
     stepGroups.set(StepGroupType.RESULTS, {
         title: "Resultat 1",
@@ -86,15 +95,17 @@ export const StepGroups = (): Map<StepGroupType, StepGroup> => {
     return stepGroups;
 }
 
-export const InitialStepsWithoutPath: StepsState = {
+export const InitialStepsWithoutPath = (stateSummary: StateSummary): StepsState => {
+    return {
         activeStepId: 0,
         steps: StepsInitialState,
-        stepGroups: StepGroups(),
+        stepGroups: StepGroups(stateSummary),
         completedGroups: new Set<StepGroupType>()
+    }  
 }
 
-export const InitialStepsWithPath = (path: string): StepsState => {
-    const steps = InitialStepsWithoutPath;
+export const InitialStepsWithPath = (path: string, stateSummary: StateSummary): StepsState => {
+    const steps = InitialStepsWithoutPath(stateSummary);
     const current = StepsInitialState.find((s) => s.path === path)
 
     return {

@@ -28,9 +28,11 @@ interface ResultatDebtProps {
   removeLedgerRow: (id: string) => void;
   completeStep: () => void;
   goBack: () => void;
+  goToStep: (step: StepDefinition) => void
   goal: Goal;
   activeStep: StepDefinition | undefined;
   steps: StepsState;
+  
 }
 
 export type LedgerRowId = string;
@@ -41,7 +43,7 @@ export default function ResultatDebt(props: ResultatDebtProps) {
   const [graphData, setGraphData] = useState<
     ChartData<"bar", number[], unknown>
   >(graphDataInitialState);
-  const { ledger, completeStep, activeStep, steps, goBack } = props;
+  const { ledger, completeStep, activeStep, steps, goBack, goToStep } = props;
 
   useEffect(() => {
     const debt = ledger.filter((i) => i.category === TransactionCategory.Debt && i.accountFrom === "user")
@@ -70,16 +72,16 @@ export default function ResultatDebt(props: ResultatDebtProps) {
   return (
     <StyledBackgroundColour>
       <StyledHeader>
-        <StepHeader activeStep={activeStep} steps={steps} />
+        <StepHeader steps={steps} />
       </StyledHeader>
       <StyledContainer>
         <StyledContainerSpace>
           <CenteredContentSection>
-            <ResultSubSectionTab items={StepsInitialState.filter((i) => i.group === activeStep?.group)} selectedItem={activeStep} />
+            <ResultSubSectionTab goToStep={goToStep} items={StepsInitialState.filter((i) => i.group === activeStep?.group)} selectedItem={activeStep} />
           </CenteredContentSection>
 
           <StyledBoxSection>
-            <h1>Debt</h1>
+            <h1>Monthly debt overview</h1>
 
             <StyledGraphContainer>
               <Bar options={chartOptions} data={graphData} />

@@ -3,7 +3,7 @@ import { Route, Routes } from "react-router-dom";
 
 import { useNavigate } from "react-router-dom";
 import "semantic-ui-css/semantic.min.css";
-import { StepsState } from "./components/Steps";
+import { StepDefinition, StepsState } from "./components/Steps";
 import { useEffect, useState } from "react";
 import UserDetails from "./components/UserDetails";
 import MoneyIn from "./components/MoneyIn";
@@ -20,7 +20,7 @@ import {
 } from "chart.js";
 import Resultat from "./components/Resultat";
 import styled from "styled-components";
-import { goBackStep, progressStep } from "./data/StepProgressor";
+import { goBackStep, goToSpecificStep, progressStep, updateSteps } from "./data/StepProgressor";
 import ResultatInteract, {
   AdjustmentAmountPercent,
   LedgerRowId,
@@ -28,10 +28,10 @@ import ResultatInteract, {
 import Home from "./components/Home";
 import MoneyOutDebt from "./components/MoneyOutDebt";
 import { Container } from "semantic-ui-react";
-import { InitialStepsWithPath } from "./data/StepsInitialState";
+import { DefaultStateSummary, InitialStepsWithPath, StateSummary } from "./data/StepsInitialState";
 import ResultatBalance from "./components/ResultatBalance";
 import ResultatDebt from "./components/ResultatDebt";
-// import { useEffect } from "react";
+import { calculateMoneyIn, calculateMoneyOut } from "./data/Ledger";
 
 export interface FamilyMember {
   id: string;
@@ -163,12 +163,13 @@ function rehydrateMap<A, B>(name: string, ifEmpty: Map<A, B>): Map<A, B> {
 
 function App() {
   const navigate = useNavigate();
+  const [stateSummary, setStateSummary] = useState<StateSummary>(DefaultStateSummary);
   const [pets, setPets] = useState<Array<Pet>>(rehydrate("pets", []));
   const [previousData, setPreviousData] = useState<any[]>(
     rehydrate("previousData", [])
   );
   const [steps, setSteps] = useState<StepsState>(
-    InitialStepsWithPath(window.location.pathname)
+    InitialStepsWithPath(window.location.pathname, DefaultStateSummary)
   );
   const [familyMembers, setFamilyMembers] = useState<Array<FamilyMember>>(
     rehydrate("familyMembers", [])
@@ -244,52 +245,34 @@ function App() {
     pets,
   ]);
 
-  // This is kept as it is useful for local testing
-  // useEffect(() => {
-  //   setLedger([
-  //     {
-  //       id: uuidv4(),
-  //       dayOfMonth: 1,
-  //       amount: 1000,
-  //       accountFrom: "lønn",
-  //       accountTo: "user",
-  //       category: TransactionCategory.Income
-  //     },
-  //     {
-  //       id: uuidv4(),
-  //       dayOfMonth: 10,
-  //       amount: 100,
-  //       accountFrom: "user",
-  //       accountTo: "netflix",
-  //       category: TransactionCategory.Cafe
-  //     },
-  //     {
-  //       id: uuidv4(),
-  //       dayOfMonth: 1,
-  //       amount: 1000,
-  //       accountFrom: "user",
-  //       accountTo: "coffee",
-  //       category: TransactionCategory.Furniture
-  //     },
-  //     {
-  //       id: uuidv4(),
-  //       dayOfMonth: 15,
-  //       amount: 167,
-  //       accountFrom: "user",
-  //       accountTo: "pony",
-  //       category: TransactionCategory.Childcare_other
-  //     },
-  //   ]);
-  // }, []);
+  useEffect(() => {
+    const moneyIn = calculateMoneyIn(ledger);
+    const moneyOut = calculateMoneyOut(ledger);
+    
+    setStateSummary({
+      moneyIn: moneyIn > 0 ? moneyIn.toString() : undefined,
+      moneyOut: moneyOut > 0 ? moneyOut.toString() : undefined,
+    })
+  }, [ ledger ]);
+
+  useEffect(() => {
+    setSteps( updateSteps(steps, stateSummary))
+  }, [ stateSummary ]);
 
   const completeStep = () => {
-    const newState = progressStep(steps);
+    const newState = progressStep(steps, stateSummary);
     setSteps(newState);
     navigate(newState.steps[newState.activeStepId]?.path || "/");
   };
 
   const goBack = () => {
-    const newState = goBackStep(steps);
+    const newState = goBackStep(steps, stateSummary);
+    setSteps(newState);
+    navigate(newState.steps[newState.activeStepId]?.path || "/");
+  };
+
+  const goToStep = (step: StepDefinition) => {
+    const newState = goToSpecificStep(step, steps, stateSummary);
     setSteps(newState);
     navigate(newState.steps[newState.activeStepId]?.path || "/");
   };
@@ -299,7 +282,7 @@ function App() {
     localStorage.clear()
     setPets([]);
     setPreviousData([])
-    setSteps(InitialStepsWithPath(window.location.pathname));
+    setSteps(InitialStepsWithPath(window.location.pathname, DefaultStateSummary));
     setFamilyMembers([]);
     setLedger([]);
     setUserDetails(InitialUserInfo)
@@ -409,7 +392,7 @@ function App() {
                   activeStep={activeStep}
                   steps={steps}
                   adjustments={adjustments}
-                  setAdjustments={setAdjustments}
+                  goToStep={goToStep}
                 />
               }
             />
@@ -424,6 +407,7 @@ function App() {
                   goBack={goBack}
                   activeStep={activeStep}
                   steps={steps}
+                  goToStep={goToStep}
                 />
               }
             />
@@ -440,6 +424,7 @@ function App() {
                   steps={steps}
                   adjustments={adjustments}
                   setAdjustments={setAdjustments}
+                  goToStep={goToStep}
                 />
               }
             />

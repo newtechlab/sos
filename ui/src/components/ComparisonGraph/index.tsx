@@ -53,21 +53,6 @@ export default function ComparisonGraph(props: ComparisonGraphProps) {
     <FixedBottomDiv>
       <Container>
         <StyledComparisonContainer overspending={overspend > 0}>
-          {/* <div>
-            <StyledBarTotal>
-              {outTotal} <Label size="mini">Kr</Label>
-            </StyledBarTotal>
-            <h3>Overforbruk</h3>
-            <Progress size="small" percent={outPercent} color="red" />
-          </div>
-          <div>
-            <StyledBarTotal>
-              {inTotal - outTotal} <Label size="mini">Kr</Label>
-            </StyledBarTotal>
-            <h3>Sparepotensiale</h3>
-            <Progress size="small" percent={inPercent} color="green" />
-          </div> */}
-
           <StyledOverspendingContainer>
             {outTotal > inTotal ? (
               <Overspend overspend={overspend} />
@@ -90,14 +75,6 @@ export default function ComparisonGraph(props: ComparisonGraphProps) {
           ) : (
             ""
           )}
-
-          {console.log(goalMonths)}
-          {/* // ) 
-          // : (
-          //   <div>
-          //     <h3>Det er ikke lagt til noe sparemål</h3>
-          //   </div>
-          // )} */}
         </StyledComparisonContainer>
       </Container>
     </FixedBottomDiv>

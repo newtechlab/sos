@@ -1,6 +1,6 @@
 import _ from "lodash";
 import { StepGroupType, StepDefinition, StepsState } from "../components/Steps";
-import { InitialStepsWithoutPath } from "./StepsInitialState";
+import { InitialStepsWithoutPath, StateSummary } from "./StepsInitialState";
 
 const reducerF = (s: Set<StepGroupType>, stepDefinition: StepDefinition): Set<StepGroupType> => {
     if (!stepDefinition.completed)
@@ -9,7 +9,7 @@ const reducerF = (s: Set<StepGroupType>, stepDefinition: StepDefinition): Set<St
     return s;
   }
 
-export const progressStep = (state: StepsState): StepsState => {
+export const progressStep = (state: StepsState, stateSummary: StateSummary): StepsState => {
     const nextActiveId = state.activeStepId + 1;
     const newSteps = state.steps.map((s) => {
       const completed = s.id === state.activeStepId || s.completed
@@ -21,16 +21,32 @@ export const progressStep = (state: StepsState): StepsState => {
     return {
       activeStepId: nextActiveId,
       steps: newSteps,
-      stepGroups: InitialStepsWithoutPath.stepGroups,
+      stepGroups: InitialStepsWithoutPath(stateSummary).stepGroups,
       completedGroups: _.reduce(newSteps, reducerF, new Set<StepGroupType>(Array.from(state.stepGroups.keys())))
     }
 }
 
-export const goBackStep = (state: StepsState): StepsState => {
+export const goBackStep = (state: StepsState, stateSummary: StateSummary): StepsState => {
   return {
     activeStepId: state.activeStepId - 1,
     steps: state.steps,
-    stepGroups: InitialStepsWithoutPath.stepGroups,
+    stepGroups: InitialStepsWithoutPath(stateSummary).stepGroups,
     completedGroups: state.completedGroups
+  }
+}
+
+export const goToSpecificStep = (step: StepDefinition, state: StepsState, stateSummary: StateSummary): StepsState => {
+  return {
+    activeStepId: step.id,
+    steps: state.steps,
+    stepGroups: InitialStepsWithoutPath(stateSummary).stepGroups,
+    completedGroups: state.completedGroups
+  }
+}
+
+export const updateSteps = (state: StepsState, stateSummary: StateSummary): StepsState => {
+  return {
+    ... state,
+    stepGroups: InitialStepsWithoutPath(stateSummary).stepGroups,
   }
 }
