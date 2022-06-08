@@ -8,8 +8,6 @@ import {
   PdfWriterService,
 } from "../../services/PdfService/PdfWriterService";
 import { AdjustmentAmountPercent, LedgerRowId } from "../ResultatInteract";
-import { StepsState } from "../Steps";
-import { InitialStepsWithoutPath } from "../../data/StepsInitialState";
 import { LastPageBackForwardControls } from "../BackForwardControls";
 import styled from "styled-components";
 
@@ -19,7 +17,7 @@ interface ResultatProps {
   removeLedgerRow: (id: string) => void;
   completeStep: () => void;
   goBack: () => void;
-  setSteps: (steps: StepsState) => void;
+  resetSession: () => void;
   userDetails: UserInformation;
   previousData: any[];
   adjustments: Map<LedgerRowId, AdjustmentAmountPercent>;
@@ -45,13 +43,12 @@ export default function Resultat(props: ResultatProps) {
     previousData,
     adjustments,
     goBack,
-    setSteps,
+    resetSession,
   } = props;
   const navigate = useNavigate();
 
   const ResetStep = () => {
-    const newState = InitialStepsWithoutPath;
-    setSteps(newState);
+    resetSession()
     navigate("/");
   };
 

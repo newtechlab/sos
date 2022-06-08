@@ -12,7 +12,8 @@ export enum StepGroupType {
     FAMILY,
     MONEY_IN,
     MONEY_OUT,
-    RESULTS
+    RESULTS,
+    END
 }
 
 export interface StepGroup {
