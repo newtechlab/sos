@@ -6,7 +6,6 @@ import styled from "styled-components";
 import { FamilyMember, InitialUserInfo, LedgerRow, Pet, UserInformation } from "../../App";
 import PdfConverter from "../../services/PdfService/PdfConverter";
 import { AdjustmentAmountPercent, LedgerRowId } from "../ResultatInteract";
-import { StyledBoxSection } from "../StyledBoxSection";
 import frontpage_family from "./frontpage_family.png";
 
 export interface HomProps {
@@ -16,6 +15,7 @@ export interface HomProps {
   setUserDetails(_: UserInformation): void;
   setAdjustments(_: Map<LedgerRowId, AdjustmentAmountPercent>): void;
   setPets: (_: Array<Pet>) => void; 
+  resetSession: () => void;
 }
 
 export const firstStep = "/family";
@@ -31,7 +31,7 @@ export interface PdfFormat {
 
 export default function Home(props: HomProps) {
   const navigate = useNavigate();
-  const { setFamilyMembers, setLedger, setUserDetails, setPreviousData, setAdjustments, setPets } = props;
+  const { setFamilyMembers, setLedger, setUserDetails, setPreviousData, setAdjustments, setPets, resetSession } = props;
   const onDrop = useCallback((acceptedFiles) => {
     const fileReader = new FileReader();
     fileReader.onload = async (event) => {
@@ -93,6 +93,7 @@ export default function Home(props: HomProps) {
             circular
             color={"blue"}
             onClick={() => {
+              resetSession();
               navigate(firstStep);
             }}
           >

@@ -27,7 +27,6 @@ export default function MoneyIn(props: MoneyInProps) {
   const [sortedLedger, setSortedLedger] = useState<LedgerRow[]>([]);
   const [filteredLedger, setFilteredLedger] = useState<LedgerRow[]>([]);
   const [moneyIn, setMoneyIn] = useState<number>(0);
-  // const [graphData, setGraphData] = useState<ChartData<"bar", number[], unknown>>(graphDataInitialState);
   const {
     ledger,
     addLedgerRow,
@@ -37,21 +36,6 @@ export default function MoneyIn(props: MoneyInProps) {
     activeStep,
     steps,
   } = props;
-
-  // useEffect(() => {
-  //     const data = {
-  //         labels: chartLabels,
-  //         datasets: [
-  //           {
-  //             label: 'Penger Inn',
-  //             data: pengerInn(chartLabels, sortedLedger),
-  //             backgroundColor: 'rgb(255, 99, 132)',
-  //           },
-  //         ],
-  //       };
-
-  //       setGraphData(data);
-  //   }, [sortedLedger]);
 
   useEffect(() => {
     setSortedLedger(sortLedger(ledger));
@@ -192,34 +176,3 @@ const StyledHeader = styled.div`
   background-color: #ffffff;
   width: 100%;
 `;
-
-// {
-/* <Table>
-                <Table.Header>
-                    <Table.Row>
-                        <Table.HeaderCell></Table.HeaderCell>
-                        <Table.HeaderCell>Amount</Table.HeaderCell>
-                        <Table.HeaderCell>Day of month</Table.HeaderCell>
-                    </Table.Row>
-                </Table.Header>
-                <Table.Body>
-                { sortedLedger.map( (row) => {
-
-                    if (row.accountTo === "user") {
-                        return <Table.Row key={row.id}>
-                            <Table.Cell>{row.accountFrom}</Table.Cell>
-                            <Table.Cell>{row.amount}</Table.Cell>
-                            <Table.Cell>{row.dayOfMonth}</Table.Cell>
-                            </Table.Row>
-                    } else {
-                        return null
-                    }
-
-                })} 
-                </Table.Body>
-            </Table> */
-// }
-
-// const StyledGraphContainer = styled.div`
-//     height: 100px;
-// `

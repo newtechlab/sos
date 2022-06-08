@@ -8,7 +8,6 @@ import { useEffect, useState } from "react";
 import UserDetails from "./components/UserDetails";
 import MoneyIn from "./components/MoneyIn";
 import MoneyOut from "./components/MoneyOut";
-// import { v4 as uuidv4 } from "uuid";
 
 import {
   Chart as ChartJS,
@@ -26,11 +25,12 @@ import ResultatInteract, {
   AdjustmentAmountPercent,
   LedgerRowId,
 } from "./components/ResultatInteract";
-// import { Container } from "semantic-ui-react";
 import Home from "./components/Home";
 import MoneyOutDebt from "./components/MoneyOutDebt";
 import { Container } from "semantic-ui-react";
 import { InitialStepsWithPath } from "./data/StepsInitialState";
+import ResultatBalance from "./components/ResultatBalance";
+import ResultatDebt from "./components/ResultatDebt";
 // import { useEffect } from "react";
 
 export interface FamilyMember {
@@ -294,6 +294,18 @@ function App() {
     navigate(newState.steps[newState.activeStepId]?.path || "/");
   };
 
+  const resetSession = () => {
+    // clear previous sessions
+    localStorage.clear()
+    setPets([]);
+    setPreviousData([])
+    setSteps(InitialStepsWithPath(window.location.pathname));
+    setFamilyMembers([]);
+    setLedger([]);
+    setUserDetails(InitialUserInfo)
+    setAdjustments(new Map<LedgerRowId, AdjustmentAmountPercent>())
+  }
+
   const activeStep = steps.steps.find((s) => s.id === steps.activeStepId);
 
   return (
@@ -311,6 +323,7 @@ function App() {
                   setUserDetails={setUserDetails}
                   setAdjustments={setAdjustments}
                   setPets={setPets}
+                  resetSession={resetSession}
                 />
               }
             />
@@ -387,7 +400,7 @@ function App() {
             <Route
               path="/resultat1"
               element={
-                <ResultatInteract
+                <ResultatBalance
                   ledger={ledger}
                   removeLedgerRow={deleteLedgerRow}
                   completeStep={completeStep}
@@ -403,6 +416,36 @@ function App() {
             <Route
               path="/resultat2"
               element={
+                <ResultatDebt
+                  ledger={ledger}
+                  removeLedgerRow={deleteLedgerRow}
+                  completeStep={completeStep}
+                  goal={userDetails.goal}
+                  goBack={goBack}
+                  activeStep={activeStep}
+                  steps={steps}
+                />
+              }
+            />
+            <Route
+              path="/resultat3"
+              element={
+                <ResultatInteract
+                  ledger={ledger}
+                  removeLedgerRow={deleteLedgerRow}
+                  completeStep={completeStep}
+                  goal={userDetails.goal}
+                  goBack={goBack}
+                  activeStep={activeStep}
+                  steps={steps}
+                  adjustments={adjustments}
+                  setAdjustments={setAdjustments}
+                />
+              }
+            />
+            <Route
+              path="/end"
+              element={
                 <Resultat
                   ledger={ledger}
                   familyMembers={familyMembers}
@@ -413,7 +456,7 @@ function App() {
                   previousData={previousData}
                   goBack={goBack}
                   pets={pets}
-                  setSteps={setSteps}
+                  resetSession={resetSession}
                 />
               }
             />

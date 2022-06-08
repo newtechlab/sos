@@ -38,13 +38,27 @@ export const StepsInitialState: Array<StepDefinition> = [
         group: StepGroupType.RESULTS,
         completed: false,
         path: "/resultat1",
-        heading: "Resultat"
+        heading: "Balance"
     },
     {
         id: 5,
         group: StepGroupType.RESULTS,
         completed: false,
         path: "/resultat2",
+        heading: "Debt"
+    },
+    {
+        id: 6,
+        group: StepGroupType.RESULTS,
+        completed: false,
+        path: "/resultat3",
+        heading: "Expenses"
+    },
+    {
+        id: 7,
+        group: StepGroupType.END,
+        completed: false,
+        path: "/end",
         heading: "Resultat"
     },
 ];
