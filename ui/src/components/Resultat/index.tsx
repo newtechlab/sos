@@ -27,15 +27,26 @@ interface ResultatProps {
 }
 
 const createPdf = async (props: CreatePdfProps) => {
+  const current = new Date();
+  const date = `${current.getFullYear()}/${current.getMonth() + 1}`;
   const blob = await PdfWriterService.createPdf(props);
   const link = document.createElement("a");
   link.href = window.URL.createObjectURL(blob);
-  link.download = "myFileName.pdf";
+  link.download = `${date}_okonomiveilederen.pdf`;
   link.click();
 };
 
 export default function Resultat(props: ResultatProps) {
-  const { ledger, familyMembers, userDetails, pets, previousData, adjustments, goBack, setSteps } = props;
+  const {
+    ledger,
+    familyMembers,
+    userDetails,
+    pets,
+    previousData,
+    adjustments,
+    goBack,
+    setSteps,
+  } = props;
   const navigate = useNavigate();
 
   const ResetStep = () => {
@@ -48,19 +59,25 @@ export default function Resultat(props: ResultatProps) {
     <StyledFullScreenDiv>
       <Container>
         <h1>Resultat</h1>
-          <div>
+        <div>
           <Image size="big" src={congratulations} wrapped />
-          </div>
+        </div>
 
-          <LastPageBackForwardControls
-            goBack={() => goBack()}
-          />          
+        <LastPageBackForwardControls goBack={() => goBack()} />
 
         <Button
           circular
           color="blue"
           onClick={() => {
-            createPdf({ ledger, familyMembers, adjustments, pets, userDetails, previousData, addImage: true });
+            createPdf({
+              ledger,
+              familyMembers,
+              adjustments,
+              pets,
+              userDetails,
+              previousData,
+              addImage: true,
+            });
             ResetStep();
           }}
         >
@@ -72,10 +89,10 @@ export default function Resultat(props: ResultatProps) {
 }
 
 export const StyledFullScreenDiv = styled.div`
-    background-color: white;
-    text-align: center;
-    position: absolute;
-    padding-top: 3em;
-    height: 100%;
-    width: 100%;
-`
+  background-color: white;
+  text-align: center;
+  position: absolute;
+  padding-top: 3em;
+  height: 100%;
+  width: 100%;
+`;

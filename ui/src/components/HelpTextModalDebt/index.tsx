@@ -74,13 +74,19 @@ export default function OpenHelpTextModal(props: AddHelpTextModalProps) {
               <StyledLinkButton
                 onClick={() => window.open("https://www.altinn.no")}
               >
-                Altinn <Icon name="external" />
+                Altinn
+                <IconDiv>
+                  <Icon name="external" />
+                </IconDiv>
               </StyledLinkButton>
 
               <StyledLinkButton
                 onClick={() => window.open("https://www.sismo.no/en/pub/")}
               >
-                Statens innkrevingssentral <Icon name="external" />
+                Statens innkrevingssentral
+                <IconDiv>
+                  <Icon name="external" />
+                </IconDiv>
               </StyledLinkButton>
 
               <StyledLinkButton
@@ -90,13 +96,19 @@ export default function OpenHelpTextModal(props: AddHelpTextModalProps) {
                   )
                 }
               >
-                Nav Innkreving <Icon name="external" />
+                Nav Innkreving
+                <IconDiv>
+                  <Icon name="external" />
+                </IconDiv>
               </StyledLinkButton>
 
               <StyledLinkButton
                 onClick={() => window.open("https://www.lanekassen.no")}
               >
-                Lånekassen <Icon name="external" />
+                Lånekassen{" "}
+                <IconDiv>
+                  <Icon name="external" />
+                </IconDiv>
               </StyledLinkButton>
             </StyledDiv>
           </StyledModalSidebar>
@@ -152,7 +164,7 @@ const StyledLinkButton = styled.button`
   border: 1px solid #a5c8d7;
   border-radius: 0.25em;
   background-color: #f1f8f8;
-  padding: 0.5em;
+  padding: 1.5em;
   width: 100%;
   color: #3d8eb1;
   text-align: left;
@@ -163,12 +175,6 @@ const StyledLinkButton = styled.button`
   }
 `;
 
-const StyledCloseButton = styled.button`
-  border: 1px solid #a5c8d7;
-  border-radius: 2em;
-  background-color: #f1f8f8;
-  padding: 0.5em;
-
-  color: #3d8eb1;
-  text-align: center;
+const IconDiv = styled.div`
+  float: right;
 `;
