@@ -30,7 +30,7 @@ export default function OpenHelpTextModal(props: AddHelpTextModalProps) {
         open={open}
         transition={transition}
       >
-        <Segment
+        <StyledSegment
           style={{
             right: "0",
             position: "fixed",
@@ -54,7 +54,7 @@ export default function OpenHelpTextModal(props: AddHelpTextModalProps) {
               <p>Legg inn et beløp som vi kan hjelpe deg å nå.</p>
             </StyledDiv>
           </StyledModalSidebar>
-        </Segment>
+        </StyledSegment>
 
         {/* <Modal
         onClose={() => setOpen(false)}
@@ -103,4 +103,8 @@ const StyledDiv = styled.div`
 
 const StyledParagraph = styled.p`
   padding-top: 1em;
+`;
+
+const StyledSegment = styled(Segment)`
+  margin-top: 0px !important;
 `;
