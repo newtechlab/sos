@@ -54,7 +54,7 @@ export default function MoneyIn(props: MoneyInProps) {
   return (
     <StyledBackgroundColour>
       <StyledHeader>
-        <StepHeader activeStep={activeStep} steps={steps} />
+        <StepHeader steps={steps} />
       </StyledHeader>
       <Container>
         <StyledContainerSpace>

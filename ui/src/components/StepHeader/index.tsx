@@ -1,12 +1,11 @@
 import { Container } from "semantic-ui-react";
 import styled from "styled-components";
-import Steps, { StepDefinition, StepsState } from "../Steps";
+import Steps, { StepsState } from "../Steps";
 
 type MenuItemProps = {
-  activeStep: StepDefinition | undefined;
   steps: StepsState;
 };
-const StepHeader: React.FC<MenuItemProps> = ({ activeStep, steps }) => {
+const StepHeader: React.FC<MenuItemProps> = ({ steps }) => {
   return (
     <StyledHeaderDiv>
       <Container>

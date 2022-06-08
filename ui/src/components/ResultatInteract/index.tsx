@@ -133,7 +133,7 @@ export default function ResultatInteract(props: ResultatInteractProps) {
   return (
     <StyledBackgroundColour>
       <StyledHeader>
-        <StepHeader activeStep={activeStep} steps={steps} />
+        <StepHeader steps={steps} />
       </StyledHeader>
       <StyledContainer>
         <StyledContainerSpace>

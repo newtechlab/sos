@@ -31,7 +31,7 @@ export interface StepDefinition {
 }
 
 export interface StepsProps {
-  steps: StepsState
+  steps: StepsState;
 }
 
 export default function Steps(props: StepsProps) {

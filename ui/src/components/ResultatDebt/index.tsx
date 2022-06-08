@@ -72,7 +72,7 @@ export default function ResultatDebt(props: ResultatDebtProps) {
   return (
     <StyledBackgroundColour>
       <StyledHeader>
-        <StepHeader activeStep={activeStep} steps={steps} />
+        <StepHeader steps={steps} />
       </StyledHeader>
       <StyledContainer>
         <StyledContainerSpace>

@@ -1,5 +1,6 @@
 import { StepGroup, StepGroupType, StepsState } from '../components/Steps';
 import { progressStep } from './StepProgressor';
+import { DefaultStateSummary } from './StepsInitialState';
 
 test('Progresses a step', () => {
   const stepGroups: Map<StepGroupType, StepGroup> = new Map<StepGroupType, StepGroup>();
@@ -19,7 +20,7 @@ test('Progresses a step', () => {
       heading: "erwfkjwefkjwer"
     }]
   }
-  const newState = progressStep(startState);
+  const newState = progressStep(startState, DefaultStateSummary);
   expect(newState).toMatchSnapshot();
 });
 
@@ -48,6 +49,6 @@ test('Progresses a step when there are two items in the same group', () => {
       heading: "erwfkjwefkjwer"
     }]
   }
-  const newState = progressStep(startState);
+  const newState = progressStep(startState, DefaultStateSummary);
   expect(newState).toMatchSnapshot();
 });
