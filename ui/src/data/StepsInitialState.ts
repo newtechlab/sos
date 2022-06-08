@@ -1,5 +1,6 @@
 import MoneyOut from "../components/MoneyOut";
 import { StepDefinition, StepGroup, StepGroupType, StepsState } from "../components/Steps";
+import { progressStep } from "./StepProgressor";
 
 export const StepsInitialState: Array<StepDefinition> = [
     {
@@ -65,28 +66,41 @@ export const StepsInitialState: Array<StepDefinition> = [
 ];
 
 export interface StateSummary {
+    familyMemberCount: number | undefined;
     moneyIn: string | undefined;
     moneyOut: string | undefined;
 }
 
 export const DefaultStateSummary: StateSummary = {
+    familyMemberCount: undefined,
     moneyIn: undefined,
     moneyOut: undefined,
 }
 
+const familyTxt = (familyMemberCount: number | undefined): string => {
+    if (familyMemberCount === undefined || familyMemberCount === 0) {
+        return "Oversikt over familen"
+    }
+
+    if (familyMemberCount === 1) return `${familyMemberCount} person`
+
+    return `${familyMemberCount} people`
+} 
+
 export const StepGroups = (stateSummary: StateSummary): Map<StepGroupType, StepGroup> => {
+    const { familyMemberCount } = stateSummary
     const stepGroups: Map<StepGroupType, StepGroup> = new Map<StepGroupType, StepGroup>();
     stepGroups.set(StepGroupType.FAMILY, {
         title: "Familie",
-        description: "Oversikt over familen",
+        description: familyTxt(familyMemberCount),
     })
     stepGroups.set(StepGroupType.MONEY_IN, {
         title: "Penger inn",
-        description: `${stateSummary.moneyIn} kr` || "Lønn og andre støtteordninger",
+        description: stateSummary.moneyIn ? `${stateSummary.moneyIn} kr` : "Lønn og andre støtteordninger",
     })
     stepGroups.set(StepGroupType.MONEY_OUT, {
         title: "Penger ut",
-        description: `${stateSummary.moneyOut} kr` || "Oversikt over familen",
+        description: stateSummary.moneyOut ? `${stateSummary.moneyOut} kr` : "Oversikt over familen",
     })
     stepGroups.set(StepGroupType.RESULTS, {
         title: "Resultat 1",
