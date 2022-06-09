@@ -40,9 +40,6 @@ const getPathOfStepGroup = (stepGroup: StepGroupType, stepDefinitions: StepDefin
 }
 
 export default function Steps(props: StepsProps) {
-
-    console.log("completedGroups", props.steps.completedGroups);
-
     const { steps } = props
     const ActiveIcon = "arrow alternate circle down";
     const CompleteIcon = "check circle";

@@ -165,7 +165,7 @@ function rehydrateSet<A>(name: string, ifEmpty: Set<A>): Set<A> {
   const item = localStorage.getItem(name);
 
   if (item) {
-    return new Set<A>(JSON.parse(item));
+    return new Set<A>(JSON.parse(item) as Array<A>);
   }
 
   return ifEmpty;
@@ -238,7 +238,7 @@ function App() {
     );
     localStorage.setItem(
       "completedStepGroups", 
-      JSON.stringify(Array.from(steps.completedGroups.entries()))
+      JSON.stringify(Array.from(steps.completedGroups.keys()))
     );
     localStorage.setItem("familyMembers", JSON.stringify(familyMembers));
     localStorage.setItem("ledger", JSON.stringify(ledger));
