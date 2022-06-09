@@ -103,7 +103,7 @@ export const StepGroups = (stateSummary: StateSummary): Map<StepGroupType, StepG
         description: stateSummary.moneyOut ? `${stateSummary.moneyOut} kr` : "Oversikt over familen",
     })
     stepGroups.set(StepGroupType.RESULTS, {
-        title: "Resultat 1",
+        title: "Resultat",
         description: "Tiltak og råd ",
     })
     return stepGroups;
@@ -118,13 +118,14 @@ export const InitialStepsWithoutPath = (stateSummary: StateSummary): StepsState 
     }  
 }
 
-export const InitialStepsWithPath = (path: string, stateSummary: StateSummary): StepsState => {
+export const InitialStepsWithPath = (path: string, stateSummary: StateSummary, completedGroups: Set<StepGroupType>): StepsState => {
     const steps = InitialStepsWithoutPath(stateSummary);
     const current = StepsInitialState.find((s) => s.path === path)
 
     return {
         ... steps, 
         activeStepId: current?.id || 0,
+        completedGroups: completedGroups
     }
 }
 

@@ -41,10 +41,18 @@ export default function DaySelector(props: DaySelectorProps) {
 
 export const StyledTable = styled(Table)`
     margin-top: 0 !important;
+
+    td.selectable.active {
+        background-color: #A5C8D7 !important;
+    }
 `;
 
 export const StyledCell = styled(Table.Cell)`
   padding: 20px !important;
+
+  &:hover {
+      cursor: pointer;
+  }
 `;
 
 export const StyledHeaderDiv = styled.div`

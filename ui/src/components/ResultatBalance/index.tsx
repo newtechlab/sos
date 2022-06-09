@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Container } from "semantic-ui-react";
+import { Container, Grid } from "semantic-ui-react";
 import { Goal, LedgerRow } from "../../App";
 import styled from "styled-components";
 
@@ -120,10 +120,12 @@ export default function ResultatBalance(props: ResultatBalanceProps) {
     computeInOutPercent();
   }, [adjustments]);
 
+  const overspending = inTotal - outTotal;
+
   return (
     <StyledBackgroundColour>
       <StyledHeader>
-        <StepHeader steps={steps} />
+        <StepHeader steps={steps} goToStep={goToStep} />
       </StyledHeader>
       <StyledContainer>
         <StyledContainerSpace>
@@ -137,6 +139,16 @@ export default function ResultatBalance(props: ResultatBalanceProps) {
             <StyledGraphContainer>
               <Bar options={chartOptions} data={graphData} />
             </StyledGraphContainer>
+
+            <DiffStyledDiv>
+            <hr />
+            <Grid>
+              <Grid.Column textAlign="left" width={14}><StyledTotalDiv className="heading">{ overspending < 0 ? "Overspending" : "Saving"}</StyledTotalDiv></Grid.Column>
+              <Grid.Column textAlign="right" width={2}><StyledTotalDiv className={ overspending < 0 ? "amountNegative" : "amountPositive" }>{inTotal - outTotal} kr</StyledTotalDiv></Grid.Column>
+            </Grid>
+            <hr />
+            </DiffStyledDiv>
+
           </StyledBoxSection>
 
           <BackForwardControls
@@ -152,6 +164,26 @@ export default function ResultatBalance(props: ResultatBalanceProps) {
 
 const StyledContainer = styled(Container)`
   padding-bottom: 150px;
+`;
+
+const StyledTotalDiv = styled.div`
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font-weight: bold !important;
+
+  
+`
+
+const DiffStyledDiv = styled.div`
+  padding-top: 30px;
+  
+  .amountNegative {
+    color: red !important;
+  }
+
+  hr {
+    border-top: 1px solid #CCC;
+  }
 `;
 
 const CenteredContentSection = styled.div`
