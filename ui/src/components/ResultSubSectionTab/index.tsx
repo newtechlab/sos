@@ -44,5 +44,6 @@ const StyledGridColumn = styled(Grid.Column)`
 
     &:hover {
         cursor: pointer;
+        background-color: white;
     }
 `

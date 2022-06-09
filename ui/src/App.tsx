@@ -161,6 +161,16 @@ function rehydrateMap<A, B>(name: string, ifEmpty: Map<A, B>): Map<A, B> {
   return ifEmpty;
 }
 
+function rehydrateSet<A>(name: string, ifEmpty: Set<A>): Set<A> {
+  const item = localStorage.getItem(name);
+
+  if (item) {
+    return new Set<A>(JSON.parse(item));
+  }
+
+  return ifEmpty;
+}
+
 function App() {
   const navigate = useNavigate();
   const [stateSummary, setStateSummary] = useState<StateSummary>(DefaultStateSummary);
@@ -169,7 +179,7 @@ function App() {
     rehydrate("previousData", [])
   );
   const [steps, setSteps] = useState<StepsState>(
-    InitialStepsWithPath(window.location.pathname, DefaultStateSummary)
+    InitialStepsWithPath(window.location.pathname, DefaultStateSummary, rehydrateSet("completedStepGroups", new Set()))
   );
   const [familyMembers, setFamilyMembers] = useState<Array<FamilyMember>>(
     rehydrate("familyMembers", [])
@@ -226,7 +236,10 @@ function App() {
       "previousData",
       JSON.stringify(Array.from(previousData))
     );
-    localStorage.setItem("steps", JSON.stringify(steps));
+    localStorage.setItem(
+      "completedStepGroups", 
+      JSON.stringify(Array.from(steps.completedGroups.entries()))
+    );
     localStorage.setItem("familyMembers", JSON.stringify(familyMembers));
     localStorage.setItem("ledger", JSON.stringify(ledger));
     localStorage.setItem("userDetails", JSON.stringify(userDetails));
@@ -257,7 +270,7 @@ function App() {
   }, [ ledger, familyMembers ]);
 
   useEffect(() => {
-    setSteps( updateSteps(steps, stateSummary))
+    setSteps(updateSteps(steps, stateSummary))
   }, [ stateSummary ]);
 
   const completeStep = () => {
@@ -283,7 +296,7 @@ function App() {
     localStorage.clear()
     setPets([]);
     setPreviousData([])
-    setSteps(InitialStepsWithPath(window.location.pathname, DefaultStateSummary));
+    setSteps(InitialStepsWithPath(window.location.pathname, DefaultStateSummary, rehydrateSet("completedStepGroups", new Set())));
     setFamilyMembers([]);
     setLedger([]);
     setUserDetails(InitialUserInfo)
@@ -342,7 +355,6 @@ function App() {
                   completeStep={completeStep}
                   goBack={goBack}
                   goToStep={goToStep}
-                  activeStep={activeStep}
                   steps={steps}
                 />
               }

@@ -18,7 +18,6 @@ interface MoneyInProps {
   completeStep: () => void;
   goBack: () => void;
   goToStep: (step: StepDefinition) => void
-  activeStep: StepDefinition | undefined;
   steps: StepsState;
 }
 
@@ -34,7 +33,6 @@ export default function MoneyIn(props: MoneyInProps) {
     removeLedgerRow,
     completeStep,
     goBack,
-    activeStep,
     steps,
     goToStep
   } = props;
