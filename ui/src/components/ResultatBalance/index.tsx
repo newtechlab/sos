@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Container } from "semantic-ui-react";
+import { Container, Grid } from "semantic-ui-react";
 import { Goal, LedgerRow } from "../../App";
 import styled from "styled-components";
 
@@ -120,6 +120,8 @@ export default function ResultatBalance(props: ResultatBalanceProps) {
     computeInOutPercent();
   }, [adjustments]);
 
+  const overspending = inTotal - outTotal;
+
   return (
     <StyledBackgroundColour>
       <StyledHeader>
@@ -137,6 +139,16 @@ export default function ResultatBalance(props: ResultatBalanceProps) {
             <StyledGraphContainer>
               <Bar options={chartOptions} data={graphData} />
             </StyledGraphContainer>
+
+            <DiffStyledDiv>
+            <hr />
+            <Grid>
+              <Grid.Column textAlign="left" width={14} className="heading">{ overspending < 0 ? "Overspending" : "Saving"}</Grid.Column>
+              <Grid.Column textAlign="right" width={2} className={ overspending < 0 ? "amountNegative" : "amountPositive" }>{inTotal - outTotal} kr</Grid.Column>
+            </Grid>
+            <hr />
+            </DiffStyledDiv>
+
           </StyledBoxSection>
 
           <BackForwardControls
@@ -152,6 +164,23 @@ export default function ResultatBalance(props: ResultatBalanceProps) {
 
 const StyledContainer = styled(Container)`
   padding-bottom: 150px;
+`;
+
+const DiffStyledDiv = styled.div`
+  padding-top: 30px;
+  
+  hr {
+    border-top: 1px solid #CCC;
+  }
+
+  .heading {
+    font-weight: bold;
+  }
+
+  .amountNegative {
+    font-weight: bold;
+    color: red;
+  }
 `;
 
 const CenteredContentSection = styled.div`
