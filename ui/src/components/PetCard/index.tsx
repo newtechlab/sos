@@ -2,24 +2,25 @@ import { Icon, Image } from "semantic-ui-react";
 import styled from "styled-components";
 import pets from "./shilouette-pets.png";
 
-interface PetMemberCardProps {
+interface GenericFamilyMemberCardProps {
   id: string;
   name: string;
-  deletePet: (id: string) => void;
+  image: string;
+  onDelete: (id: string) => void;
 }
 
-export default function PetMemberCard(props: PetMemberCardProps) {
-  const { id, name, deletePet } = props;
+export function GenericFamilyMemberCard(props: GenericFamilyMemberCardProps) {
+  const { id, name, onDelete, image } = props;
 
   return (
     <StyledPetCard>
-      <StyledImage src={pets} wrapped ui={false} />
+      <StyledImage src={image} wrapped ui={false} />
       <StyledNameDiv>        
         {name}
         <IconDiv>
         <Icon
         onClick={() => {
-          deletePet(id);
+          onDelete(id);
         }}
         name="trash alternate outline"
         color="blue"        
@@ -28,6 +29,20 @@ export default function PetMemberCard(props: PetMemberCardProps) {
       
       </StyledNameDiv>
     </StyledPetCard>
+  );
+}
+
+interface PetMemberCardProps {
+  id: string;
+  name: string;
+  onDelete: (id: string) => void;
+}
+
+export default function PetMemberCard(props: PetMemberCardProps) {
+  const { id, name, onDelete } = props;
+
+  return (
+    <GenericFamilyMemberCard id={id} name={name} onDelete={onDelete} image={pets} />
   );
 }
 

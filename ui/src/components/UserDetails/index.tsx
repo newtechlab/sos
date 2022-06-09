@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Card, Container, Grid, Icon, Input } from "semantic-ui-react";
+import { Card, Container, Grid, Input } from "semantic-ui-react";
 import styled from "styled-components";
 import { Car, FamilyMember, HouseSituation, Pet, UserInformation } from "../../App";
 import AddFamilyMemberCard from "../AddFamilyMemberCard";
@@ -11,7 +11,6 @@ import { JaNei } from "../JaNei";
 import StepHeader from "../StepHeader";
 import { StepDefinition, StepsState } from "../Steps";
 import AddPetModal from "../AddPetModal";
-import { StyledGridRow } from "../MoneyIn";
 import { StyledCard } from "../StyledFamilyCard";
 import PetMemberCard from "../PetCard";
 
@@ -136,7 +135,7 @@ export default function UserDetails(props: UserDetailsProps) {
                     key={p.id}
                     id={p.id}
                     name={p.name}
-                    deletePet={deletePet}
+                    onDelete={deletePet}
                   />
                 );
               })}
