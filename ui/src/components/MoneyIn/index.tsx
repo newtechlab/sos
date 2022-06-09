@@ -17,6 +17,7 @@ interface MoneyInProps {
   removeLedgerRow: (id: string) => void;
   completeStep: () => void;
   goBack: () => void;
+  goToStep: (step: StepDefinition) => void
   activeStep: StepDefinition | undefined;
   steps: StepsState;
 }
@@ -35,6 +36,7 @@ export default function MoneyIn(props: MoneyInProps) {
     goBack,
     activeStep,
     steps,
+    goToStep
   } = props;
 
   useEffect(() => {
@@ -53,8 +55,8 @@ export default function MoneyIn(props: MoneyInProps) {
 
   return (
     <StyledBackgroundColour>
-      <StyledHeader>
-        <StepHeader steps={steps} />
+      <StyledHeader> 
+        <StepHeader steps={steps} goToStep={goToStep} />
       </StyledHeader>
       <Container>
         <StyledContainerSpace>

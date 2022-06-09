@@ -103,7 +103,7 @@ export const StepGroups = (stateSummary: StateSummary): Map<StepGroupType, StepG
         description: stateSummary.moneyOut ? `${stateSummary.moneyOut} kr` : "Oversikt over familen",
     })
     stepGroups.set(StepGroupType.RESULTS, {
-        title: "Resultat 1",
+        title: "Resultat",
         description: "Tiltak og råd ",
     })
     return stepGroups;

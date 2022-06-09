@@ -321,6 +321,7 @@ function App() {
                   steps={steps}
                   completeStep={completeStep}
                   goBack={goBack}
+                  goToStep={goToStep}
                   setUserDetails={setUserDetails}
                   userDetails={userDetails}
                   pets={pets}
@@ -340,6 +341,7 @@ function App() {
                   removeLedgerRow={deleteLedgerRow}
                   completeStep={completeStep}
                   goBack={goBack}
+                  goToStep={goToStep}
                   activeStep={activeStep}
                   steps={steps}
                 />
@@ -354,6 +356,7 @@ function App() {
                   removeLedgerRow={deleteLedgerRow}
                   completeStep={completeStep}
                   goBack={goBack}
+                  goToStep={goToStep}
                   activeStep={activeStep}
                   steps={steps}
                   categories={new Set([TransactionCategory.Debt])}
@@ -369,6 +372,7 @@ function App() {
                   removeLedgerRow={deleteLedgerRow}
                   completeStep={completeStep}
                   goBack={goBack}
+                  goToStep={goToStep}
                   activeStep={activeStep}
                   steps={steps}
                   categories={

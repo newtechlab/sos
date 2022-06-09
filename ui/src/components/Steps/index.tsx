@@ -32,6 +32,11 @@ export interface StepDefinition {
 
 export interface StepsProps {
   steps: StepsState;
+  goToStep: (step: StepDefinition) => void
+}
+
+const getPathOfStepGroup = (stepGroup: StepGroupType, stepDefinitions: StepDefinition[]): StepDefinition | undefined => {
+    return stepDefinitions.find((i) => i.group === stepGroup)
 }
 
 export default function Steps(props: StepsProps) {
@@ -41,14 +46,16 @@ export default function Steps(props: StepsProps) {
     const stepsArray = Array.from( steps.stepGroups )
     return <Step.Group widths={4}>
             { stepsArray.map(([stepGroupId, stepGroup]) => {
+                const currentStepDefinition = steps.stepGroups.get(stepGroupId)
+                const stepDefinition: StepDefinition | undefined = getPathOfStepGroup(stepGroupId, steps.steps);
                 const step = steps.steps[steps.activeStepId];
                 const isActive = stepGroupId === (step?.group || StepGroupType.FAMILY);
-                return <Step key={stepGroupId} active={isActive}>
+                return <Step key={stepGroupId} active={isActive} onClick={ () => { if (stepDefinition) { props.goToStep(stepDefinition) } }}>
                     {  isActive && <Icon name={ActiveIcon} color="teal" /> }
                     {  !isActive && steps.completedGroups.has(stepGroupId) && <Icon name={CompleteIcon} color="green" /> } 
                     <Step.Content>
-                    <Step.Title>{ steps.stepGroups.get(stepGroupId)?.title }</Step.Title>
-                    <Step.Description> { steps.stepGroups.get(stepGroupId)?.description }</Step.Description>
+                    <Step.Title>{ currentStepDefinition?.title }</Step.Title>
+                    <Step.Description> { currentStepDefinition?.description }</Step.Description>
                     </Step.Content>
                 </Step>
             })}

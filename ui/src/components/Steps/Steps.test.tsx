@@ -19,6 +19,6 @@ test('renders learn react link', () => {
       heading: "erwfkjwefkjwer"
     }]
   }
-  const {container, getByText} = render( <Steps steps={stepState} />  )
+  const {container, getByText} = render( <Steps steps={stepState} goToStep={(step) => undefined } />  )
   expect(getByText('Oversikt over familen')).toBeInTheDocument()
 });

@@ -26,6 +26,7 @@ export interface UserDetailsProps {
   userDetails: UserInformation;
   completeStep: () => void;
   goBack: () => void;
+  goToStep: (step: StepDefinition) => void
   activeStep: StepDefinition | undefined;
   steps: StepsState;
 }
@@ -40,7 +41,7 @@ export default function UserDetails(props: UserDetailsProps) {
     familyMembers,
     completeStep,
     goBack,
-    activeStep,
+    goToStep,
     steps,
     userDetails,
     setUserDetails,
@@ -52,7 +53,7 @@ export default function UserDetails(props: UserDetailsProps) {
   return (
     <StyledBackgroundColour>
       <StyledHeader>
-        <StepHeader steps={steps}  />
+        <StepHeader steps={steps} goToStep={goToStep} />
       </StyledHeader>
       <Container>
         <StyledContainerSpace>

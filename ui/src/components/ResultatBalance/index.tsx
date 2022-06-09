@@ -125,7 +125,7 @@ export default function ResultatBalance(props: ResultatBalanceProps) {
   return (
     <StyledBackgroundColour>
       <StyledHeader>
-        <StepHeader steps={steps} />
+        <StepHeader steps={steps} goToStep={goToStep} />
       </StyledHeader>
       <StyledContainer>
         <StyledContainerSpace>
@@ -143,8 +143,8 @@ export default function ResultatBalance(props: ResultatBalanceProps) {
             <DiffStyledDiv>
             <hr />
             <Grid>
-              <Grid.Column textAlign="left" width={14} className="heading">{ overspending < 0 ? "Overspending" : "Saving"}</Grid.Column>
-              <Grid.Column textAlign="right" width={2} className={ overspending < 0 ? "amountNegative" : "amountPositive" }>{inTotal - outTotal} kr</Grid.Column>
+              <Grid.Column textAlign="left" width={14}><StyledTotalDiv className="heading">{ overspending < 0 ? "Overspending" : "Saving"}</StyledTotalDiv></Grid.Column>
+              <Grid.Column textAlign="right" width={2}><StyledTotalDiv className={ overspending < 0 ? "amountNegative" : "amountPositive" }>{inTotal - outTotal} kr</StyledTotalDiv></Grid.Column>
             </Grid>
             <hr />
             </DiffStyledDiv>
@@ -166,20 +166,23 @@ const StyledContainer = styled(Container)`
   padding-bottom: 150px;
 `;
 
+const StyledTotalDiv = styled.div`
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font-weight: bold !important;
+
+  
+`
+
 const DiffStyledDiv = styled.div`
   padding-top: 30px;
   
+  .amountNegative {
+    color: red !important;
+  }
+
   hr {
     border-top: 1px solid #CCC;
-  }
-
-  .heading {
-    font-weight: bold;
-  }
-
-  .amountNegative {
-    font-weight: bold;
-    color: red;
   }
 `;
 

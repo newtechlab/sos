@@ -19,6 +19,7 @@ interface MoneyOutProps {
   removeLedgerRow: (id: string) => void;
   completeStep: () => void;
   goBack: () => void;
+  goToStep: (step: StepDefinition) => void
   activeStep: StepDefinition | undefined;
   steps: StepsState;
   categories: Set<string>;
@@ -39,7 +40,7 @@ export default function MoneyOut(props: MoneyOutProps) {
     removeLedgerRow,
     completeStep,
     goBack,
-    activeStep,
+    goToStep,
     steps,
     categories,
   } = props;
@@ -63,7 +64,7 @@ export default function MoneyOut(props: MoneyOutProps) {
   return (
     <StyledBackgroundColour>
       <StyledHeader>
-        <StepHeader steps={steps} />
+        <StepHeader steps={steps} goToStep={goToStep} />
       </StyledHeader>
       <StyledContainer>
         <StyledContainerSpace>
