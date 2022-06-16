@@ -27,7 +27,7 @@ import ResultatInteract, {
 } from "./components/ResultatInteract";
 import Home from "./components/Home";
 import MoneyOutDebt from "./components/MoneyOutDebt";
-import { Container } from "semantic-ui-react";
+import { Button, Container, Icon } from "semantic-ui-react";
 import { DefaultStateSummary, InitialStepsWithPath, StateSummary } from "./data/StepsInitialState";
 import ResultatBalance from "./components/ResultatBalance";
 import ResultatDebt from "./components/ResultatDebt";
@@ -291,6 +291,10 @@ function App() {
     navigate(newState.steps[newState.activeStepId]?.path || "/");
   };
 
+  const openFeedbackForm = () => {
+    window.open('https://forms.gle/M6ou5EjrdY4tv8BJ8', '_blank')?.focus();
+  }
+
   const resetSession = () => {
     // clear previous sessions
     localStorage.clear()
@@ -307,6 +311,7 @@ function App() {
 
   return (
     <StyledRootDiv className="App">
+      <FeedbackButton color='purple' circular onClick={() => openFeedbackForm()}> <Icon name='chat' />Feedback </FeedbackButton>
       <StyledOverridesDiv>
         <StyledBodyDiv>
           <Routes>
@@ -481,6 +486,12 @@ export const StyledOverridesDiv = styled.div`
     font-family: Montserrat !important;
     font-weight: 300;
   }
+`;
+
+export const FeedbackButton = styled(Button)`
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
 `;
 
 export const StyledRootDiv = styled.div`
