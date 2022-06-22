@@ -129,9 +129,7 @@ export default function ResultatBalance(props: ResultatBalanceProps) {
       </StyledHeader>
       <StyledContainer>
         <StyledContainerSpace>
-          <CenteredContentSection>
-            <ResultSubSectionTab goToStep={goToStep} items={StepsInitialState.filter((i) => i.group === activeStep?.group)} selectedItem={activeStep} />
-          </CenteredContentSection>
+          <ResultSubSectionTab goToStep={goToStep} items={StepsInitialState.filter((i) => i.group === activeStep?.group)} selectedItem={activeStep} />
 
           <StyledBoxSection>
             <h1>Pengebruk</h1>

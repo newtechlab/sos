@@ -76,9 +76,7 @@ export default function ResultatDebt(props: ResultatDebtProps) {
       </StyledHeader>
       <StyledContainer>
         <StyledContainerSpace>
-          <CenteredContentSection>
-            <ResultSubSectionTab goToStep={goToStep} items={StepsInitialState.filter((i) => i.group === activeStep?.group)} selectedItem={activeStep} />
-          </CenteredContentSection>
+          <ResultSubSectionTab goToStep={goToStep} items={StepsInitialState.filter((i) => i.group === activeStep?.group)} selectedItem={activeStep} />
 
           <StyledBoxSection>
             <h1>Monthly debt overview</h1>
