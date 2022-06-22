@@ -75,7 +75,7 @@ export default function MoneyOut(props: MoneyOutProps) {
               addLedgerRow={addLedgerRow}
               categories={categories}
               header="gjeld"
-              ingresstext="Penger du bruker hver måned på å betale på gjeld og/eller husleie"
+              ingresstext="Penger du bruker hver måned på å betale gjeld"
             />
           )}
           <StyledDiv>
