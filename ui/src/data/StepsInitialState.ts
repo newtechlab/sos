@@ -96,7 +96,7 @@ export const StepGroups = (stateSummary: StateSummary): Map<StepGroupType, StepG
     })
     stepGroups.set(StepGroupType.MONEY_IN, {
         title: "Penger inn",
-        description: stateSummary.moneyIn ? `${stateSummary.moneyIn} kr` : "Lønn og andre støtteordninger",
+        description: stateSummary.moneyIn ? `${stateSummary.moneyIn} kr` : "Lønn og støtteordninger",
     })
     stepGroups.set(StepGroupType.MONEY_OUT, {
         title: "Penger ut",
