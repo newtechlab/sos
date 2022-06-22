@@ -129,9 +129,7 @@ export default function ResultatBalance(props: ResultatBalanceProps) {
       </StyledHeader>
       <StyledContainer>
         <StyledContainerSpace>
-          <CenteredContentSection>
-            <ResultSubSectionTab goToStep={goToStep} items={StepsInitialState.filter((i) => i.group === activeStep?.group)} selectedItem={activeStep} />
-          </CenteredContentSection>
+          <ResultSubSectionTab goToStep={goToStep} items={StepsInitialState.filter((i) => i.group === activeStep?.group)} selectedItem={activeStep} />
 
           <StyledBoxSection>
             <h1>Pengebruk</h1>
@@ -143,7 +141,7 @@ export default function ResultatBalance(props: ResultatBalanceProps) {
             <DiffStyledDiv>
             <hr />
             <Grid>
-              <Grid.Column textAlign="left" width={14}><StyledTotalDiv className="heading">{ overspending < 0 ? "Overspending" : "Saving"}</StyledTotalDiv></Grid.Column>
+              <Grid.Column textAlign="left" width={14}><StyledTotalDiv className="heading">{ overspending < 0 ? "Overforbruk" : "Sparande"}</StyledTotalDiv></Grid.Column>
               <Grid.Column textAlign="right" width={2}><StyledTotalDiv className={ overspending < 0 ? "amountNegative" : "amountPositive" }>{inTotal - outTotal} kr</StyledTotalDiv></Grid.Column>
             </Grid>
             <hr />

@@ -10,6 +10,7 @@ import styled from "styled-components";
 import { StepDefinition, StepsState } from "../Steps";
 import StepHeader from "../StepHeader";
 import MoneyTotal from "../MoneyTotal";
+import TrashIcon from "../TrashIcon";
 
 interface MoneyInProps {
   ledger: Array<LedgerRow>;
@@ -94,12 +95,10 @@ export default function MoneyIn(props: MoneyInProps) {
                       <Grid.Column width={6}>{row.amount}</Grid.Column>
                       <Grid.Column width={3}>{row.dayOfMonth}</Grid.Column>
                       <Grid.Column width={1}>
-                        <Icon
-                          onClick={() => {
-                            removeLedgerRow(row.id);
-                          }}
-                          name="trash alternate outline"
+                        <TrashIcon
+                          onClick={removeLedgerRow}                    
                           color="blue"
+                          itemId={row.id}
                         />
                       </Grid.Column>
                     </StyledGridRow>

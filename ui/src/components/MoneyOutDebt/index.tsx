@@ -12,6 +12,7 @@ import StepHeader from "../StepHeader";
 import styled from "styled-components";
 import MoneyTotal from "../MoneyTotal";
 import HelpTextModalDebt from "../HelpTextModalDebt";
+import TrashIcon from "../TrashIcon";
 
 interface MoneyOutProps {
   ledger: Array<LedgerRow>;
@@ -114,12 +115,10 @@ export default function MoneyOut(props: MoneyOutProps) {
                     <Grid.Column width={3}>{row.amount}</Grid.Column>
                     {/* <Grid.Column width={3}>{row.dayOfMonth}</Grid.Column> */}
                     <Grid.Column width={1}>
-                      <Icon
-                        onClick={() => {
-                          removeLedgerRow(row.id);
-                        }}
-                        name="trash alternate outline"
-                        color="blue"
+                      <TrashIcon
+                          onClick={removeLedgerRow}                    
+                          color="blue"
+                          itemId={row.id}
                       />
                     </Grid.Column>
                   </StyledGridRow>
