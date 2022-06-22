@@ -183,9 +183,3 @@ const StyledContainer = styled(Container)`
 const StyledDiv = styled.div`
   position: relative;
 `;
-
-const OurIcon = styled(Icon)`
-  &:hover {
-    cursor: pointer;
-    background-color: white;
-`

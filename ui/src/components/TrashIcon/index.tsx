@@ -12,6 +12,7 @@ export default function TrashIcon(props: IconProps) {
 
   return (
     <StyledIcon
+      title="Slette"
       name="trash alternate outline"
       color={color}
       onClick={() => {
