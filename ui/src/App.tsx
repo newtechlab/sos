@@ -311,7 +311,7 @@ function App() {
 
   return (
     <StyledRootDiv className="App">
-      <FeedbackButton color='purple' circular onClick={() => openFeedbackForm()}> <Icon name='chat' />Feedback </FeedbackButton>
+      <FeedbackButton color='purple' circular onClick={() => openFeedbackForm()}> <Icon name='chat' />Send oss din tilbakemelding </FeedbackButton>
       <StyledOverridesDiv>
         <StyledBodyDiv>
           <Routes>
