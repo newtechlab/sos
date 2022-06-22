@@ -133,7 +133,7 @@ export default function MoneyOut(props: MoneyOutProps) {
                     }}
                   >
                     <Icon name="plus" />
-                    Utgifter
+                    Legg til utgifter
                   </Button>
                 </Grid.Column>
               </StyledGridRowBottom>
