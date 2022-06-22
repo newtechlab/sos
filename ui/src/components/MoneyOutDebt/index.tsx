@@ -116,10 +116,9 @@ export default function MoneyOut(props: MoneyOutProps) {
                     {/* <Grid.Column width={3}>{row.dayOfMonth}</Grid.Column> */}
                     <Grid.Column width={1}>
                       <TrashIcon
-                        onClick={removeLedgerRow}                    
-                        name="trash alternate outline"
-                        color="blue"
-                        itemId={row.id}
+                          onClick={removeLedgerRow}                    
+                          color="blue"
+                          itemId={row.id}
                       />
                     </Grid.Column>
                   </StyledGridRow>

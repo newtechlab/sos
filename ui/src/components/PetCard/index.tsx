@@ -1,5 +1,6 @@
 import { Icon, Image } from "semantic-ui-react";
 import styled from "styled-components";
+import TrashIcon from "../TrashIcon";
 import pets from "./shilouette-pets.png";
 
 interface GenericFamilyMemberCardProps {
@@ -18,13 +19,11 @@ export function GenericFamilyMemberCard(props: GenericFamilyMemberCardProps) {
       <StyledNameDiv>        
         {name}
         <IconDiv>
-        <Icon
-        onClick={() => {
-          onDelete(id);
-        }}
-        name="trash alternate outline"
-        color="blue"        
-        />  
+          <TrashIcon
+            onClick={onDelete}                    
+            color="blue"
+            itemId={id}
+          /> 
         </IconDiv>
       
       </StyledNameDiv>
