@@ -77,7 +77,7 @@ export default function AddMoneyOutModal(props: AddMoneyOutModalProps) {
     });
     items.set("Husleie", {
       name: "Husleie",
-      category: TransactionCategory.Debt,
+      category: TransactionCategory.Rent,
     });
     items.set("Reise (Fly, hotell)", {
       name: "Reise (Fly, hotell)",
