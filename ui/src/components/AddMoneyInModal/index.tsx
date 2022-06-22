@@ -225,7 +225,6 @@ export default function AddMoneyInModal(props: AddMoneyInModalProps) {
       onClose={() => setOpen(false)}
       onOpen={() => setOpen(true)}
       open={open}
-      trigger={<Button>Show Modal</Button>}
     >
       <StyledModalContent>
         <StyledOverridesDiv>

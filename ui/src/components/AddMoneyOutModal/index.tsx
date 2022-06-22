@@ -142,7 +142,6 @@ export default function AddMoneyOutModal(props: AddMoneyOutModalProps) {
       onClose={() => setOpen(false)}
       onOpen={() => setOpen(true)}
       open={open}
-      trigger={<Button>Show Modal</Button>}
     >
       <Modal.Header>Legg til ny {props.header}</Modal.Header>
       <Modal.Content>{props.ingresstext}</Modal.Content>
