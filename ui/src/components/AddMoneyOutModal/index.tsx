@@ -163,7 +163,7 @@ export default function AddMoneyOutModal(props: AddMoneyOutModalProps) {
             </Grid.Column>
             <Grid.Column width={5}>
               <Dropdown
-                placeholder="for eksempel Husleie"
+                placeholder="velg utgift"
                 selection
                 options={dropDownItems}
                 onChange={(_, data) => {
