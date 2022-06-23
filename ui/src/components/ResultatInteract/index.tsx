@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button, Container, Icon } from "semantic-ui-react";
-import { Goal, LedgerRow } from "../../App";
+import { Goal, LedgerRow, TransactionCategory } from "../../App";
 import styled from "styled-components";
 
 import { ChartData } from "chart.js";
@@ -60,8 +60,6 @@ export default function ResultatInteract(props: ResultatInteractProps) {
   >(graphDataInitialState);
   const { ledger, completeStep, activeStep, steps, goBack, adjustments, setAdjustments, goToStep } = props;
 
-  const labels = ["Penger Inn", "Penger Ut"];
-
   const computeInOutPercent = () => {
     const adjustedLedger = sortedLedger.map((row) => {
       if (adjustments.has(row.id)) {
@@ -91,34 +89,33 @@ export default function ResultatInteract(props: ResultatInteractProps) {
   }, [sortedLedger]);
 
   useEffect(() => {
-    const data = {
-      labels: labels,
-      datasets: [
-        {
-          label: "Penger Inn",
-          data: [inTotal, 0],
-          backgroundColor: PengerInnColour,
-        },
-        {
-          label: "Total expense amount",
-          data: [0, outTotal],
-          backgroundColor: PengerUtColour,
-        },
-      ],
-    };
-    setGraphData(data);
-  }, [inTotal, outTotal]);
-
-  useEffect(() => {
     setSortedLedger(sortLedger(ledger));
   }, [ledger]);
 
   useEffect(() => {
-    const mOut = sortedLedger.filter((row) => {
-      return row.accountFrom === "user";
-    });
+    const debt = ledger.filter((i) => i.category != TransactionCategory.Debt && i.accountFrom === "user")
+    const mOut = _.orderBy(debt, ["amount"], ["desc"]);
     setMoneyOut(mOut);
   }, [sortedLedger]);
+
+  useEffect(() => {
+    const data = {
+      labels: moneyOut.map((i) => { 
+        return i.accountTo 
+      }),
+      datasets: moneyOut.map((item, index) => { 
+        const data = Array(moneyOut.length)
+        data[index] = item.amount
+        return {
+          label: item.accountTo,
+          data: data,
+          backgroundColor: PengerUtColour,
+        }
+      }) 
+    };
+    setGraphData(data);
+  }, [moneyOut]);
+
 
   useEffect(() => {
     computeInOutPercent();
@@ -140,7 +137,7 @@ export default function ResultatInteract(props: ResultatInteractProps) {
           <ResultSubSectionTab goToStep={goToStep} items={StepsInitialState.filter((i) => i.group === activeStep?.group)} selectedItem={activeStep} />
 
           <StyledBoxSection>
-            <h1>Pengebruk</h1>
+            <h1>Månedlige utgifter</h1>
 
             <StyledGraphContainer>
               <Bar options={chartOptions} data={graphData} />
@@ -168,7 +165,10 @@ export default function ResultatInteract(props: ResultatInteractProps) {
 
               <StyledRow>
                 <StyledColumn>
-                  <h2>Løpende utgifter</h2>
+                  <h2>Løpende utgifter</h2>                  
+                  <StyledParagraph>
+                  Under kan du se dine månedlige utgifter. Du kan bruke tabellen til å tilpasse den økonomiske balansen for å sette et mål for neste måneds pengebruk. Prøve å justere utgiftene til et beløp som gir deg rom til å spare penger.
+                  </StyledParagraph>
                   <MoneyOutList
                     moneyOut={moneyOut}
                     onUpdateValue={onUpdateSlider}
@@ -239,4 +239,8 @@ const StyledColumn = styled.div`
 
 const StyledGraphContainer = styled.div`
   height: 150px;
+`;
+
+const StyledParagraph = styled.p`
+  margin-bottom: 3em;
 `;
