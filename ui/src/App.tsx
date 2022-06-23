@@ -489,6 +489,7 @@ export const StyledOverridesDiv = styled.div`
 `;
 
 export const FeedbackButton = styled(Button)`
+  z-index: 1000;
   position: fixed;
   bottom: 20px;
   right: 20px;
