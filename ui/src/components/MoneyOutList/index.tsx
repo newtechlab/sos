@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { Slider } from "../Slider";
 import { LedgerRow } from "../../App";
 import { AdjustmentAmountPercent } from "../ResultatInteract";
-import { Grid, Icon, Label } from "semantic-ui-react";
+import { Label } from "semantic-ui-react";
 
 export interface MoneyOutListProps {
   moneyOut: LedgerRow[];
@@ -14,7 +14,7 @@ export function MoneyOutList(props: MoneyOutListProps) {
   const { moneyOut, onUpdateValue, adjustments } = props;
 
   if (moneyOut.length === 0) {
-    return <div>Please add some items to you expenses first</div>;
+    return <div>Vennligst legg til noen utgifter</div>;
   }
 
   return (
