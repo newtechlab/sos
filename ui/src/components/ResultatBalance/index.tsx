@@ -141,7 +141,7 @@ export default function ResultatBalance(props: ResultatBalanceProps) {
             <DiffStyledDiv>
             <hr />
             <Grid>
-              <Grid.Column textAlign="left" width={14}><StyledTotalDiv className="heading">{ overspending < 0 ? "Overforbruk" : "Sparande"}</StyledTotalDiv></Grid.Column>
+              <Grid.Column textAlign="left" width={14}><StyledTotalDiv className="heading">{ overspending < 0 ? "Overforbruk" : "Potensiell sparing"}</StyledTotalDiv></Grid.Column>
               <Grid.Column textAlign="right" width={2}><StyledTotalDiv className={ overspending < 0 ? "amountNegative" : "amountPositive" }>{inTotal - outTotal} kr</StyledTotalDiv></Grid.Column>
             </Grid>
             <hr />
