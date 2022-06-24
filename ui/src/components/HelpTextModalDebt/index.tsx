@@ -143,7 +143,7 @@ const StyledParagraph = styled.p`
   padding-top: 1em;
 `;
 
-const StyledGaryBox = styled.div`
+export const StyledGaryBox = styled.div`
   padding: 2em;
   background-color: #f5f5f0;
   border-radius: 0.25em;
