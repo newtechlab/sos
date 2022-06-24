@@ -83,9 +83,9 @@ export default function AddMoneyInModal(props: AddMoneyInModalProps) {
   >();
   incomeTypes.set("Housing_Benefit", [
     {
-      key: "Housbanken",
-      text: "Housbanken",
-      value: "Housbanken",
+      key: "Husbanken",
+      text: "Husbanken",
+      value: "Husbanken",
     },
   ]);
   incomeTypes.set("Income", [
