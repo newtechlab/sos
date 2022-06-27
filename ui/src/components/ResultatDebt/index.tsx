@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Container } from "semantic-ui-react";
+import { Container, Grid } from "semantic-ui-react";
 import { Goal, LedgerRow, TransactionCategory } from "../../App";
 import styled from "styled-components";
 
@@ -22,6 +22,7 @@ import {
 import BackForwardControls from "../BackForwardControls";
 import ResultSubSectionTab from "../ResultSubSectionTab";
 import { StepsInitialState } from "../../data/StepsInitialState";
+import { DiffStyledDiv, StyledTotalDiv } from "../ResultatBalance";
 
 interface ResultatDebtProps {
   ledger: Array<LedgerRow>;
@@ -40,6 +41,7 @@ export type AdjustmentAmountPercent = string;
 
 export default function ResultatDebt(props: ResultatDebtProps) {
   const [debt, setDebt] = useState<LedgerRow[]>([]);
+  const [totalDebt, setTotalDebt] = useState<number>(0);
   const [graphData, setGraphData] = useState<
     ChartData<"bar", number[], unknown>
   >(graphDataInitialState);
@@ -48,7 +50,11 @@ export default function ResultatDebt(props: ResultatDebtProps) {
   useEffect(() => {
     const debt = ledger.filter((i) => i.category === TransactionCategory.Debt && i.accountFrom === "user")
     const sortedDebt = _.orderBy(debt, ["amount"], ["desc"]);
+    
     setDebt(sortedDebt);
+
+    const totalDebt = _.sumBy(sortedDebt, "amount");
+    setTotalDebt(totalDebt);
   }, [ledger]);
 
   useEffect(() => {
@@ -84,6 +90,16 @@ export default function ResultatDebt(props: ResultatDebtProps) {
             <StyledGraphContainer>
               <Bar options={chartOptions} data={graphData} />
             </StyledGraphContainer>
+
+            <DiffStyledDiv>
+              <hr />
+                <Grid>
+                  <Grid.Column textAlign="left" width={14}><StyledTotalDiv className="heading">Total</StyledTotalDiv></Grid.Column>
+                  <Grid.Column textAlign="right" width={2}><StyledTotalDiv className="amountPositive">{totalDebt} kr</StyledTotalDiv></Grid.Column>
+                </Grid>
+              <hr />
+            </DiffStyledDiv>
+
           </StyledBoxSection>
 
           <BackForwardControls
