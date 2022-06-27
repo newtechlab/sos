@@ -49,7 +49,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint **/*.tsx"
+    "lint": "eslint **/*.tsx  --max-warnings 0"
   },
   "eslintConfig": {
     "extends": [

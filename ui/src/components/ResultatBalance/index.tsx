@@ -139,12 +139,12 @@ export default function ResultatBalance(props: ResultatBalanceProps) {
             </StyledGraphContainer>
 
             <DiffStyledDiv>
-            <hr />
-            <Grid>
-              <Grid.Column textAlign="left" width={14}><StyledTotalDiv className="heading">{ overspending < 0 ? "Overforbruk" : "Potensiell sparing"}</StyledTotalDiv></Grid.Column>
-              <Grid.Column textAlign="right" width={2}><StyledTotalDiv className={ overspending < 0 ? "amountNegative" : "amountPositive" }>{inTotal - outTotal} kr</StyledTotalDiv></Grid.Column>
-            </Grid>
-            <hr />
+              <hr />
+                <Grid>
+                  <Grid.Column textAlign="left" width={14}><StyledTotalDiv className="heading">{ overspending < 0 ? "Overforbruk" : "Potensiell sparing"}</StyledTotalDiv></Grid.Column>
+                  <Grid.Column textAlign="right" width={2}><StyledTotalDiv className={ overspending < 0 ? "amountNegative" : "amountPositive" }>{inTotal - outTotal} kr</StyledTotalDiv></Grid.Column>
+                </Grid>
+              <hr />
             </DiffStyledDiv>
 
           </StyledBoxSection>
@@ -164,15 +164,13 @@ const StyledContainer = styled(Container)`
   padding-bottom: 150px;
 `;
 
-const StyledTotalDiv = styled.div`
+export const StyledTotalDiv = styled.div`
   padding-top: 10px;
   padding-bottom: 10px;
   font-weight: bold !important;
-
-  
 `
 
-const DiffStyledDiv = styled.div`
+export const DiffStyledDiv = styled.div`
   padding-top: 30px;
   
   .amountNegative {
