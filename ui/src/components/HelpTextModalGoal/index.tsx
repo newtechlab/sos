@@ -91,6 +91,7 @@ const LabelButton = styled.button`
   right: 0px;
   &:hover {
     text-decoration: underline;
+    cursor: pointer;
   }
 `;
 
@@ -107,4 +108,5 @@ const StyledParagraph = styled.p`
 
 const StyledSegment = styled(Segment)`
   margin-top: 0px !important;
+  overflow: scroll;
 `;

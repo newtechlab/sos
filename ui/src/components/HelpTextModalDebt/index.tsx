@@ -128,6 +128,7 @@ const LabelButton = styled.button`
   right: 0px;
   &:hover {
     text-decoration: underline;
+    cursor: pointer;
   }
 `;
 
@@ -158,6 +159,7 @@ const StyledImage = styled(Image)`
 
 const StyledSegment = styled(Segment)`
   margin-top: 0px !important;
+  overflow: scroll;
 `;
 
 const StyledLinkButton = styled.button`
