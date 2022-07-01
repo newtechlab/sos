@@ -33,7 +33,6 @@ interface ResultatDebtProps {
   goal: Goal;
   activeStep: StepDefinition | undefined;
   steps: StepsState;
-  
 }
 
 export type LedgerRowId = string;
