@@ -10,6 +10,7 @@ import {
 } from "semantic-ui-react";
 import { Fragment } from "react";
 import BankID from "./BankID.png";
+import { LabelButton } from "../HelpTextModalGoal";
 
 interface AddHelpTextModalProps {
   open: boolean;
@@ -117,20 +118,6 @@ export default function OpenHelpTextModal(props: AddHelpTextModalProps) {
     </Fragment>
   );
 }
-const LabelButton = styled.button`
-  border: 0px;
-  color: #3d8eb1;
-  background-color: #f1f8f8;
-  font-family: Montserrat !important;
-  font-weight: 300;
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  &:hover {
-    text-decoration: underline;
-    cursor: pointer;
-  }
-`;
 
 const StyledModalSidebar = styled.div`
   padding: 3em;
