@@ -1,12 +1,19 @@
 import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { useNavigate } from "react-router-dom";
-import { Button, Container, Image, Icon } from "semantic-ui-react";
+import { Button, Container, Image, Icon, Header } from "semantic-ui-react";
 import styled from "styled-components";
-import { FamilyMember, InitialUserInfo, LedgerRow, Pet, UserInformation } from "../../App";
+import {
+  FamilyMember,
+  InitialUserInfo,
+  LedgerRow,
+  Pet,
+  UserInformation,
+} from "../../App";
 import PdfConverter from "../../services/PdfService/PdfConverter";
 import { AdjustmentAmountPercent, LedgerRowId } from "../ResultatInteract";
 import frontpage_family from "./frontpage_family.png";
+import BankID from "./BankID.png";
 
 export interface HomProps {
   setPreviousData: (data: any[]) => void;
@@ -14,7 +21,7 @@ export interface HomProps {
   setLedger: (_: Array<LedgerRow>) => void;
   setUserDetails(_: UserInformation): void;
   setAdjustments(_: Map<LedgerRowId, AdjustmentAmountPercent>): void;
-  setPets: (_: Array<Pet>) => void; 
+  setPets: (_: Array<Pet>) => void;
   resetSession: () => void;
 }
 
@@ -31,13 +38,23 @@ export interface PdfFormat {
 
 export default function Home(props: HomProps) {
   const navigate = useNavigate();
-  const { setFamilyMembers, setLedger, setUserDetails, setPreviousData, setAdjustments, setPets, resetSession } = props;
+  const {
+    setFamilyMembers,
+    setLedger,
+    setUserDetails,
+    setPreviousData,
+    setAdjustments,
+    setPets,
+    resetSession,
+  } = props;
   const onDrop = useCallback((acceptedFiles) => {
     const fileReader = new FileReader();
     fileReader.onload = async (event) => {
       try {
         if (event?.target?.readyState === FileReader.DONE) {
-          const attachments = await PdfConverter.getAttachmentAsObject(event.target.result);
+          const attachments = await PdfConverter.getAttachmentAsObject(
+            event.target.result
+          );
           setPreviousData(attachments.previousData);
           setFamilyMembers(attachments.familyMembers);
           setLedger(attachments.ledger);
@@ -48,7 +65,9 @@ export default function Home(props: HomProps) {
         navigate(firstStep);
       } catch (err) {
         console.error("Load PDF error", err);
-        alert("There was an issue loading the PDF. Did you load the correct file?")
+        alert(
+          "There was an issue loading the PDF. Did you load the correct file?"
+        );
       }
     };
     fileReader.readAsArrayBuffer(acceptedFiles[0]);
@@ -61,25 +80,24 @@ export default function Home(props: HomProps) {
         <Image size="large" src={frontpage_family} wrapped />
         <Styledtitle>Økonomiveilederen</Styledtitle>
 
-        
         <StyledParagraph>
           Velkommen til økonomiveilederen! Målet med dette verktøyet er å gi deg
           bedre oversikt over din pengebruk. Ved å få bedre oversikt, tror vi at
           det blir enklere å ta nødvendige grep for å få en trygg økonomi og en
           enklere hverdag.{" "}
         </StyledParagraph>
-        
 
-        <StyledCenterDiv>
-          <StyledNBParagraph>
-            <StyledIcon>
-              <Icon name="info circle" />
-            </StyledIcon>
-            NB! Før vi begynner ber vi deg gjøre klar Bank-ID da vi vil be deg om
-            å logge på forskjellige nettsteder for å få full oversikt over din
+        <StyledGaryBox>
+          <Header>Husk BankID</Header>
+          <StyledSpaceAfter>
+            Før vi begynner ber vi deg gjøre klar Bank-ID da vi vil be deg om å
+            logge på forskjellige nettsteder for å få full oversikt over din
             økonomisk situasjon
-          </StyledNBParagraph>
-        </StyledCenterDiv>
+          </StyledSpaceAfter>
+          <StyledParagraph>
+            <StyledImage src={BankID} wrapped ui={false} />
+          </StyledParagraph>
+        </StyledGaryBox>
 
         <StyledSpace {...getRootProps()}>
           <input {...getInputProps()} />
@@ -110,15 +128,8 @@ export default function Home(props: HomProps) {
   );
 }
 
-const StyledCenterDiv = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 1em;
-`;
-
 const StyledSpace = styled.div`
-  padding: 1em !important;
+  padding-bottom: 1em !important;
 `;
 
 const StyledDragParagraph = styled.p`
@@ -138,34 +149,33 @@ const Styledtitle = styled.h1`
   font-weight: bold !important;
   padding: 1em;
 `;
-const StyledNBParagraph = styled.p`
-  background-color: #f1f8f8 !important;
-  padding: 0.5em;
-  text-align: left;
-  border-radius: 3px;
-  margin-bottom: 2em;
-  max-width: 800px;
-`;
-const StyledIcon = styled.p`
-  background-color: #f1f8f8 !important;
-  color: #3d8eb1;
-  padding: 0.5em;
-  text-align: left;
-  font-size: 17px;
-  border-radius: 2px;
-  float: left;
-`;
 
 const StyledParagraph = styled.p`
   margin-bottom: 3em;
 `;
+const StyledSpaceAfter = styled.p`
+  margin-bottom: 2em;
+`;
 
 export const StyledOuterDiv = styled.div`
-    background-color: #FFF;
-    padding: 40px;
-    margin-bottom: 40px;
-    text-align: center;
-    height: 100%;
-    width: 100%;
-    position: absolute;
-`
+  background-color: #fff;
+  padding: 40px;
+  margin-bottom: 40px;
+  text-align: center;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+`;
+const StyledImage = styled(Image)`
+  img {
+    width: 100px !important;
+  }
+`;
+export const StyledGaryBox = styled.div`
+  padding: 2em;
+  background-color: #f5f5f0;
+  border-radius: 0.25em;
+  margin-top: 2em;
+  margin-bottom: 2em;
+  text-align: left;
+`;
