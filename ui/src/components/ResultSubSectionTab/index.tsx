@@ -28,19 +28,24 @@ export default function ResultSubSectionTab(props: ResultSubSectionTabProps) {
 
 const StyledContainerDiv = styled.div`
     width: 500px;
+    drop-shadow(16px 16px 10px black);
 `
 
 const StyledGrid = styled(Grid)`
-    border: 1px solid #CCC;
+    
 `
 
 const StyledGridSelectedColumn = styled(Grid.Column)`
     background-color: white;
     font-weight: bold !important;
+    padding-right: 20px;
+    border-right: 10px solid #F1F8F8;
 `
 
 const StyledGridColumn = styled(Grid.Column)`
-    background-color: #F1F8F8;
+    background-color: #EEE;
+    padding-right: 20px;
+    border-right: 10px solid #F1F8F8;
 
     &:hover {
         cursor: pointer;

@@ -83,9 +83,9 @@ export default function AddMoneyInModal(props: AddMoneyInModalProps) {
   >();
   incomeTypes.set("Housing_Benefit", [
     {
-      key: "Housbanken",
-      text: "Housbanken",
-      value: "Housbanken",
+      key: "Husbanken",
+      text: "Husbanken",
+      value: "Husbanken",
     },
   ]);
   incomeTypes.set("Income", [
@@ -225,7 +225,6 @@ export default function AddMoneyInModal(props: AddMoneyInModalProps) {
       onClose={() => setOpen(false)}
       onOpen={() => setOpen(true)}
       open={open}
-      trigger={<Button>Show Modal</Button>}
     >
       <StyledModalContent>
         <StyledOverridesDiv>

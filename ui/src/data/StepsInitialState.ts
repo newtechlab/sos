@@ -40,21 +40,21 @@ export const StepsInitialState: Array<StepDefinition> = [
         group: StepGroupType.RESULTS,
         completed: false,
         path: "/resultat1",
-        heading: "Balance"
+        heading: "Oversikt"
     },
     {
         id: 5,
         group: StepGroupType.RESULTS,
         completed: false,
         path: "/resultat2",
-        heading: "Debt"
+        heading: "Gjeld"
     },
     {
         id: 6,
         group: StepGroupType.RESULTS,
         completed: false,
         path: "/resultat3",
-        heading: "Expenses"
+        heading: "Utgifter"
     },
     {
         id: 7,
@@ -96,11 +96,11 @@ export const StepGroups = (stateSummary: StateSummary): Map<StepGroupType, StepG
     })
     stepGroups.set(StepGroupType.MONEY_IN, {
         title: "Penger inn",
-        description: stateSummary.moneyIn ? `${stateSummary.moneyIn} kr` : "Lønn og andre støtteordninger",
+        description: stateSummary.moneyIn ? `${stateSummary.moneyIn} kr` : "Lønn og støtteordninger",
     })
     stepGroups.set(StepGroupType.MONEY_OUT, {
         title: "Penger ut",
-        description: stateSummary.moneyOut ? `${stateSummary.moneyOut} kr` : "Oversikt over familen",
+        description: stateSummary.moneyOut ? `${stateSummary.moneyOut} kr` : "Gjeld og utgifter",
     })
     stepGroups.set(StepGroupType.RESULTS, {
         title: "Resultat",

@@ -77,7 +77,7 @@ export default function AddMoneyOutModal(props: AddMoneyOutModalProps) {
     });
     items.set("Husleie", {
       name: "Husleie",
-      category: TransactionCategory.Debt,
+      category: TransactionCategory.Rent,
     });
     items.set("Reise (Fly, hotell)", {
       name: "Reise (Fly, hotell)",
@@ -142,7 +142,6 @@ export default function AddMoneyOutModal(props: AddMoneyOutModalProps) {
       onClose={() => setOpen(false)}
       onOpen={() => setOpen(true)}
       open={open}
-      trigger={<Button>Show Modal</Button>}
     >
       <Modal.Header>Legg til ny {props.header}</Modal.Header>
       <Modal.Content>{props.ingresstext}</Modal.Content>
@@ -164,7 +163,7 @@ export default function AddMoneyOutModal(props: AddMoneyOutModalProps) {
             </Grid.Column>
             <Grid.Column width={5}>
               <Dropdown
-                placeholder="for eksempel Husleie"
+                placeholder="velg utgift"
                 selection
                 options={dropDownItems}
                 onChange={(_, data) => {

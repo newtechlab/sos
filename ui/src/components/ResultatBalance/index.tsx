@@ -46,11 +46,8 @@ export type AdjustmentAmountPercent = string;
 
 export default function ResultatBalance(props: ResultatBalanceProps) {
   const [sortedLedger, setSortedLedger] = useState<LedgerRow[]>([]);
-  const [moneyOut, setMoneyOut] = useState<LedgerRow[]>([]);
   const [inTotal, setInTotal] = useState<number>(0);
-  const [inPercent, setInPercent] = useState<number>(0);
   const [outTotal, setOutTotal] = useState<number>(0);
-  const [outPercent, setOutPercent] = useState<number>(0);
   const [graphData, setGraphData] = useState<
     ChartData<"bar", number[], unknown>
   >(graphDataInitialState);
@@ -75,11 +72,6 @@ export default function ResultatBalance(props: ResultatBalanceProps) {
     setInTotal(totalIn);
     const totalOut = calculateMoneyOut(adjustedLedger);
     setOutTotal(totalOut);
-
-    const newInPercent = (totalIn / (totalIn + totalOut)) * 100;
-    const newOutPercent = (totalOut / (totalIn + totalOut)) * 100;
-    setInPercent(newInPercent);
-    setOutPercent(newOutPercent);
   };
 
   useEffect(() => {
@@ -110,13 +102,6 @@ export default function ResultatBalance(props: ResultatBalanceProps) {
   }, [ledger]);
 
   useEffect(() => {
-    const mOut = sortedLedger.filter((row) => {
-      return row.accountFrom === "user";
-    });
-    setMoneyOut(mOut);
-  }, [sortedLedger]);
-
-  useEffect(() => {
     computeInOutPercent();
   }, [adjustments]);
 
@@ -129,9 +114,7 @@ export default function ResultatBalance(props: ResultatBalanceProps) {
       </StyledHeader>
       <StyledContainer>
         <StyledContainerSpace>
-          <CenteredContentSection>
-            <ResultSubSectionTab goToStep={goToStep} items={StepsInitialState.filter((i) => i.group === activeStep?.group)} selectedItem={activeStep} />
-          </CenteredContentSection>
+          <ResultSubSectionTab goToStep={goToStep} items={StepsInitialState.filter((i) => i.group === activeStep?.group)} selectedItem={activeStep} />
 
           <StyledBoxSection>
             <h1>Pengebruk</h1>
@@ -141,12 +124,12 @@ export default function ResultatBalance(props: ResultatBalanceProps) {
             </StyledGraphContainer>
 
             <DiffStyledDiv>
-            <hr />
-            <Grid>
-              <Grid.Column textAlign="left" width={14}><StyledTotalDiv className="heading">{ overspending < 0 ? "Overspending" : "Saving"}</StyledTotalDiv></Grid.Column>
-              <Grid.Column textAlign="right" width={2}><StyledTotalDiv className={ overspending < 0 ? "amountNegative" : "amountPositive" }>{inTotal - outTotal} kr</StyledTotalDiv></Grid.Column>
-            </Grid>
-            <hr />
+              <hr />
+                <Grid>
+                  <Grid.Column textAlign="left" width={14}><StyledTotalDiv className="heading">{ overspending < 0 ? "Overforbruk" : "Potensiell sparing"}</StyledTotalDiv></Grid.Column>
+                  <Grid.Column textAlign="right" width={2}><StyledTotalDiv className={ overspending < 0 ? "amountNegative" : "amountPositive" }>{inTotal - outTotal} kr</StyledTotalDiv></Grid.Column>
+                </Grid>
+              <hr />
             </DiffStyledDiv>
 
           </StyledBoxSection>
@@ -166,15 +149,13 @@ const StyledContainer = styled(Container)`
   padding-bottom: 150px;
 `;
 
-const StyledTotalDiv = styled.div`
+export const StyledTotalDiv = styled.div`
   padding-top: 10px;
   padding-bottom: 10px;
   font-weight: bold !important;
-
-  
 `
 
-const DiffStyledDiv = styled.div`
+export const DiffStyledDiv = styled.div`
   padding-top: 30px;
   
   .amountNegative {

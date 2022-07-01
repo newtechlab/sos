@@ -27,7 +27,7 @@ import ResultatInteract, {
 } from "./components/ResultatInteract";
 import Home from "./components/Home";
 import MoneyOutDebt from "./components/MoneyOutDebt";
-import { Button, Container, Icon } from "semantic-ui-react";
+import { Button, Icon } from "semantic-ui-react";
 import { DefaultStateSummary, InitialStepsWithPath, StateSummary } from "./data/StepsInitialState";
 import ResultatBalance from "./components/ResultatBalance";
 import ResultatDebt from "./components/ResultatDebt";
@@ -175,7 +175,7 @@ function App() {
   const navigate = useNavigate();
   const [stateSummary, setStateSummary] = useState<StateSummary>(DefaultStateSummary);
   const [pets, setPets] = useState<Array<Pet>>(rehydrate("pets", []));
-  const [previousData, setPreviousData] = useState<any[]>(
+  const [previousData, setPreviousData] = useState<unknown[]>(
     rehydrate("previousData", [])
   );
   const [steps, setSteps] = useState<StepsState>(
@@ -489,6 +489,7 @@ export const StyledOverridesDiv = styled.div`
 `;
 
 export const FeedbackButton = styled(Button)`
+  z-index: 1000;
   position: fixed;
   bottom: 20px;
   right: 20px;
@@ -502,11 +503,6 @@ export const StyledRootDiv = styled.div`
 
 const StyledBodyDiv = styled.div`
   text-align: left;
-`;
-
-const StyledRootContainer = styled(Container)`
-  margin-bottom: 0;
-  padding-bottom: 100px;
 `;
 
 export default App;
