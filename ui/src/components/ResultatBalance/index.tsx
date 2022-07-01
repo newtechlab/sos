@@ -46,11 +46,8 @@ export type AdjustmentAmountPercent = string;
 
 export default function ResultatBalance(props: ResultatBalanceProps) {
   const [sortedLedger, setSortedLedger] = useState<LedgerRow[]>([]);
-  const [moneyOut, setMoneyOut] = useState<LedgerRow[]>([]);
   const [inTotal, setInTotal] = useState<number>(0);
-  const [inPercent, setInPercent] = useState<number>(0);
   const [outTotal, setOutTotal] = useState<number>(0);
-  const [outPercent, setOutPercent] = useState<number>(0);
   const [graphData, setGraphData] = useState<
     ChartData<"bar", number[], unknown>
   >(graphDataInitialState);
@@ -75,11 +72,6 @@ export default function ResultatBalance(props: ResultatBalanceProps) {
     setInTotal(totalIn);
     const totalOut = calculateMoneyOut(adjustedLedger);
     setOutTotal(totalOut);
-
-    const newInPercent = (totalIn / (totalIn + totalOut)) * 100;
-    const newOutPercent = (totalOut / (totalIn + totalOut)) * 100;
-    setInPercent(newInPercent);
-    setOutPercent(newOutPercent);
   };
 
   useEffect(() => {
@@ -108,13 +100,6 @@ export default function ResultatBalance(props: ResultatBalanceProps) {
   useEffect(() => {
     setSortedLedger(sortLedger(ledger));
   }, [ledger]);
-
-  useEffect(() => {
-    const mOut = sortedLedger.filter((row) => {
-      return row.accountFrom === "user";
-    });
-    setMoneyOut(mOut);
-  }, [sortedLedger]);
 
   useEffect(() => {
     computeInOutPercent();

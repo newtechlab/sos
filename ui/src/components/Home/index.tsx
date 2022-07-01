@@ -35,16 +35,21 @@ export default function Home(props: HomProps) {
   const onDrop = useCallback((acceptedFiles) => {
     const fileReader = new FileReader();
     fileReader.onload = async (event) => {
-      if (event?.target?.readyState === FileReader.DONE) {
-        const attachments = await PdfConverter.getAttachmentAsObject(event.target.result);
-        setPreviousData(attachments.previousData);
-        setFamilyMembers(attachments.familyMembers);
-        setLedger(attachments.ledger);
-        setUserDetails(attachments.userDetails || InitialUserInfo);
-        setAdjustments(attachments.adjustments);
-        setPets(attachments.pets);
+      try {
+        if (event?.target?.readyState === FileReader.DONE) {
+          const attachments = await PdfConverter.getAttachmentAsObject(event.target.result);
+          setPreviousData(attachments.previousData);
+          setFamilyMembers(attachments.familyMembers);
+          setLedger(attachments.ledger);
+          setUserDetails(attachments.userDetails || InitialUserInfo);
+          setAdjustments(attachments.adjustments);
+          setPets(attachments.pets);
+        }
+        navigate(firstStep);
+      } catch (err) {
+        console.error("Load PDF error", err);
+        alert("There was an issue loading the PDF. Did you load the correct file?")
       }
-      navigate(firstStep);
     };
     fileReader.readAsArrayBuffer(acceptedFiles[0]);
   }, []);
