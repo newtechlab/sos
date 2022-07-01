@@ -40,7 +40,6 @@ export default function OpenHelpTextModal(props: AddHelpTextModalProps) {
             top: "0",
             bottom: "0",
             zIndex: 1000,
-            overflow: "scroll",
           }}
         >
           <Button icon circular color="blue" onClick={() => setOpen(false)}>
@@ -129,6 +128,7 @@ const LabelButton = styled.button`
   right: 0px;
   &:hover {
     text-decoration: underline;
+    cursor: pointer;
   }
 `;
 
@@ -159,6 +159,7 @@ const StyledImage = styled(Image)`
 
 const StyledSegment = styled(Segment)`
   margin-top: 0px !important;
+  overflow: scroll;
 `;
 
 const StyledLinkButton = styled.button`
