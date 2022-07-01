@@ -40,6 +40,7 @@ export default function OpenHelpTextModal(props: AddHelpTextModalProps) {
             top: "0",
             bottom: "0",
             zIndex: 1000,
+            overflow: "scroll",
           }}
         >
           <Button icon circular color="blue" onClick={() => setOpen(false)}>
