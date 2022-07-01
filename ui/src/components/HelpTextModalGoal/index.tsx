@@ -80,8 +80,12 @@ export default function OpenHelpTextModal(props: AddHelpTextModalProps) {
     </Fragment>
   );
 }
-const LabelButton = styled.button`
-  border: 0px;
+export const LabelButton = styled.button`
+  border: 1px solid #3d8eb1;
+  padding: 5px;
+  padding-left: 15px;
+  padding-right: 15px;
+  border-radius: 20px;
   color: #3d8eb1;
   background-color: #f1f8f8;
   font-family: Montserrat !important;
