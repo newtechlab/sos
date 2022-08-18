@@ -5,6 +5,9 @@ import reportWebVitals from './reportWebVitals';
 import { HashRouter } from 'react-router-dom';
 import "typeface-montserrat";
 import "typeface-roboto";
+import ReactGA from 'react-ga';
+
+ReactGA.initialize('G-F6QPNLHRJ1');
 
 ReactDOM.render(
   <HashRouter>
