@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { useNavigate } from "react-router-dom";
 import { Button, Container, Image, Icon, Header } from "semantic-ui-react";
@@ -14,6 +14,7 @@ import PdfConverter from "../../services/PdfService/PdfConverter";
 import { AdjustmentAmountPercent, LedgerRowId } from "../ResultatInteract";
 import frontpage_family from "./frontpage_family.png";
 import BankID from "./BankID.png";
+import OpenBetaBar from "../BetaBar";
 
 export interface HomProps {
   setPreviousData: (data: any[]) => void;
@@ -37,6 +38,8 @@ export interface PdfFormat {
 }
 
 export default function Home(props: HomProps) {
+  const [addBetaBarModalOpen, setAddBetaBarModalOpen] =
+    useState<boolean>(false);
   const navigate = useNavigate();
   const {
     setFamilyMembers,
@@ -77,6 +80,13 @@ export default function Home(props: HomProps) {
   return (
     <StyledOuterDiv>
       <Container>
+        <BetaTestDiv>
+          NB! Dette er en tjeneste under utvikling
+          <OpenBetaBar
+            open={addBetaBarModalOpen}
+            setOpen={setAddBetaBarModalOpen}
+          />
+        </BetaTestDiv>
         <Image size="large" src={frontpage_family} wrapped />
         <Styledtitle>Økonomiveilederen</Styledtitle>
 
@@ -178,4 +188,18 @@ export const StyledGaryBox = styled.div`
   margin-top: 2em;
   margin-bottom: 2em;
   text-align: left;
+`;
+
+export const BetaTestDiv = styled.div`
+  padding: 1.5em;
+  background-color: #f1f8f8;
+  font-family: Montserrat !important;
+  font-weight: 300;
+  width:500px;
+  margin:0 auto;
+  margin-bottom: 4em;
+  display: flex;
+  align-items:center;
+  justify-content:center;
+  }
 `;
