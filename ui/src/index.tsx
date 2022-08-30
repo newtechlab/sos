@@ -7,7 +7,7 @@ import "typeface-montserrat";
 import "typeface-roboto";
 import ReactGA from 'react-ga';
 
-ReactGA.initialize('G-F6QPNLHRJ1');
+ReactGA.initialize('G-KJDND3RBZB');
 
 ReactDOM.render(
   <HashRouter>
