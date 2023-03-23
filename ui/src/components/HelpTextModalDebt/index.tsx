@@ -6,7 +6,6 @@ import {
   Segment,
   TransitionablePortal,
   Icon,
-  Grid,
 } from "semantic-ui-react";
 import { Fragment } from "react";
 import BankID from "./BankID.png";

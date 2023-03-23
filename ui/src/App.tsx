@@ -20,7 +20,12 @@ import {
 } from "chart.js";
 import Resultat from "./components/Resultat";
 import styled from "styled-components";
-import { goBackStep, goToSpecificStep, progressStep, updateSteps } from "./data/StepProgressor";
+import {
+  goBackStep,
+  goToSpecificStep,
+  progressStep,
+  updateSteps,
+} from "./data/StepProgressor";
 import ResultatInteract, {
   AdjustmentAmountPercent,
   LedgerRowId,
@@ -28,7 +33,11 @@ import ResultatInteract, {
 import Home from "./components/Home";
 import MoneyOutDebt from "./components/MoneyOutDebt";
 import { Button, Icon } from "semantic-ui-react";
-import { DefaultStateSummary, InitialStepsWithPath, StateSummary } from "./data/StepsInitialState";
+import {
+  DefaultStateSummary,
+  InitialStepsWithPath,
+  StateSummary,
+} from "./data/StepsInitialState";
 import ResultatBalance from "./components/ResultatBalance";
 import ResultatDebt from "./components/ResultatDebt";
 import { calculateMoneyIn, calculateMoneyOut } from "./data/Ledger";
@@ -173,13 +182,18 @@ function rehydrateSet<A>(name: string, ifEmpty: Set<A>): Set<A> {
 
 function App() {
   const navigate = useNavigate();
-  const [stateSummary, setStateSummary] = useState<StateSummary>(DefaultStateSummary);
+  const [stateSummary, setStateSummary] =
+    useState<StateSummary>(DefaultStateSummary);
   const [pets, setPets] = useState<Array<Pet>>(rehydrate("pets", []));
   const [previousData, setPreviousData] = useState<unknown[]>(
     rehydrate("previousData", [])
   );
   const [steps, setSteps] = useState<StepsState>(
-    InitialStepsWithPath(window.location.pathname, DefaultStateSummary, rehydrateSet("completedStepGroups", new Set()))
+    InitialStepsWithPath(
+      window.location.pathname,
+      DefaultStateSummary,
+      rehydrateSet("completedStepGroups", new Set())
+    )
   );
   const [familyMembers, setFamilyMembers] = useState<Array<FamilyMember>>(
     rehydrate("familyMembers", [])
@@ -237,7 +251,7 @@ function App() {
       JSON.stringify(Array.from(previousData))
     );
     localStorage.setItem(
-      "completedStepGroups", 
+      "completedStepGroups",
       JSON.stringify(Array.from(steps.completedGroups.keys()))
     );
     localStorage.setItem("familyMembers", JSON.stringify(familyMembers));
@@ -261,17 +275,18 @@ function App() {
   useEffect(() => {
     const moneyIn = calculateMoneyIn(ledger);
     const moneyOut = calculateMoneyOut(ledger);
-    
+
     setStateSummary({
-      familyMemberCount: familyMembers.length > 0 ? familyMembers.length : undefined,
+      familyMemberCount:
+        familyMembers.length > 0 ? familyMembers.length : undefined,
       moneyIn: moneyIn > 0 ? moneyIn.toString() : undefined,
       moneyOut: moneyOut > 0 ? moneyOut.toString() : undefined,
-    })
-  }, [ ledger, familyMembers ]);
+    });
+  }, [ledger, familyMembers]);
 
   useEffect(() => {
-    setSteps(updateSteps(steps, stateSummary))
-  }, [ stateSummary ]);
+    setSteps(updateSteps(steps, stateSummary));
+  }, [stateSummary]);
 
   const completeStep = () => {
     const newState = progressStep(steps, stateSummary);
@@ -292,26 +307,40 @@ function App() {
   };
 
   const openFeedbackForm = () => {
-    window.open('https://forms.gle/M6ou5EjrdY4tv8BJ8', '_blank')?.focus();
-  }
+    window.open("https://forms.gle/M6ou5EjrdY4tv8BJ8", "_blank")?.focus();
+  };
 
   const resetSession = () => {
     // clear previous sessions
-    localStorage.clear()
+    localStorage.clear();
     setPets([]);
-    setPreviousData([])
-    setSteps(InitialStepsWithPath(window.location.pathname, DefaultStateSummary, rehydrateSet("completedStepGroups", new Set())));
+    setPreviousData([]);
+    setSteps(
+      InitialStepsWithPath(
+        window.location.pathname,
+        DefaultStateSummary,
+        rehydrateSet("completedStepGroups", new Set())
+      )
+    );
     setFamilyMembers([]);
     setLedger([]);
-    setUserDetails(InitialUserInfo)
-    setAdjustments(new Map<LedgerRowId, AdjustmentAmountPercent>())
-  }
+    setUserDetails(InitialUserInfo);
+    setAdjustments(new Map<LedgerRowId, AdjustmentAmountPercent>());
+  };
 
   const activeStep = steps.steps.find((s) => s.id === steps.activeStepId);
 
   return (
     <StyledRootDiv className="App">
-      <FeedbackButton color='purple' circular onClick={() => openFeedbackForm()}> <Icon name='chat' />Send oss din tilbakemelding </FeedbackButton>
+      <FeedbackButton
+        color="purple"
+        circular
+        onClick={() => openFeedbackForm()}
+      >
+        {" "}
+        <Icon name="chat" />
+        Send oss din tilbakemelding{" "}
+      </FeedbackButton>
       <StyledOverridesDiv>
         <StyledBodyDiv>
           <Routes>
@@ -333,6 +362,12 @@ function App() {
               path="/family"
               element={
                 <UserDetails
+                  setPreviousData={setPreviousData}
+                  setFamilyMembers={setFamilyMembers}
+                  setLedger={setLedger}
+                  setUserDetails={setUserDetails}
+                  setAdjustments={setAdjustments}
+                  setPets={setPets}
                   familyMembers={familyMembers}
                   addFamilyMember={purpleMonkeyDishWasher}
                   activeStep={activeStep}
@@ -340,12 +375,11 @@ function App() {
                   completeStep={completeStep}
                   goBack={goBack}
                   goToStep={goToStep}
-                  setUserDetails={setUserDetails}
                   userDetails={userDetails}
                   pets={pets}
-                  setPets={setPets}
                   deletePet={deletePet}
                   deleteFamilyMember={deleteFamilyMember}
+                  resetSession={resetSession}
                 />
               }
             />

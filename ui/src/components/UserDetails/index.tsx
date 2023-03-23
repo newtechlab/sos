@@ -1,7 +1,17 @@
-import { useState } from "react";
-import { Card, Container, Grid, Input } from "semantic-ui-react";
+import { useCallback, useState } from "react";
+import { useDropzone } from "react-dropzone";
+import { useNavigate } from "react-router-dom";
+import { Card, Container, Grid, Icon, Input } from "semantic-ui-react";
 import styled from "styled-components";
-import { Car, FamilyMember, HouseSituation, Pet, UserInformation } from "../../App";
+import {
+  Car,
+  FamilyMember,
+  HouseSituation,
+  InitialUserInfo,
+  LedgerRow,
+  Pet,
+  UserInformation,
+} from "../../App";
 import AddFamilyMemberCard from "../AddFamilyMemberCard";
 import AddFamilyMemberModal from "../AddFamilyMemberModal";
 import BackForwardControls from "../BackForwardControls";
@@ -13,21 +23,40 @@ import { StepDefinition, StepsState } from "../Steps";
 import AddPetModal from "../AddPetModal";
 import { StyledCard } from "../StyledFamilyCard";
 import PetMemberCard from "../PetCard";
+import PdfConverter from "../../services/PdfService/PdfConverter";
+import { AdjustmentAmountPercent, LedgerRowId } from "../ResultatInteract";
 
 export interface UserDetailsProps {
   familyMembers: Array<FamilyMember>;
   addFamilyMember: (_: FamilyMember) => void;
-  setUserDetails: (_: UserInformation) => void;
-  setPets: (_: Array<Pet>) => void;
+
   deletePet: (id: string) => void;
   deleteFamilyMember: (id: string) => void;
   pets: Array<Pet>;
   userDetails: UserInformation;
   completeStep: () => void;
   goBack: () => void;
-  goToStep: (step: StepDefinition) => void
+  goToStep: (step: StepDefinition) => void;
   activeStep: StepDefinition | undefined;
   steps: StepsState;
+  setPreviousData: (data: any[]) => void;
+  setFamilyMembers: (_: Array<FamilyMember>) => void;
+  setLedger: (_: Array<LedgerRow>) => void;
+  setUserDetails(_: UserInformation): void;
+  setAdjustments(_: Map<LedgerRowId, AdjustmentAmountPercent>): void;
+  setPets: (_: Array<Pet>) => void;
+  resetSession: () => void;
+}
+
+export const firstStep = "/family";
+
+export interface PdfFormat {
+  previousData: any[]; // previous / historical sessions
+  familyMembers: Array<FamilyMember>;
+  ledger: Array<LedgerRow>;
+  userDetails: UserInformation | undefined;
+  adjustments: Map<LedgerRowId, AdjustmentAmountPercent>;
+  pets: Array<Pet>;
 }
 
 export default function UserDetails(props: UserDetailsProps) {
@@ -36,6 +65,12 @@ export default function UserDetails(props: UserDetailsProps) {
   const [addHelpTextGoalModalOpen, OpenHelpTextGoalModal] =
     useState<boolean>(false);
   const {
+    setFamilyMembers,
+    setLedger,
+    setUserDetails,
+    setPreviousData,
+    setAdjustments,
+    setPets,
     addFamilyMember,
     familyMembers,
     completeStep,
@@ -43,12 +78,39 @@ export default function UserDetails(props: UserDetailsProps) {
     goToStep,
     steps,
     userDetails,
-    setUserDetails,
     pets,
-    setPets,
+
     deletePet,
     deleteFamilyMember,
   } = props;
+  const navigate = useNavigate();
+  const onDrop = useCallback((acceptedFiles) => {
+    const fileReader = new FileReader();
+    fileReader.onload = async (event) => {
+      try {
+        if (event?.target?.readyState === FileReader.DONE) {
+          const attachments = await PdfConverter.getAttachmentAsObject(
+            event.target.result
+          );
+          setPreviousData(attachments.previousData);
+          setFamilyMembers(attachments.familyMembers);
+          setLedger(attachments.ledger);
+          setUserDetails(attachments.userDetails || InitialUserInfo);
+          setAdjustments(attachments.adjustments);
+          setPets(attachments.pets);
+        }
+        navigate(firstStep);
+      } catch (err) {
+        console.error("Load PDF error", err);
+        alert(
+          "There was an issue loading the PDF. Did you load the correct file?"
+        );
+      }
+    };
+    fileReader.readAsArrayBuffer(acceptedFiles[0]);
+  }, []);
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+
   return (
     <StyledBackgroundColour>
       <StyledHeader>
@@ -63,13 +125,30 @@ export default function UserDetails(props: UserDetailsProps) {
               setOpen={setAddFamilyModalOpen}
             />
           )}
+          <StyledSpace {...getRootProps()}>
+            <input {...getInputProps()} />
+            {isDragActive ? (
+              <StyledDragParagraphActive>Slipp fil</StyledDragParagraphActive>
+            ) : (
+              <StyledDragParagraph>
+                <Icon name="cloud upload" color="blue" /> Dra og slipp PDF eller
+                klikk i feltet for å åpne fra maskin.
+              </StyledDragParagraph>
+            )}
+          </StyledSpace>
 
           <StyledHeadingDiv>
             <h1>Familiemedlemmer</h1>
             <h3>Hvem består familien av?</h3>
             <Card.Group>
               {familyMembers.map((fm) => {
-                return <FamilyMemberCard key={fm.id} familyMember={fm} deleteFamilyMember={deleteFamilyMember}/>;
+                return (
+                  <FamilyMemberCard
+                    key={fm.id}
+                    familyMember={fm}
+                    deleteFamilyMember={deleteFamilyMember}
+                  />
+                );
               })}
               <AddFamilyMemberCard
                 key="ADD_NEW_MEMBER"
@@ -265,4 +344,21 @@ const CenterTextDiv = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+`;
+
+const StyledSpace = styled.div`
+  padding-bottom: 1em !important;
+`;
+
+const StyledDragParagraph = styled.p`
+  background-color: #f1f8f8 !important;
+  border: 1px dashed #3d8eb1;
+  padding: 3em;
+  border-radius: 3px;
+`;
+const StyledDragParagraphActive = styled.p`
+  background-color: #f1f8f8 !important;
+  border: 2px solid #3d8eb1;
+  padding: 3em;
+  border-radius: 3px;
 `;

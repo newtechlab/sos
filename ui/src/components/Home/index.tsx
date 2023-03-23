@@ -1,20 +1,11 @@
-import { useCallback, useState } from "react";
-import { useDropzone } from "react-dropzone";
 import { useNavigate } from "react-router-dom";
-import { Button, Container, Image, Icon, Header } from "semantic-ui-react";
+import { Button, Container, Image } from "semantic-ui-react";
 import styled from "styled-components";
-import {
-  FamilyMember,
-  InitialUserInfo,
-  LedgerRow,
-  Pet,
-  UserInformation,
-} from "../../App";
-import PdfConverter from "../../services/PdfService/PdfConverter";
+import { FamilyMember, LedgerRow, Pet, UserInformation } from "../../App";
 import { AdjustmentAmountPercent, LedgerRowId } from "../ResultatInteract";
 import frontpage_family from "./frontpage_family.png";
-import BankID from "./BankID.png";
-import OpenBetaBar from "../BetaBar";
+import expences from "./expences.png";
+import overview from "./Overview.png";
 
 export interface HomProps {
   setPreviousData: (data: any[]) => void;
@@ -25,181 +16,133 @@ export interface HomProps {
   setPets: (_: Array<Pet>) => void;
   resetSession: () => void;
 }
-
 export const firstStep = "/family";
 
-export interface PdfFormat {
-  previousData: any[]; // previous / historical sessions
-  familyMembers: Array<FamilyMember>;
-  ledger: Array<LedgerRow>;
-  userDetails: UserInformation | undefined;
-  adjustments: Map<LedgerRowId, AdjustmentAmountPercent>;
-  pets: Array<Pet>;
-}
-
 export default function Home(props: HomProps) {
-  const [addBetaBarModalOpen, setAddBetaBarModalOpen] =
-    useState<boolean>(false);
   const navigate = useNavigate();
-  const {
-    setFamilyMembers,
-    setLedger,
-    setUserDetails,
-    setPreviousData,
-    setAdjustments,
-    setPets,
-    resetSession,
-  } = props;
-  const onDrop = useCallback((acceptedFiles) => {
-    const fileReader = new FileReader();
-    fileReader.onload = async (event) => {
-      try {
-        if (event?.target?.readyState === FileReader.DONE) {
-          const attachments = await PdfConverter.getAttachmentAsObject(
-            event.target.result
-          );
-          setPreviousData(attachments.previousData);
-          setFamilyMembers(attachments.familyMembers);
-          setLedger(attachments.ledger);
-          setUserDetails(attachments.userDetails || InitialUserInfo);
-          setAdjustments(attachments.adjustments);
-          setPets(attachments.pets);
-        }
-        navigate(firstStep);
-      } catch (err) {
-        console.error("Load PDF error", err);
-        alert(
-          "There was an issue loading the PDF. Did you load the correct file?"
-        );
-      }
-    };
-    fileReader.readAsArrayBuffer(acceptedFiles[0]);
-  }, []);
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+  const { resetSession } = props;
 
   return (
-    <StyledOuterDiv>
-      <Container>
-        <BetaTestDiv>
-          NB! Dette er en tjeneste under utvikling
-          <OpenBetaBar
-            open={addBetaBarModalOpen}
-            setOpen={setAddBetaBarModalOpen}
-          />
-        </BetaTestDiv>
-        <Image size="large" src={frontpage_family} wrapped />
+    <>
+      <StyledWhiteLayout>
         <Styledtitle>Økonomiveilederen</Styledtitle>
+        <H2>- for bedre oversikt og kontroll på økonomien</H2>
 
-        <StyledParagraph>
-          Velkommen til økonomiveilederen! Målet med dette verktøyet er å gi deg
-          bedre oversikt over din pengebruk. Ved å få bedre oversikt, tror vi at
-          det blir enklere å ta nødvendige grep for å få en trygg økonomi og en
-          enklere hverdag.{" "}
-        </StyledParagraph>
-
-        <StyledGaryBox>
-          <Header>Husk BankID</Header>
-          <StyledSpaceAfter>
-            Før vi begynner ber vi deg gjøre klar Bank-ID da vi vil be deg om å
-            logge på forskjellige nettsteder for å få full oversikt over din
-            økonomisk situasjon
-          </StyledSpaceAfter>
-          <StyledParagraph>
-            <StyledImage src={BankID} wrapped ui={false} />
-          </StyledParagraph>
-        </StyledGaryBox>
-
-        <StyledSpace {...getRootProps()}>
-          <input {...getInputProps()} />
-          {isDragActive ? (
-            <StyledDragParagraphActive>Slipp fil</StyledDragParagraphActive>
-          ) : (
-            <StyledDragParagraph>
-              <Icon name="cloud upload" color="blue" /> Dra og slipp PDF eller
-              klikk i feltet for å åpne fra maskin.
-            </StyledDragParagraph>
-          )}
-        </StyledSpace>
-        <StyledSpace>eller</StyledSpace>
         <StyledSpace>
-          <Button
-            circular
-            color={"blue"}
+          <StyledBigButton
             onClick={() => {
               resetSession();
               navigate(firstStep);
             }}
           >
-            Begynn ny kartlegging
-          </Button>
+            Start ny kartlegging
+          </StyledBigButton>
         </StyledSpace>
+      </StyledWhiteLayout>
+
+      <Container>
+        <StyledLayout>
+          <StyledParagraph>
+            <Image size="large" src={frontpage_family} wrapped />
+          </StyledParagraph>
+          <Styledtitle>Hva er Økonomiveilederen?</Styledtitle>
+          <StyledParagraph>
+            Velkommen til økonomiveilederen! Målet med dette verktøyet er å gi
+            deg bedre oversikt over din pengebruk. Ved å få bedre oversikt, tror
+            vi at det blir enklere å ta nødvendige grep for å få en trygg
+            økonomi og en enklere hverdag.{" "}
+          </StyledParagraph>
+          <StyledParagraph>
+            Bruk verktøyet til å legge inn husstandens inntekter og månedlige
+            utgifter. Da vil du få en oversikt om du/dere har overforbruk eller
+            potensiale for å spare.{" "}
+          </StyledParagraph>
+
+          <StyledParagraph>
+            <Image size="massive" src={overview} wrapped />
+          </StyledParagraph>
+          <StyledParagraph>
+            Det følger også med en enkel budsjettplanlegger, der man tar
+            utgangspunkt i dine utgifter og visuelt kan eksperimentere med hvor
+            man bør spare penger og hvordan det kan ha utslag på din økonomi på
+            lengre sikt.
+          </StyledParagraph>
+          <StyledSpace>
+            <Image size="massive" src={expences} wrapped />
+          </StyledSpace>
+        </StyledLayout>
       </Container>
-    </StyledOuterDiv>
+      <StyledWhiteLayout>
+        <Button
+          color="blue"
+          onClick={() => {
+            resetSession();
+            navigate(firstStep);
+          }}
+        >
+          Start ny kartlegging
+        </Button>
+      </StyledWhiteLayout>
+    </>
   );
 }
 
 const StyledSpace = styled.div`
-  padding-bottom: 1em !important;
-`;
-
-const StyledDragParagraph = styled.p`
-  background-color: #f1f8f8 !important;
-  border: 1px dashed #3d8eb1;
-  padding: 3em;
-  border-radius: 3px;
-`;
-const StyledDragParagraphActive = styled.p`
-  background-color: #f1f8f8 !important;
-  border: 2px solid #3d8eb1;
-  padding: 3em;
-  border-radius: 3px;
+  padding-bottom: 2em !important;
 `;
 
 const Styledtitle = styled.h1`
   font-weight: bold !important;
-  padding: 1em;
+  font-size: xx-large;
+  padding-top: 1em;
+`;
+
+const H2 = styled.h2`
+  font-weight: bold !important;
+  font-size: medium;
+  padding-bottom: 2em;
 `;
 
 const StyledParagraph = styled.p`
   margin-bottom: 3em;
 `;
-const StyledSpaceAfter = styled.p`
-  margin-bottom: 2em;
-`;
 
-export const StyledOuterDiv = styled.div`
+export const StyledWhiteLayout = styled.div`
   background-color: #fff;
   padding: 40px;
   margin-bottom: 40px;
   text-align: center;
   height: 100%;
   width: 100%;
-  position: absolute;
-`;
-const StyledImage = styled(Image)`
-  img {
-    width: 100px !important;
-  }
-`;
-export const StyledGaryBox = styled.div`
-  padding: 2em;
-  background-color: #f5f5f0;
-  border-radius: 0.25em;
-  margin-top: 2em;
-  margin-bottom: 2em;
-  text-align: left;
 `;
 
-export const BetaTestDiv = styled.div`
-  padding: 1.5em;
-  background-color: #f1f8f8;
-  font-family: Montserrat !important;
-  font-weight: 300;
-  width:500px;
-  margin:0 auto;
-  margin-bottom: 4em;
-  display: flex;
-  align-items:center;
-  justify-content:center;
+export const StyledLayout = styled.div`
+  padding: 40px;
+  margin: auto;
+  text-align: center;
+  max-width: 55em;
+`;
+
+export const StyledBigButton = styled.button`
+  margin-bottom: 2em;
+  text-align: center;
+  color: white;
+  background-color: #3d8eb1 !important;
+  border: 2px solid #3d8eb1;
+  padding-right: 3em;
+  padding-left: 3em;
+  padding-top: 1em;
+  padding-bottom: 1em;
+  border-radius: 3px;
+  font-weight: bold !important;
+  font-size: large;
+  &:hover {
+    background-color: white !important;
+    color: #3d8eb1;
+    cursor: pointer;
   }
+`;
+
+export const StyledBlueBackground = styled.div`
+  background-color: #3d8eb1 !important;
 `;
