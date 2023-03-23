@@ -13,7 +13,7 @@ interface PDFModalProps {
   setOpen: (_: boolean) => void;
 }
 
-export default function OpenHelpTextModal(props: PDFModalProps) {
+export default function OpenPDFModal(props: PDFModalProps) {
   const { open, setOpen } = props;
   const transition = {
     animation: "fly left",
@@ -22,7 +22,7 @@ export default function OpenHelpTextModal(props: PDFModalProps) {
 
   return (
     <Fragment>
-      <Button blue circular onClick={() => setOpen(true)}>
+      <Button color="blue" circular onClick={() => setOpen(true)}>
         Last opp PDF
       </Button>
       <TransitionablePortal

@@ -65,8 +65,7 @@ export default function UserDetails(props: UserDetailsProps) {
   const [addHelpTextGoalModalOpen, OpenHelpTextGoalModal] =
     useState<boolean>(false);
 
-  // const [addHelpTextGoalModalOpen, OpenHelpTextGoalModal] =
-  //   useState<boolean>(false);
+  const [pdfModalOpen, setPdfModalOpen] = useState<boolean>(false);
   const {
     setFamilyMembers,
     setLedger,
@@ -140,10 +139,8 @@ export default function UserDetails(props: UserDetailsProps) {
             )}
           </StyledSpace>
           <ModalPDFUpload
-            open={false}
-            setOpen={function (_: boolean): void {
-              throw new Error("Function not implemented.");
-            }}
+            open={pdfModalOpen}
+            setOpen={setPdfModalOpen}
           ></ModalPDFUpload>
 
           <StyledHeadingDiv>
@@ -333,14 +330,6 @@ export const StyledContainerSpace = styled.div`
 export const StyledHeader = styled.div`
   background-color: #ffffff;
   width: 100%;
-`;
-
-const DottedDiv = styled.div`
-  border: 2px dashed #a5c8d7;
-  height: 145px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `;
 
 const StyledHeadingDiv = styled.div`
