@@ -1,19 +1,19 @@
 import { useNavigate } from "react-router-dom";
 import { Button, Container, Image } from "semantic-ui-react";
 import styled from "styled-components";
-import { FamilyMember, LedgerRow, Pet, UserInformation } from "../../App";
-import { AdjustmentAmountPercent, LedgerRowId } from "../ResultatInteract";
+// import { FamilyMember, LedgerRow, Pet, UserInformation } from "../../App";
+// import { AdjustmentAmountPercent, LedgerRowId } from "../ResultatInteract";
 import frontpage_family from "./frontpage_family.png";
 import expences from "./expences.png";
 import overview from "./Overview.png";
 
 export interface HomProps {
-  setPreviousData: (data: any[]) => void;
-  setFamilyMembers: (_: Array<FamilyMember>) => void;
-  setLedger: (_: Array<LedgerRow>) => void;
-  setUserDetails(_: UserInformation): void;
-  setAdjustments(_: Map<LedgerRowId, AdjustmentAmountPercent>): void;
-  setPets: (_: Array<Pet>) => void;
+  // setPreviousData: (data: any[]) => void;
+  // setFamilyMembers: (_: Array<FamilyMember>) => void;
+  // setLedger: (_: Array<LedgerRow>) => void;
+  // setUserDetails(_: UserInformation): void;
+  // setAdjustments(_: Map<LedgerRowId, AdjustmentAmountPercent>): void;
+  // setPets: (_: Array<Pet>) => void;
   resetSession: () => void;
 }
 export const firstStep = "/family";

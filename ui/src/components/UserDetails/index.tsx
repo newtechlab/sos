@@ -25,20 +25,20 @@ import { StyledCard } from "../StyledFamilyCard";
 import PetMemberCard from "../PetCard";
 import PdfConverter from "../../services/PdfService/PdfConverter";
 import { AdjustmentAmountPercent, LedgerRowId } from "../ResultatInteract";
+import ModalPDFUpload from "../ModalPDFUpload";
 
 export interface UserDetailsProps {
   familyMembers: Array<FamilyMember>;
-  addFamilyMember: (_: FamilyMember) => void;
-
-  deletePet: (id: string) => void;
-  deleteFamilyMember: (id: string) => void;
   pets: Array<Pet>;
   userDetails: UserInformation;
+  activeStep: StepDefinition | undefined;
+  steps: StepsState;
+  addFamilyMember: (_: FamilyMember) => void;
+  deletePet: (id: string) => void;
+  deleteFamilyMember: (id: string) => void;
   completeStep: () => void;
   goBack: () => void;
   goToStep: (step: StepDefinition) => void;
-  activeStep: StepDefinition | undefined;
-  steps: StepsState;
   setPreviousData: (data: any[]) => void;
   setFamilyMembers: (_: Array<FamilyMember>) => void;
   setLedger: (_: Array<LedgerRow>) => void;
@@ -47,8 +47,6 @@ export interface UserDetailsProps {
   setPets: (_: Array<Pet>) => void;
   resetSession: () => void;
 }
-
-export const firstStep = "/family";
 
 export interface PdfFormat {
   previousData: any[]; // previous / historical sessions
@@ -59,11 +57,16 @@ export interface PdfFormat {
   pets: Array<Pet>;
 }
 
+export const firstStep = "/family";
+
 export default function UserDetails(props: UserDetailsProps) {
   const [addFamilyModalOpen, setAddFamilyModalOpen] = useState<boolean>(false);
   const [addPetModalOpen, setAddPetModalOpen] = useState<boolean>(false);
   const [addHelpTextGoalModalOpen, OpenHelpTextGoalModal] =
     useState<boolean>(false);
+
+  // const [addHelpTextGoalModalOpen, OpenHelpTextGoalModal] =
+  //   useState<boolean>(false);
   const {
     setFamilyMembers,
     setLedger,
@@ -72,10 +75,10 @@ export default function UserDetails(props: UserDetailsProps) {
     setAdjustments,
     setPets,
     addFamilyMember,
-    familyMembers,
     completeStep,
     goBack,
     goToStep,
+    familyMembers,
     steps,
     userDetails,
     pets,
@@ -136,6 +139,12 @@ export default function UserDetails(props: UserDetailsProps) {
               </StyledDragParagraph>
             )}
           </StyledSpace>
+          <ModalPDFUpload
+            open={false}
+            setOpen={function (_: boolean): void {
+              throw new Error("Function not implemented.");
+            }}
+          ></ModalPDFUpload>
 
           <StyledHeadingDiv>
             <h1>Familiemedlemmer</h1>

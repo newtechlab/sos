@@ -348,12 +348,12 @@ function App() {
               path="/"
               element={
                 <Home
-                  setPreviousData={setPreviousData}
-                  setFamilyMembers={setFamilyMembers}
-                  setLedger={setLedger}
-                  setUserDetails={setUserDetails}
-                  setAdjustments={setAdjustments}
-                  setPets={setPets}
+                  // setPreviousData={setPreviousData}
+                  // setFamilyMembers={setFamilyMembers}
+                  // setLedger={setLedger}
+                  // setUserDetails={setUserDetails}
+                  // setAdjustments={setAdjustments}
+                  // setPets={setPets}
                   resetSession={resetSession}
                 />
               }
