@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { useNavigate } from "react-router-dom";
-import { Card, Container, Grid, Icon, Input } from "semantic-ui-react";
+import { Button, Card, Container, Grid, Icon, Input } from "semantic-ui-react";
 import styled from "styled-components";
 import {
   Car,
@@ -25,7 +25,8 @@ import { StyledCard } from "../StyledFamilyCard";
 import PetMemberCard from "../PetCard";
 import PdfConverter from "../../services/PdfService/PdfConverter";
 import { AdjustmentAmountPercent, LedgerRowId } from "../ResultatInteract";
-import ModalPDFUpload from "../ModalPDFUpload";
+
+import { StyledBoxSection } from "../StyledBoxSection";
 
 export interface UserDetailsProps {
   familyMembers: Array<FamilyMember>;
@@ -64,8 +65,7 @@ export default function UserDetails(props: UserDetailsProps) {
   const [addPetModalOpen, setAddPetModalOpen] = useState<boolean>(false);
   const [addHelpTextGoalModalOpen, OpenHelpTextGoalModal] =
     useState<boolean>(false);
-
-  const [pdfModalOpen, setPdfModalOpen] = useState<boolean>(false);
+  const [pdfDropped, setPdfDropped] = useState<boolean>(false);
   const {
     setFamilyMembers,
     setLedger,
@@ -101,7 +101,7 @@ export default function UserDetails(props: UserDetailsProps) {
           setAdjustments(attachments.adjustments);
           setPets(attachments.pets);
         }
-        navigate(firstStep);
+        setPdfDropped(true);
       } catch (err) {
         console.error("Load PDF error", err);
         alert(
@@ -127,25 +127,85 @@ export default function UserDetails(props: UserDetailsProps) {
               setOpen={setAddFamilyModalOpen}
             />
           )}
-          <StyledSpace {...getRootProps()}>
-            <input {...getInputProps()} />
-            {isDragActive ? (
-              <StyledDragParagraphActive>Slipp fil</StyledDragParagraphActive>
-            ) : (
-              <StyledDragParagraph>
-                <Icon name="cloud upload" color="blue" /> Dra og slipp PDF eller
-                klikk i feltet for å åpne fra maskin.
-              </StyledDragParagraph>
-            )}
-          </StyledSpace>
-          <ModalPDFUpload
-            open={pdfModalOpen}
-            setOpen={setPdfModalOpen}
-          ></ModalPDFUpload>
+          {!pdfDropped ? (
+            <StyledBoxSection {...getRootProps()}>
+              <input {...getInputProps()} />
+              {isDragActive ? (
+                <StyledDragParagraphActive>Slipp fil</StyledDragParagraphActive>
+              ) : (
+                <div>
+                  <Styledtitle> Har du gjort dette før?</Styledtitle>
+                  <Ingress>
+                    {" "}
+                    Hvis du lastet ned en PDF forrige gang du gjorde dette, så
+                    kan du laste den opp igjen her. Da bruker vi den til å fylle
+                    ut feltene, så slipper du å fylle inn all informasjonen på
+                    nytt.
+                  </Ingress>
+                  <Button
+                    circular
+                    color="blue"
+                    alt="Last opp PDF fra forrige gjennomgang"
+                  >
+                    Last opp PDF
+                  </Button>
+                </div>
+              )}
+            </StyledBoxSection>
+          ) : null}
 
           <StyledHeadingDiv>
             <h1>Familiemedlemmer</h1>
             <h3>Hvem består familien av?</h3>
+            <StyledBoxSection>
+              <div className="ui form">
+                <div className="three fields">
+                  <div className="field">
+                    <label>Navn</label>
+                    <input
+                      type="text"
+                      placeholder="Skriv inn navn på familiemedlem"
+                    ></input>
+                  </div>
+                  <div className="field">
+                    <label>Alder</label>
+                    <input
+                      type="number"
+                      placeholder="Skriv in alder på familiemedlem"
+                    ></input>
+                  </div>
+                  <div className="grouped fields">
+                    <label className="kjønn">Kjønn</label>
+                    <Space>
+                      {" "}
+                      <div className="inline fields">
+                        <div className="field">
+                          <div className="ui radio checkbox">
+                            <input
+                              type="radio"
+                              name="kjønn"
+                              checked={true}
+                              className="hidden"
+                            ></input>
+                            <label>Kvinne</label>
+                          </div>
+                        </div>
+                        <div className="field">
+                          <div className="ui radio checkbox">
+                            <input
+                              type="radio"
+                              name="kjønn"
+                              className="hidden"
+                            ></input>
+                            <label>Mann</label>
+                          </div>
+                        </div>
+                      </div>
+                    </Space>
+                  </div>
+                </div>
+              </div>
+            </StyledBoxSection>
             <Card.Group>
               {familyMembers.map((fm) => {
                 return (
@@ -344,19 +404,27 @@ const CenterTextDiv = styled.div`
   transform: translate(-50%, -50%);
 `;
 
-const StyledSpace = styled.div`
-  padding-bottom: 1em !important;
-`;
-
-const StyledDragParagraph = styled.p`
-  background-color: #f1f8f8 !important;
-  border: 1px dashed #3d8eb1;
-  padding: 3em;
-  border-radius: 3px;
-`;
 const StyledDragParagraphActive = styled.p`
   background-color: #f1f8f8 !important;
+  font-weight: bold !important;
   border: 2px solid #3d8eb1;
-  padding: 3em;
+  padding: 4em;
   border-radius: 3px;
+`;
+
+const Styledtitle = styled.h1`
+  font-weight: bold !important;
+  font-size: x-large;
+  padding-top: 1em;
+`;
+
+const Ingress = styled.p`
+  font-size: medium;
+  padding-bottom: 2em;
+`;
+
+const Space = styled.div`
+  display: flex;
+  justify-content: center;
+  padding-top: 1em;
 `;
