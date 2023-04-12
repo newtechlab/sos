@@ -46,6 +46,7 @@ export interface FamilyMember {
   id: string;
   name: string;
   age: string;
+  sex?: string;
 }
 
 export interface Pet {

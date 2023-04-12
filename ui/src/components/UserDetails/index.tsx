@@ -1,7 +1,15 @@
 import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { useNavigate } from "react-router-dom";
-import { Button, Card, Container, Grid, Icon, Input } from "semantic-ui-react";
+import {
+  Button,
+  Card,
+  Container,
+  Grid,
+  GridRow,
+  Icon,
+  Input,
+} from "semantic-ui-react";
 import styled from "styled-components";
 import {
   Car,
@@ -25,8 +33,12 @@ import { StyledCard } from "../StyledFamilyCard";
 import PetMemberCard from "../PetCard";
 import PdfConverter from "../../services/PdfService/PdfConverter";
 import { AdjustmentAmountPercent, LedgerRowId } from "../ResultatInteract";
-
+import { v4 as uuidv4 } from "uuid";
 import { StyledBoxSection } from "../StyledBoxSection";
+import { StyledGrid, StyledGridRow, StyledGridRowBottom } from "../MoneyIn";
+import TrashIcon from "../TrashIcon";
+import { add } from "lodash";
+import { getValue } from "@testing-library/user-event/dist/utils";
 
 export interface UserDetailsProps {
   familyMembers: Array<FamilyMember>;
@@ -66,6 +78,8 @@ export default function UserDetails(props: UserDetailsProps) {
   const [addHelpTextGoalModalOpen, OpenHelpTextGoalModal] =
     useState<boolean>(false);
   const [pdfDropped, setPdfDropped] = useState<boolean>(false);
+  const [newName, setNewName] = useState("");
+  const [newAge, setNewAge] = useState("");
   const {
     setFamilyMembers,
     setLedger,
@@ -158,54 +172,74 @@ export default function UserDetails(props: UserDetailsProps) {
             <h1>Familiemedlemmer</h1>
             <h3>Hvem består familien av?</h3>
             <StyledBoxSection>
-              <div className="ui form">
-                <div className="three fields">
-                  <div className="field">
-                    <label>Navn</label>
-                    <input
-                      type="text"
-                      placeholder="Skriv inn navn på familiemedlem"
-                    ></input>
-                  </div>
-                  <div className="field">
-                    <label>Alder</label>
-                    <input
-                      type="number"
-                      placeholder="Skriv in alder på familiemedlem"
-                    ></input>
-                  </div>
-                  <div className="grouped fields">
-                    <label className="kjønn">Kjønn</label>
-                    <Space>
-                      {" "}
-                      <div className="inline fields">
-                        <div className="field">
-                          <div className="ui radio checkbox">
-                            <input
-                              type="radio"
-                              name="kjønn"
-                              checked={true}
-                              className="hidden"
-                            ></input>
-                            <label>Kvinne</label>
-                          </div>
-                        </div>
-                        <div className="field">
-                          <div className="ui radio checkbox">
-                            <input
-                              type="radio"
-                              name="kjønn"
-                              className="hidden"
-                            ></input>
-                            <label>Mann</label>
-                          </div>
-                        </div>
-                      </div>
-                    </Space>
-                  </div>
-                </div>
-              </div>
+              <StyledGrid>
+                <Grid.Row>
+                  <Grid.Column width={9}>
+                    <strong>Navn</strong>
+                  </Grid.Column>
+                  <Grid.Column width={5} textAlign="right">
+                    <strong>Alder</strong>
+                  </Grid.Column>
+                </Grid.Row>
+                {familyMembers
+                  ? familyMembers.map((fm) => {
+                      return (
+                        <StyledGridRow key={fm.id}>
+                          <Grid.Column width={9}>{fm.name}</Grid.Column>
+                          <Grid.Column width={5} textAlign="right">
+                            {fm.age}
+                          </Grid.Column>
+                          <Grid.Column width={2} textAlign="center">
+                            <TrashIcon
+                              color="blue"
+                              itemId={fm.id}
+                              onClick={deleteFamilyMember}
+                            />
+                          </Grid.Column>
+                        </StyledGridRow>
+                      );
+                    })
+                  : null}
+
+                <GridRow key="new familymember">
+                  <Grid.Column width={9}>
+                    <div className="ui fluid input">
+                      <input
+                        type="text"
+                        color="blue"
+                        placeholder="Navn"
+                        onChange={(e) => setNewName(e.target.value)}
+                      />
+                    </div>
+                  </Grid.Column>
+                  <Grid.Column width={3}>
+                    <div className="ui input">
+                      <input
+                        type="text"
+                        color="blue"
+                        placeholder="Alder"
+                        onChange={(e) => setNewAge(e.target.value)}
+                      />
+                    </div>
+                  </Grid.Column>
+                  <Grid.Column width={3}>
+                    <Button
+                      color="blue"
+                      onClick={() =>
+                        addFamilyMember({
+                          id: uuidv4(),
+                          name: newName,
+                          age: newAge,
+                        })
+                      }
+                    >
+                      legg til
+                    </Button>
+                  </Grid.Column>
+                </GridRow>
+              </StyledGrid>
             </StyledBoxSection>
+
             <Card.Group>
               {familyMembers.map((fm) => {
                 return (
@@ -423,8 +457,8 @@ const Ingress = styled.p`
   padding-bottom: 2em;
 `;
 
-const Space = styled.div`
-  display: flex;
-  justify-content: center;
-  padding-top: 1em;
+export const StyledIcon = styled(Icon)`
+  &:hover {
+    cursor: pointer;
+  }
 `;
