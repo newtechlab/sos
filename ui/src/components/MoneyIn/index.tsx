@@ -48,11 +48,7 @@ interface DropDownItem {
 
 export default function MoneyIn(props: MoneyInProps) {
   const [belopEndError, setBelopEndError] = useState<boolean>(false);
-  const [amount, setAmount] = useState<number | undefined>(undefined);
-  const [category, setCategory] = useState<string | undefined>(undefined);
-  const [from, setFrom] = useState<string | undefined>(undefined);
   const [subcategories, setSubcategories] = useState<Array<DropDownItem>>([]);
-  const [day, setDay] = useState<number | undefined>(undefined);
   const [dropDownItems, setDropDownItems] = useState<DropDownItem[]>([]);
   const [moneyInItems, setMoneyInItems] = useState<
     Map<string, MoneyInAndCategory>
@@ -264,7 +260,7 @@ export default function MoneyIn(props: MoneyInProps) {
     setDropDownItems(dropDownItems);
   }, [moneyInItems]);
 
-  const setCategoryX = (category: string | undefined, row: LedgerRow) => {
+  const setCategory = (category: string | undefined, row: LedgerRow) => {
     if (category) {
       const items = incomeTypes.get(category);
       if (items) {
@@ -285,18 +281,6 @@ export default function MoneyIn(props: MoneyInProps) {
           setSubcategories(items);
         }
       }
-    }
-  };
-
-  const setSubCategoriesX = (
-    subcategory: string | undefined,
-    row: LedgerRow
-  ) => {
-    if (subcategory) {
-      editLedgerRow({
-        ...row,
-        accountFrom: subcategory,
-      });
     }
   };
 
@@ -344,7 +328,7 @@ export default function MoneyIn(props: MoneyInProps) {
                           placeholder="Kategori"
                           options={Categories}
                           onChange={(_, data) => {
-                            setCategoryX(data.value?.toString(), row);
+                            setCategory(data.value?.toString(), row);
                           }}
                         />
                       </StyledGridColumn>
@@ -358,7 +342,10 @@ export default function MoneyIn(props: MoneyInProps) {
                             placeholder="Ordning"
                             options={subcategories}
                             onChange={(_, data) => {
-                              setSubCategoriesX(data.value?.toString(), row);
+                              editLedgerRow({
+                                ...row,
+                                accountFrom: data.value?.toString() as string,
+                              });
                             }}
                           />
                         ) : (
