@@ -1,5 +1,13 @@
 import { useEffect, useState } from "react";
-import { Button, Container, Grid, Icon } from "semantic-ui-react";
+import {
+  Button,
+  Container,
+  Grid,
+  GridRow,
+  Icon,
+  Dropdown,
+  Input,
+} from "semantic-ui-react";
 import { LedgerRow } from "../../App";
 import AddMoneyInModal from "../AddMoneyInModal";
 
@@ -11,18 +19,44 @@ import { StepDefinition, StepsState } from "../Steps";
 import StepHeader from "../StepHeader";
 import MoneyTotal from "../MoneyTotal";
 import TrashIcon from "../TrashIcon";
+import { add } from "lodash";
+import { TransactionCategory } from "../../App";
+import { v4 as uuidv4 } from "uuid";
+import ErrorBar from "../ErrorBar";
 
 interface MoneyInProps {
   ledger: Array<LedgerRow>;
   addLedgerRow: (_: LedgerRow) => void;
+  editLedgerRow: (_: LedgerRow) => void;
   removeLedgerRow: (id: string) => void;
   completeStep: () => void;
   goBack: () => void;
-  goToStep: (step: StepDefinition) => void
+  goToStep: (step: StepDefinition) => void;
   steps: StepsState;
 }
 
+interface MoneyInAndCategory {
+  name: string;
+  category: TransactionCategory;
+}
+
+interface DropDownItem {
+  key: string;
+  text: string;
+  value: string;
+}
+
 export default function MoneyIn(props: MoneyInProps) {
+  const [belopEndError, setBelopEndError] = useState<boolean>(false);
+  const [amount, setAmount] = useState<number | undefined>(undefined);
+  const [category, setCategory] = useState<string | undefined>(undefined);
+  const [from, setFrom] = useState<string | undefined>(undefined);
+  const [subcategories, setSubcategories] = useState<Array<DropDownItem>>([]);
+  const [day, setDay] = useState<number | undefined>(undefined);
+  const [dropDownItems, setDropDownItems] = useState<DropDownItem[]>([]);
+  const [moneyInItems, setMoneyInItems] = useState<
+    Map<string, MoneyInAndCategory>
+  >(new Map<string, MoneyInAndCategory>());
   const [addMoneyInModalOpen, setAddMoneyInModalOpen] =
     useState<boolean>(false);
   const [sortedLedger, setSortedLedger] = useState<LedgerRow[]>([]);
@@ -35,7 +69,8 @@ export default function MoneyIn(props: MoneyInProps) {
     completeStep,
     goBack,
     steps,
-    goToStep
+    goToStep,
+    editLedgerRow,
   } = props;
 
   useEffect(() => {
@@ -49,12 +84,225 @@ export default function MoneyIn(props: MoneyInProps) {
       })
     );
 
-    setMoneyIn(calculateMoneyIn(sortedLedger))
+    setMoneyIn(calculateMoneyIn(sortedLedger));
   }, [sortedLedger]);
+
+  const Categories = [
+    {
+      key: TransactionCategory.Income,
+      text: "Lønn",
+      value: TransactionCategory.Income,
+    },
+    {
+      key: TransactionCategory.Housing_Benefit,
+      text: "Husbanken",
+      value: TransactionCategory.Housing_Benefit,
+    },
+    {
+      key: TransactionCategory.Government_Income,
+      text: "NAV",
+      value: TransactionCategory.Government_Income,
+    },
+  ];
+
+  const incomeTypes: Map<string, Array<DropDownItem>> = new Map<
+    string,
+    Array<DropDownItem>
+  >();
+  incomeTypes.set("Housing_Benefit", [
+    {
+      key: "Husbanken",
+      text: "Husbanken",
+      value: "Husbanken",
+    },
+  ]);
+  incomeTypes.set("Income", [
+    {
+      key: "Lønn",
+      text: "Lønn",
+      value: "Lønn",
+    },
+  ]);
+
+  incomeTypes.set("Government_Income", [
+    {
+      key: "Sosialhjelp",
+      text: "Sosialhjelp",
+      value: "Sosialhjelp",
+    },
+    {
+      key: "Barnetrygd",
+      text: "Barnetrygd",
+      value: "Barnetrygd",
+    },
+    {
+      key: "Dagpenger",
+      text: "Dagpenger",
+      value: "Dagpenger",
+    },
+    {
+      key: "Sykepenger",
+      text: "Sykepenger",
+      value: "Sykepenger",
+    },
+    {
+      key: "Foreldrepenger",
+      text: "Foreldrepenger",
+      value: "Foreldrepenger",
+    },
+    {
+      key: "Kontantstøtte",
+      text: "Kontantstøtte",
+      value: "Kontantstøtte",
+    },
+    {
+      key: "Pensjon",
+      text: "Pensjon",
+      value: "Pensjon",
+    },
+    {
+      key: "Arbeidsavklaringspenger",
+      text: "Arbeidsavklaringspenger",
+      value: "Arbeidsavklaringspenger",
+    },
+    {
+      key: "Tiltakspenger",
+      text: "Tiltakspenger",
+      value: "Tiltakspenger",
+    },
+    {
+      key: "Uførepensjon",
+      text: "Uførepensjon",
+      value: "Uførepensjon",
+    },
+    {
+      key: "Kvalifiseringsstønad",
+      text: "Kvalifiseringsstønad",
+      value: "Kvalifiseringsstønad",
+    },
+    {
+      key: "Overgangsstønad",
+      text: "Overgangsstønad",
+      value: "Overgangsstønad",
+    },
+    {
+      key: "Barnebidrag",
+      text: "Barnebidrag",
+      value: "Barnebidrag",
+    },
+    {
+      key: "Forskuddsbidrag",
+      text: "Forskuddsbidrag",
+      value: "Forskuddsbidrag",
+    },
+    {
+      key: "Introduksjonsstønad",
+      text: "Introduksjonsstønad",
+      value: "Introduksjonsstønad",
+    },
+    {
+      key: "Grunnstønad",
+      text: "Grunnstønad",
+      value: "Grunnstønad",
+    },
+    {
+      key: "Hjelpestønad",
+      text: "Hjelpestønad",
+      value: "Hjelpestønad",
+    },
+    {
+      key: "Engangsstønad",
+      text: "Engangsstønad",
+      value: "Engangsstønad",
+    },
+    {
+      key: "Omsorgslønn",
+      text: "Omsorgslønn",
+      value: "Omsorgslønn",
+    },
+    {
+      key: "Barnetilsyn",
+      text: "Barnetilsyn",
+      value: "Barnetilsyn",
+    },
+  ]);
+
+  const getDateArray = () => {
+    const arr = [];
+    for (let i = 1; i <= 28; i++) {
+      arr.push({
+        key: i,
+        text: i.toString(),
+        value: i,
+      });
+    }
+    return arr;
+  };
+
+  const DayCategories = getDateArray();
+
+  let belopError = false;
+  const validateInput = (inputvalue: string) => {
+    const validNumber = RegExp(/^[0-9\b]+$/);
+    validNumber.test(inputvalue) ? (belopError = false) : (belopError = true);
+  };
+
+  const convertDropdownItem = (item: MoneyInAndCategory): DropDownItem => {
+    return {
+      key: item.name,
+      text: item.name,
+      value: item.name,
+    };
+  };
+
+  useEffect(() => {
+    const dropDownItems: DropDownItem[] = [];
+    moneyInItems.forEach((value) => {
+      const i = convertDropdownItem(value);
+      dropDownItems.push(i);
+    });
+    setDropDownItems(dropDownItems);
+  }, [moneyInItems]);
+
+  const setCategoryX = (category: string | undefined, row: LedgerRow) => {
+    if (category) {
+      const items = incomeTypes.get(category);
+      if (items) {
+        if (items?.length === 1) {
+          editLedgerRow({
+            ...row,
+            accountFrom: items[0].value,
+            category:
+              category === "Income"
+                ? TransactionCategory.Income
+                : TransactionCategory.Housing_Benefit,
+          });
+        } else {
+          editLedgerRow({
+            ...row,
+            category: TransactionCategory.Government_Income,
+          });
+          setSubcategories(items);
+        }
+      }
+    }
+  };
+
+  const setSubCategoriesX = (
+    subcategory: string | undefined,
+    row: LedgerRow
+  ) => {
+    if (subcategory) {
+      editLedgerRow({
+        ...row,
+        accountFrom: subcategory,
+      });
+    }
+  };
 
   return (
     <StyledBackgroundColour>
-      <StyledHeader> 
+      <StyledHeader>
         <StepHeader steps={steps} goToStep={goToStep} />
       </StyledHeader>
       <Container>
@@ -67,19 +315,17 @@ export default function MoneyIn(props: MoneyInProps) {
             />
           )}
 
-          <h1>Lønn, støtteordninger og andre inntekter</h1>
+          <h1>Penger inn</h1>
 
           <StyledBoxSection>
             <StyledGrid>
               {filteredLedger.length > 0 && (
                 <Grid.Row>
-                  <Grid.Column width={6}>
+                  <StyledGridColumn width={3}>
                     <strong>Type inntekt</strong>
-                  </Grid.Column>
-                  {/* <Grid.Column width={4}>
-                            Ordning
-                        </Grid.Column> */}
-                  <Grid.Column width={6}>
+                  </StyledGridColumn>
+                  <Grid.Column width={4}>Ordning</Grid.Column>
+                  <Grid.Column width={4}>
                     <strong>Beløp</strong>
                   </Grid.Column>
                   <Grid.Column width={3}>
@@ -91,12 +337,79 @@ export default function MoneyIn(props: MoneyInProps) {
                 if (row.accountTo === "user") {
                   return (
                     <StyledGridRow key={row.id}>
-                      <Grid.Column width={6}>{row.accountFrom}</Grid.Column>
-                      <Grid.Column width={6}>{row.amount}</Grid.Column>
-                      <Grid.Column width={3}>{row.dayOfMonth}</Grid.Column>
-                      <Grid.Column width={1}>
+                      <StyledGridColumn width={3}>
+                        <Dropdown
+                          search
+                          selection
+                          placeholder="Kategori"
+                          options={Categories}
+                          onChange={(_, data) => {
+                            setCategoryX(data.value?.toString(), row);
+                          }}
+                        />
+                      </StyledGridColumn>
+
+                      <Grid.Column width={4}>
+                        {row.category ===
+                        TransactionCategory.Government_Income ? (
+                          <Dropdown
+                            search
+                            selection
+                            placeholder="Ordning"
+                            options={subcategories}
+                            onChange={(_, data) => {
+                              setSubCategoriesX(data.value?.toString(), row);
+                            }}
+                          />
+                        ) : (
+                          <div>-</div>
+                        )}
+                      </Grid.Column>
+
+                      <Grid.Column width={4}>
+                        <Input
+                          placeholder="f.eks 10 000"
+                          onChange={(_, data) => {
+                            validateInput(data.value);
+                            editLedgerRow({
+                              ...row,
+                              amount: parseInt(
+                                data.value?.toString() || "0",
+                                10
+                              ),
+                            });
+                          }}
+                        />
+                        {belopError || belopEndError ? (
+                          <ErrorBar msg="Vennligst skriv inn et nummer" />
+                        ) : (
+                          ""
+                        )}
+                      </Grid.Column>
+                      <Grid.Column width={3}>
+                        <Dropdown
+                          search
+                          selection
+                          placeholder="Dag"
+                          options={DayCategories}
+                          onChange={(_, data) => {
+                            editLedgerRow({
+                              ...row,
+                              dayOfMonth: parseInt(
+                                data.value?.toString() || "0",
+                                10
+                              ),
+                            });
+                          }}
+                        />
+                      </Grid.Column>
+                      <Grid.Column
+                        verticalAlign="middle"
+                        textAlign="center"
+                        width={1}
+                      >
                         <TrashIcon
-                          onClick={removeLedgerRow}                    
+                          onClick={removeLedgerRow}
                           color="blue"
                           itemId={row.id}
                         />
@@ -114,7 +427,14 @@ export default function MoneyIn(props: MoneyInProps) {
                     circular
                     color="blue"
                     onClick={() => {
-                      setAddMoneyInModalOpen(true);
+                      addLedgerRow({
+                        id: uuidv4(),
+                        dayOfMonth: 0,
+                        amount: 0,
+                        accountFrom: "",
+                        accountTo: "user",
+                        category: TransactionCategory.Undefined,
+                      });
                     }}
                   >
                     <Icon name="plus" />
@@ -123,15 +443,12 @@ export default function MoneyIn(props: MoneyInProps) {
                 </Grid.Column>
               </StyledGridRowBottom>
 
-              <MoneyTotal text="Lønn og andre støtteordninger" total={moneyIn} />      
-
+              <MoneyTotal
+                text="Lønn og andre støtteordninger"
+                total={moneyIn}
+              />
             </StyledGrid>
           </StyledBoxSection>
-
-          {/* 
-        <StyledGraphContainer>
-            <Bar options={chartOptions} data={graphData} />
-        </StyledGraphContainer> */}
 
           <BackForwardControls
             goBack={() => goBack()}
@@ -144,7 +461,7 @@ export default function MoneyIn(props: MoneyInProps) {
 }
 
 export const StyledTotalGrid = styled(Grid)`
-  background-color: #F5F5F0;
+  background-color: #f5f5f0;
 `;
 
 export const StyledGridRowBottom = styled(Grid.Row)`
@@ -160,6 +477,7 @@ export const StyledGridRow = styled(Grid.Row)`
   border: 1px solid #3d8eb1;
   border-radius: 5px;
   margin-bottom: 10px;
+  background-color: #f1f8f8;
 `;
 
 const StyledBackgroundColour = styled.div`
@@ -174,4 +492,8 @@ const StyledContainerSpace = styled.div`
 const StyledHeader = styled.div`
   background-color: #ffffff;
   width: 100%;
+`;
+
+const StyledGridColumn = styled(Grid.Column)`
+  margin-right: 2rem;
 `;

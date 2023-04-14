@@ -222,6 +222,22 @@ function App() {
     setLedger(ledger.concat(ledgerRow));
   };
 
+  const editLedgerRow = (ledgerRow: LedgerRow) => {
+    const currentRow = ledger.find((item) => {
+      if (item.id === ledgerRow.id) {
+        return item;
+      }
+    });
+
+    const index = ledger.indexOf(currentRow as LedgerRow);
+    if (index > -1) {
+      // only splice array when item is found
+      ledger.splice(index, 1); // 2nd parameter means remove one item only
+    }
+
+    addLedgerRow(ledgerRow);
+  };
+
   const deleteLedgerRow = (id: string) => {
     const filtered = ledger.filter((row) => {
       return row.id !== id;
@@ -391,6 +407,7 @@ function App() {
                 <MoneyIn
                   ledger={ledger}
                   addLedgerRow={addLedgerRow}
+                  editLedgerRow={editLedgerRow}
                   removeLedgerRow={deleteLedgerRow}
                   completeStep={completeStep}
                   goBack={goBack}
