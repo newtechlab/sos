@@ -300,20 +300,21 @@ export default function MoneyIn(props: MoneyInProps) {
           )}
 
           <h1>Penger inn</h1>
+          <h2>Inntekt og annen støtte</h2>
 
           <StyledBoxSection>
             <StyledGrid>
               {filteredLedger.length > 0 && (
                 <Grid.Row>
                   <StyledGridColumn width={3}>
-                    <strong>Type inntekt</strong>
+                    <strong>Inntekt</strong>
                   </StyledGridColumn>
                   <Grid.Column width={4}>Ordning</Grid.Column>
                   <Grid.Column width={4}>
                     <strong>Beløp</strong>
                   </Grid.Column>
                   <Grid.Column width={3}>
-                    <strong>Dato</strong>
+                    <strong>Dato for utbetaling</strong>
                   </Grid.Column>
                 </Grid.Row>
               )}
@@ -366,6 +367,8 @@ export default function MoneyIn(props: MoneyInProps) {
                               ),
                             });
                           }}
+                          label={{ basic: true, content: "kr" }}
+                          labelPosition="right"
                         />
                         {belopError || belopEndError ? (
                           <ErrorBar msg="Vennligst skriv inn et nummer" />
@@ -430,10 +433,7 @@ export default function MoneyIn(props: MoneyInProps) {
                 </Grid.Column>
               </StyledGridRowBottom>
 
-              <MoneyTotal
-                text="Lønn og andre støtteordninger"
-                total={moneyIn}
-              />
+              <MoneyTotal text="Inntekter" total={moneyIn} />
             </StyledGrid>
           </StyledBoxSection>
 
