@@ -417,40 +417,19 @@ function App() {
               }
             />
             <Route
-              path="/gjeld"
+              path="/penger-ut"
               element={
                 <MoneyOutDebt
                   ledger={ledger}
                   addLedgerRow={addLedgerRow}
+                  editLedgerRow={editLedgerRow}
                   removeLedgerRow={deleteLedgerRow}
                   completeStep={completeStep}
                   goBack={goBack}
                   goToStep={goToStep}
                   activeStep={activeStep}
                   steps={steps}
-                  categories={new Set([TransactionCategory.Debt])}
-                />
-              }
-            />
-            <Route
-              path="/penger-ut"
-              element={
-                <MoneyOut
-                  ledger={ledger}
-                  addLedgerRow={addLedgerRow}
-                  removeLedgerRow={deleteLedgerRow}
-                  completeStep={completeStep}
-                  goBack={goBack}
-                  goToStep={goToStep}
-                  activeStep={activeStep}
-                  steps={steps}
-                  categories={
-                    new Set(
-                      AllTransactionCategories.filter(
-                        (c) => c !== TransactionCategory.Debt.toString()
-                      )
-                    )
-                  }
+                  categories={new Set(AllTransactionCategories)}
                 />
               }
             />
