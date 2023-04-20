@@ -52,6 +52,7 @@ export interface FamilyMember {
 export interface Pet {
   id: string;
   name: string;
+  type: string;
 }
 
 export enum TransactionCategory {
@@ -218,6 +219,22 @@ function App() {
     setFamilyMembers(familyMembers.concat(familyMember));
   };
 
+  const editPurpleMonkeyDishWasher = (familyMember: FamilyMember) => {
+    const currentRow = familyMembers.find((item) => {
+      if (item.id === familyMember.id) {
+        return item;
+      }
+    });
+
+    const index = familyMembers.indexOf(currentRow as FamilyMember);
+    if (index > -1) {
+      // only splice array when item is found
+      familyMembers.splice(index, 1); // 2nd parameter means remove one item only
+    }
+
+    purpleMonkeyDishWasher(familyMember);
+  };
+
   const addLedgerRow = (ledgerRow: LedgerRow) => {
     setLedger(ledger.concat(ledgerRow));
   };
@@ -236,6 +253,26 @@ function App() {
     }
 
     addLedgerRow(ledgerRow);
+  };
+
+  const addPet = (pet: Pet) => {
+    setPets(pets.concat(pet));
+  };
+
+  const editPet = (pet: Pet) => {
+    const currentRow = pets.find((item) => {
+      if (item.id === pet.id) {
+        return item;
+      }
+    });
+
+    const index = pets.indexOf(currentRow as Pet);
+    if (index > -1) {
+      // only splice array when item is found
+      pets.splice(index, 1); // 2nd parameter means remove one item only
+    }
+
+    addPet(pet);
   };
 
   const deleteLedgerRow = (id: string) => {
@@ -381,12 +418,13 @@ function App() {
                 <UserDetails
                   setPreviousData={setPreviousData}
                   setFamilyMembers={setFamilyMembers}
+                  setPets={setPets}
                   setLedger={setLedger}
                   setUserDetails={setUserDetails}
                   setAdjustments={setAdjustments}
-                  setPets={setPets}
                   familyMembers={familyMembers}
                   addFamilyMember={purpleMonkeyDishWasher}
+                  editFamilyMember={editPurpleMonkeyDishWasher}
                   activeStep={activeStep}
                   steps={steps}
                   completeStep={completeStep}
@@ -394,6 +432,8 @@ function App() {
                   goToStep={goToStep}
                   userDetails={userDetails}
                   pets={pets}
+                  addPet={addPet}
+                  editPet={editPet}
                   deletePet={deletePet}
                   deleteFamilyMember={deleteFamilyMember}
                   resetSession={resetSession}
@@ -516,12 +556,12 @@ export const StyledOverridesDiv = styled.div`
     font-family: Regular;
   }
   h1 {
-    font-family: Medium;
+    font-family: Regular;
     font-size: 2.125rem;
     line-height: 2.5rem;
   }
   h2 {
-    font-family: Medium;
+    font-family: Regular;
     font-size: 1.625 rem;
     line-height: 2rem;
   }

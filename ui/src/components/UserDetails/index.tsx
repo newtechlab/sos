@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { useNavigate } from "react-router-dom";
 import {
@@ -47,6 +47,7 @@ export interface UserDetailsProps {
   activeStep: StepDefinition | undefined;
   steps: StepsState;
   addFamilyMember: (_: FamilyMember) => void;
+  editFamilyMember: (_: FamilyMember) => void;
   deletePet: (id: string) => void;
   deleteFamilyMember: (id: string) => void;
   completeStep: () => void;
@@ -57,7 +58,9 @@ export interface UserDetailsProps {
   setLedger: (_: Array<LedgerRow>) => void;
   setUserDetails(_: UserInformation): void;
   setAdjustments(_: Map<LedgerRowId, AdjustmentAmountPercent>): void;
+  addPet: (_: Pet) => void;
   setPets: (_: Array<Pet>) => void;
+  editPet: (_: Pet) => void;
   resetSession: () => void;
 }
 
@@ -82,11 +85,13 @@ export default function UserDetails(props: UserDetailsProps) {
   const [newAge, setNewAge] = useState("");
   const {
     setFamilyMembers,
+    editFamilyMember,
     setLedger,
     setUserDetails,
     setPreviousData,
     setAdjustments,
-    setPets,
+    addPet,
+    editPet,
     addFamilyMember,
     completeStep,
     goBack,
@@ -95,7 +100,7 @@ export default function UserDetails(props: UserDetailsProps) {
     steps,
     userDetails,
     pets,
-
+    setPets,
     deletePet,
     deleteFamilyMember,
   } = props;
@@ -177,7 +182,7 @@ export default function UserDetails(props: UserDetailsProps) {
                   <Grid.Column width={9}>
                     <strong>Navn</strong>
                   </Grid.Column>
-                  <Grid.Column width={5} textAlign="right">
+                  <Grid.Column width={5} textAlign="left">
                     <strong>Alder</strong>
                   </Grid.Column>
                 </Grid.Row>
@@ -185,11 +190,39 @@ export default function UserDetails(props: UserDetailsProps) {
                   ? familyMembers.map((fm) => {
                       return (
                         <StyledGridRow key={fm.id}>
-                          <Grid.Column width={9}>{fm.name}</Grid.Column>
-                          <Grid.Column width={5} textAlign="right">
-                            {fm.age}
+                          <Grid.Column width={9}>
+                            <Input
+                              fluid
+                              placeholder="Navn"
+                              onChange={(_, data) => {
+                                editFamilyMember({
+                                  ...fm,
+                                  name: data.value?.toString(),
+                                });
+                              }}
+                              labelPosition="right"
+                              value={fm.name}
+                            />
                           </Grid.Column>
-                          <Grid.Column width={2} textAlign="center">
+                          <Grid.Column width={5} textAlign="right">
+                            <Input
+                              fluid
+                              placeholder="Alder"
+                              onChange={(_, data) => {
+                                editFamilyMember({
+                                  ...fm,
+                                  age: data.value?.toString(),
+                                });
+                              }}
+                              labelPosition="right"
+                              value={fm.age}
+                            />
+                          </Grid.Column>
+                          <Grid.Column
+                            width={2}
+                            verticalAlign="middle"
+                            textAlign="center"
+                          >
                             <TrashIcon
                               color="blue"
                               itemId={fm.id}
@@ -200,67 +233,30 @@ export default function UserDetails(props: UserDetailsProps) {
                       );
                     })
                   : null}
-
-                <GridRow key="new familymember">
-                  <Grid.Column width={9}>
-                    <div className="ui fluid input">
-                      <input
-                        type="text"
-                        color="blue"
-                        placeholder="Navn"
-                        onChange={(e) => setNewName(e.target.value)}
-                      />
-                    </div>
-                  </Grid.Column>
-                  <Grid.Column width={3}>
-                    <div className="ui input">
-                      <input
-                        type="text"
-                        color="blue"
-                        placeholder="Alder"
-                        onChange={(e) => setNewAge(e.target.value)}
-                      />
-                    </div>
-                  </Grid.Column>
-                  <Grid.Column width={3}>
+                <StyledGridRowBottom>
+                  <Grid.Column width={16}>
                     <Button
+                      circular
                       color="blue"
-                      onClick={() =>
+                      onClick={() => {
                         addFamilyMember({
                           id: uuidv4(),
-                          name: newName,
-                          age: newAge,
-                        })
-                      }
+                          name: "",
+                          age: "",
+                        });
+                      }}
                     >
-                      legg til
+                      <Icon name="plus" />
+                      Legg til medlem
                     </Button>
                   </Grid.Column>
-                </GridRow>
+                </StyledGridRowBottom>
               </StyledGrid>
             </StyledBoxSection>
-
-            <Card.Group>
-              {familyMembers.map((fm) => {
-                return (
-                  <FamilyMemberCard
-                    key={fm.id}
-                    familyMember={fm}
-                    deleteFamilyMember={deleteFamilyMember}
-                  />
-                );
-              })}
-              <AddFamilyMemberCard
-                key="ADD_NEW_MEMBER"
-                onClick={() => {
-                  setAddFamilyModalOpen(true);
-                }}
-              />
-            </Card.Group>
           </StyledHeadingDiv>
 
           <StyledHeadingDiv>
-            <h1>Eier familien bil(er)?</h1>
+            <h1>Eier familien bil eller andre kjøretøy?</h1>
 
             <JaNei
               optionOneSelected={userDetails.car === Car.OWN}
@@ -283,7 +279,7 @@ export default function UserDetails(props: UserDetailsProps) {
           </StyledHeadingDiv>
 
           <StyledHeadingDiv>
-            <h1>Hvordan bor familien?</h1>
+            <h1>Boligsituasjon</h1>
 
             <JaNei
               optionOneSelected={userDetails.house === HouseSituation.OWN}
@@ -306,50 +302,85 @@ export default function UserDetails(props: UserDetailsProps) {
           </StyledHeadingDiv>
 
           <StyledHeadingDiv>
-            <h1>Har familien dyr?</h1>
-            <Card.Group>
-              {pets.map((p) => {
-                return (
-                  <PetMemberCard
-                    key={p.id}
-                    id={p.id}
-                    name={p.name}
-                    onDelete={deletePet}
-                  />
-                );
-              })}
-              <StyledCard onClick={() => setAddPetModalOpen(true)}>
-                <CenterTextDiv>+ Legg til</CenterTextDiv>
-              </StyledCard>
-            </Card.Group>
-
-            <AddPetModal
-              open={addPetModalOpen}
-              setOpen={setAddPetModalOpen}
-              pets={pets}
-              setPets={setPets}
-            />
+            <h1>Eier du noen dyr?</h1>
+            <StyledBoxSection>
+              <StyledGrid>
+                <Grid.Row>
+                  <Grid.Column width={9}>
+                    <strong>Navn</strong>
+                  </Grid.Column>
+                  <Grid.Column width={5} textAlign="left">
+                    <strong>Type dyr</strong>
+                  </Grid.Column>
+                </Grid.Row>
+                {pets
+                  ? pets.map((pet) => {
+                      return (
+                        <StyledGridRow key={pet.id}>
+                          <Grid.Column width={9}>
+                            <Input
+                              fluid
+                              placeholder="Navn"
+                              onChange={(_, data) => {
+                                editPet({
+                                  ...pet,
+                                  name: data.value?.toString(),
+                                });
+                              }}
+                              labelPosition="right"
+                              value={pet.name}
+                            />
+                          </Grid.Column>
+                          <Grid.Column width={5} textAlign="left">
+                            <Input
+                              fluid
+                              placeholder="Skriv inn dyret her (f.eks Hest)"
+                              onChange={(_, data) => {
+                                editPet({
+                                  ...pet,
+                                  type: data.value?.toString(),
+                                });
+                              }}
+                              labelPosition="right"
+                              value={pet.type}
+                            />
+                          </Grid.Column>
+                          <Grid.Column
+                            width={2}
+                            verticalAlign="middle"
+                            textAlign="center"
+                          >
+                            <TrashIcon
+                              color="blue"
+                              itemId={pet.id}
+                              onClick={deletePet}
+                            />
+                          </Grid.Column>
+                        </StyledGridRow>
+                      );
+                    })
+                  : null}
+                <StyledGridRowBottom>
+                  <Grid.Column width={16}>
+                    <Button
+                      circular
+                      color="blue"
+                      onClick={() => {
+                        addPet({
+                          id: uuidv4(),
+                          name: "",
+                          type: "",
+                        });
+                      }}
+                    >
+                      <Icon name="plus" />
+                      Legg til dyr
+                    </Button>
+                  </Grid.Column>
+                </StyledGridRowBottom>
+              </StyledGrid>
+            </StyledBoxSection>
           </StyledHeadingDiv>
-
-          {/* <StyledHeadingDiv>
-            <h1>Andre eiendeler?</h1>
-
-            <Grid columns={1}>
-              <Grid.Column>
-                <Input
-                  placeholder="Skriv inn eiendelen her (f.eks Hytte)"
-                  value={userDetails.otherAssets}
-                  onChange={(_, data) => {
-                    props.setUserDetails({
-                      ...userDetails,
-                      otherAssets: data.value?.toString()
-                    });
-                  }}
-                  style={{ width: "100%" }}
-                />
-              </Grid.Column>
-            </Grid>
-          </StyledHeadingDiv> */}
 
           <StyledHeadingDiv>
             <h1>Har familien et sparemål?</h1>
@@ -394,11 +425,6 @@ export default function UserDetails(props: UserDetailsProps) {
               </Grid.Column>
             </Grid>
           </StyledHeadingDiv>
-
-          {/* <StyledBControlsDiv> */}
-          {/* <Button onClick={() => {
-          setAddFamilyModalOpen(true);
-        }}>Add Family Member</Button> */}
 
           <BackForwardControls
             goBack={() => goBack()}
