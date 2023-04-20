@@ -37,7 +37,7 @@ interface ResultatInteractProps {
   removeLedgerRow: (id: string) => void;
   completeStep: () => void;
   goBack: () => void;
-  goToStep: (step: StepDefinition) => void
+  goToStep: (step: StepDefinition) => void;
   goal: Goal;
   activeStep: StepDefinition | undefined;
   steps: StepsState;
@@ -58,7 +58,16 @@ export default function ResultatInteract(props: ResultatInteractProps) {
   const [graphData, setGraphData] = useState<
     ChartData<"bar", number[], unknown>
   >(graphDataInitialState);
-  const { ledger, completeStep, activeStep, steps, goBack, adjustments, setAdjustments, goToStep } = props;
+  const {
+    ledger,
+    completeStep,
+    activeStep,
+    steps,
+    goBack,
+    adjustments,
+    setAdjustments,
+    goToStep,
+  } = props;
 
   const computeInOutPercent = () => {
     const adjustedLedger = sortedLedger.map((row) => {
@@ -93,29 +102,30 @@ export default function ResultatInteract(props: ResultatInteractProps) {
   }, [ledger]);
 
   useEffect(() => {
-    const debt = ledger.filter((i) => i.category != TransactionCategory.Debt && i.accountFrom === "user")
+    const debt = ledger.filter(
+      (i) => i.category != TransactionCategory.Debt && i.accountFrom === "user"
+    );
     const mOut = _.orderBy(debt, ["amount"], ["desc"]);
     setMoneyOut(mOut);
   }, [sortedLedger]);
 
   useEffect(() => {
     const data = {
-      labels: moneyOut.map((i) => { 
-        return i.accountTo 
+      labels: moneyOut.map((i) => {
+        return i.accountTo;
       }),
-      datasets: moneyOut.map((item, index) => { 
-        const data = Array(moneyOut.length)
-        data[index] = item.amount
+      datasets: moneyOut.map((item, index) => {
+        const data = Array(moneyOut.length);
+        data[index] = item.amount;
         return {
           label: item.accountTo,
           data: data,
           backgroundColor: PengerUtColour,
-        }
-      }) 
+        };
+      }),
     };
     setGraphData(data);
   }, [moneyOut]);
-
 
   useEffect(() => {
     computeInOutPercent();
@@ -129,13 +139,8 @@ export default function ResultatInteract(props: ResultatInteractProps) {
 
   return (
     <StyledBackgroundColour>
-      <StyledHeader>
-        <StepHeader steps={steps} goToStep={goToStep} />
-      </StyledHeader>
       <StyledContainer>
         <StyledContainerSpace>
-          <ResultSubSectionTab goToStep={goToStep} items={StepsInitialState.filter((i) => i.group === activeStep?.group)} selectedItem={activeStep} />
-
           <StyledBoxSection>
             <h1>Månedlige utgifter</h1>
 
@@ -165,9 +170,12 @@ export default function ResultatInteract(props: ResultatInteractProps) {
 
               <StyledRow>
                 <StyledColumn>
-                  <h2>Løpende utgifter</h2>                  
+                  <h2>Løpende utgifter</h2>
                   <StyledParagraph>
-                  Under kan du se dine månedlige utgifter. Du kan bruke tabellen til å tilpasse den økonomiske balansen for å sette et mål for neste måneds pengebruk. Prøve å justere utgiftene til et beløp som gir deg rom til å spare penger.
+                    Under kan du se dine månedlige utgifter. Du kan bruke
+                    tabellen til å tilpasse den økonomiske balansen for å sette
+                    et mål for neste måneds pengebruk. Prøve å justere utgiftene
+                    til et beløp som gir deg rom til å spare penger.
                   </StyledParagraph>
                   <MoneyOutList
                     moneyOut={moneyOut}
@@ -180,10 +188,9 @@ export default function ResultatInteract(props: ResultatInteractProps) {
           </StyledBoxSection>
 
           <BackForwardControls
-                goBack={() => goBack()}
-                completeStep={completeStep}
-              />        
-
+            goBack={() => goBack()}
+            completeStep={completeStep}
+          />
         </StyledContainerSpace>
       </StyledContainer>
 

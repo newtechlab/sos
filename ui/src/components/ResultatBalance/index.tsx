@@ -28,17 +28,20 @@ import {
 import BackForwardControls from "../BackForwardControls";
 import ResultSubSectionTab from "../ResultSubSectionTab";
 import { StepsInitialState } from "../../data/StepsInitialState";
+import ResultatDebt from "../ResultatDebt";
+import ResultatInteract from "../ResultatInteract";
 
 interface ResultatBalanceProps {
   ledger: Array<LedgerRow>;
   removeLedgerRow: (id: string) => void;
   completeStep: () => void;
   goBack: () => void;
-  goToStep: (step: StepDefinition) => void
+  goToStep: (step: StepDefinition) => void;
   goal: Goal;
   activeStep: StepDefinition | undefined;
   steps: StepsState;
   adjustments: Map<LedgerRowId, AdjustmentAmountPercent>;
+  setAdjustments: (_: Map<LedgerRowId, AdjustmentAmountPercent>) => void;
 }
 
 export type LedgerRowId = string;
@@ -51,7 +54,18 @@ export default function ResultatBalance(props: ResultatBalanceProps) {
   const [graphData, setGraphData] = useState<
     ChartData<"bar", number[], unknown>
   >(graphDataInitialState);
-  const { ledger, completeStep, activeStep, steps, goBack, adjustments, goToStep } = props;
+  const {
+    ledger,
+    completeStep,
+    activeStep,
+    steps,
+    goBack,
+    adjustments,
+    setAdjustments,
+    goToStep,
+    removeLedgerRow,
+    goal,
+  } = props;
 
   const labels = ["Penger Inn", "Penger Ut"];
 
@@ -114,10 +128,8 @@ export default function ResultatBalance(props: ResultatBalanceProps) {
       </StyledHeader>
       <StyledContainer>
         <StyledContainerSpace>
-          <ResultSubSectionTab goToStep={goToStep} items={StepsInitialState.filter((i) => i.group === activeStep?.group)} selectedItem={activeStep} />
-
           <StyledBoxSection>
-            <h1>Pengebruk</h1>
+            <h1>Balanse</h1>
 
             <StyledGraphContainer>
               <Bar options={chartOptions} data={graphData} />
@@ -125,45 +137,73 @@ export default function ResultatBalance(props: ResultatBalanceProps) {
 
             <DiffStyledDiv>
               <hr />
-                <Grid>
-                  <Grid.Column textAlign="left" width={14}><StyledTotalDiv className="heading">{ overspending < 0 ? "Overforbruk" : "Potensiell sparing"}</StyledTotalDiv></Grid.Column>
-                  <Grid.Column textAlign="right" width={2}><StyledTotalDiv className={ overspending < 0 ? "amountNegative" : "amountPositive" }>{inTotal - outTotal} kr</StyledTotalDiv></Grid.Column>
-                </Grid>
+              <Grid>
+                <Grid.Column textAlign="left" width={14}>
+                  <StyledTotalDiv className="heading">
+                    {overspending < 0 ? "Overforbruk" : "Potensiell sparing"}
+                  </StyledTotalDiv>
+                </Grid.Column>
+                <Grid.Column textAlign="right" width={2}>
+                  <StyledTotalDiv
+                    className={
+                      overspending < 0 ? "amountNegative" : "amountPositive"
+                    }
+                  >
+                    {inTotal - outTotal} kr
+                  </StyledTotalDiv>
+                </Grid.Column>
+              </Grid>
               <hr />
             </DiffStyledDiv>
-
           </StyledBoxSection>
-
-          <BackForwardControls
-                goBack={() => goBack()}
-                completeStep={completeStep}
-              />        
-
         </StyledContainerSpace>
       </StyledContainer>
+      <ResultatDebt
+        ledger={ledger}
+        removeLedgerRow={removeLedgerRow}
+        completeStep={completeStep}
+        goBack={goBack}
+        goToStep={goToStep}
+        goal={goal}
+        activeStep={activeStep}
+        steps={steps}
+      />
+
+      <ResultatInteract
+        ledger={ledger}
+        removeLedgerRow={removeLedgerRow}
+        completeStep={completeStep}
+        goBack={goBack}
+        goToStep={goToStep}
+        goal={goal}
+        activeStep={activeStep}
+        steps={steps}
+        adjustments={adjustments}
+        setAdjustments={setAdjustments}
+      />
     </StyledBackgroundColour>
   );
 }
 
 const StyledContainer = styled(Container)`
-  padding-bottom: 150px;
+  padding-top: 9.375rem;
 `;
 
 export const StyledTotalDiv = styled.div`
   padding-top: 10px;
   padding-bottom: 10px;
   font-weight: bold !important;
-`
+`;
 
 export const DiffStyledDiv = styled.div`
   padding-top: 30px;
-  
+
   .amountNegative {
     color: red !important;
   }
 
   hr {
-    border-top: 1px solid #CCC;
+    border-top: 1px solid #ccc;
   }
 `;
 

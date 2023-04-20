@@ -445,6 +445,7 @@ function App() {
                   activeStep={activeStep}
                   steps={steps}
                   adjustments={adjustments}
+                  setAdjustments={setAdjustments}
                   goToStep={goToStep}
                 />
               }
@@ -508,14 +509,21 @@ function App() {
 export const StyledOverridesDiv = styled.div`
   div,
   p,
-  h1,
-  h2,
   h3,
   h4,
   button,
   table {
-    font-family: Montserrat !important;
-    font-weight: 300;
+    font-family: Regular;
+  }
+  h1 {
+    font-family: Medium;
+    font-size: 2.125rem;
+    line-height: 2.5rem;
+  }
+  h2 {
+    font-family: Medium;
+    font-size: 1.625 rem;
+    line-height: 2rem;
   }
 `;
 
