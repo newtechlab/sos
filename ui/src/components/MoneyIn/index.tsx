@@ -3,7 +3,6 @@ import {
   Button,
   Container,
   Grid,
-  GridRow,
   Icon,
   Dropdown,
   Input,
@@ -19,7 +18,6 @@ import { StepDefinition, StepsState } from "../Steps";
 import StepHeader from "../StepHeader";
 import MoneyTotal from "../MoneyTotal";
 import TrashIcon from "../TrashIcon";
-import { add } from "lodash";
 import { TransactionCategory } from "../../App";
 import { v4 as uuidv4 } from "uuid";
 import ErrorBar from "../ErrorBar";
@@ -284,6 +282,8 @@ export default function MoneyIn(props: MoneyInProps) {
     }
   };
 
+  console.log(filteredLedger);
+
   return (
     <StyledBackgroundColour>
       <StyledHeader>
@@ -331,6 +331,7 @@ export default function MoneyIn(props: MoneyInProps) {
                           onChange={(_, data) => {
                             setCategory(data.value?.toString(), row);
                           }}
+                          value={row.accountFrom}
                         />
                       </StyledGridColumn>
 
@@ -348,6 +349,7 @@ export default function MoneyIn(props: MoneyInProps) {
                                 accountFrom: data.value?.toString() as string,
                               });
                             }}
+                            value={row.accountTo}
                           />
                         ) : (
                           <div>-</div>
@@ -367,6 +369,7 @@ export default function MoneyIn(props: MoneyInProps) {
                               ),
                             });
                           }}
+                          value={row.amount}
                           label={{ basic: true, content: "kr" }}
                           labelPosition="right"
                         />
@@ -391,6 +394,7 @@ export default function MoneyIn(props: MoneyInProps) {
                               ),
                             });
                           }}
+                          value={row.dayOfMonth}
                         />
                       </Grid.Column>
                       <Grid.Column

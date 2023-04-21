@@ -44,20 +44,6 @@ export const StepsInitialState: Array<StepDefinition> = [
   },
   {
     id: 4,
-    group: StepGroupType.RESULTS,
-    completed: false,
-    path: "/resultat2",
-    heading: "Gjeld",
-  },
-  {
-    id: 5,
-    group: StepGroupType.RESULTS,
-    completed: false,
-    path: "/resultat3",
-    heading: "Utgifter",
-  },
-  {
-    id: 6,
     group: StepGroupType.END,
     completed: false,
     path: "/end",

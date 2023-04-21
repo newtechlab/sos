@@ -178,14 +178,17 @@ export default function UserDetails(props: UserDetailsProps) {
             <h3>Hvem består familien av?</h3>
             <StyledBoxSection>
               <StyledGrid>
-                <Grid.Row>
-                  <Grid.Column width={9}>
-                    <strong>Navn</strong>
-                  </Grid.Column>
-                  <Grid.Column width={5} textAlign="left">
-                    <strong>Alder</strong>
-                  </Grid.Column>
-                </Grid.Row>
+                {familyMembers.length ? (
+                  <Grid.Row>
+                    <Grid.Column width={9}>
+                      <strong>Navn</strong>
+                    </Grid.Column>
+                    <Grid.Column width={5} textAlign="left">
+                      <strong>Alder</strong>
+                    </Grid.Column>
+                  </Grid.Row>
+                ) : null}
+
                 {familyMembers
                   ? familyMembers.map((fm) => {
                       return (
@@ -305,14 +308,16 @@ export default function UserDetails(props: UserDetailsProps) {
             <h1>Eier du noen dyr?</h1>
             <StyledBoxSection>
               <StyledGrid>
-                <Grid.Row>
-                  <Grid.Column width={9}>
-                    <strong>Navn</strong>
-                  </Grid.Column>
-                  <Grid.Column width={5} textAlign="left">
-                    <strong>Type dyr</strong>
-                  </Grid.Column>
-                </Grid.Row>
+                {pets.length ? (
+                  <Grid.Row>
+                    <Grid.Column width={9}>
+                      <strong>Navn</strong>
+                    </Grid.Column>
+                    <Grid.Column width={5} textAlign="left">
+                      <strong>Type dyr</strong>
+                    </Grid.Column>
+                  </Grid.Row>
+                ) : null}
                 {pets
                   ? pets.map((pet) => {
                       return (

@@ -7,7 +7,6 @@ import { StepDefinition, StepsState } from "./components/Steps";
 import { useEffect, useState } from "react";
 import UserDetails from "./components/UserDetails";
 import MoneyIn from "./components/MoneyIn";
-import MoneyOut from "./components/MoneyOut";
 
 import {
   Chart as ChartJS,
@@ -477,38 +476,6 @@ function App() {
               path="/resultat1"
               element={
                 <ResultatBalance
-                  ledger={ledger}
-                  removeLedgerRow={deleteLedgerRow}
-                  completeStep={completeStep}
-                  goal={userDetails.goal}
-                  goBack={goBack}
-                  activeStep={activeStep}
-                  steps={steps}
-                  adjustments={adjustments}
-                  setAdjustments={setAdjustments}
-                  goToStep={goToStep}
-                />
-              }
-            />
-            <Route
-              path="/resultat2"
-              element={
-                <ResultatDebt
-                  ledger={ledger}
-                  removeLedgerRow={deleteLedgerRow}
-                  completeStep={completeStep}
-                  goal={userDetails.goal}
-                  goBack={goBack}
-                  activeStep={activeStep}
-                  steps={steps}
-                  goToStep={goToStep}
-                />
-              }
-            />
-            <Route
-              path="/resultat3"
-              element={
-                <ResultatInteract
                   ledger={ledger}
                   removeLedgerRow={deleteLedgerRow}
                   completeStep={completeStep}
