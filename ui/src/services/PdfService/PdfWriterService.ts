@@ -50,6 +50,13 @@ export class PdfWriterService {
     pdfDoc.attach(uint8array, "sos_state");
     let page = pdfDoc.addPage();
 
+    const Savingspotential = (): number => {
+      const moneyOut = calculateMoneyOut(props.ledger);
+      const moneyIn = calculateMoneyIn(props.ledger);
+      const res = moneyIn - moneyOut;
+      return res;
+    };
+
     if (props.addImage) {
       const FrontPageBytes = await fetch("frontpage.png").then((res) =>
         res.arrayBuffer()
@@ -428,6 +435,103 @@ export class PdfWriterService {
         font: fontBold,
       }
     );
+
+    y = y + 44;
+
+    page.drawLine({
+      start: { x: 80, y: height - y },
+      end: { x: 520, y: height - y },
+      thickness: 0.5,
+      color: rgb(0, 0, 0),
+      opacity: 0.75,
+    });
+    y = y + 44;
+
+    page = pdfDoc.addPage();
+    y = 80;
+
+    page.drawText("4. Resultat", {
+      x: 50,
+      y: height - y,
+      size: 20,
+      font: fontBold,
+    });
+    y = y + 26;
+
+    page.drawText("Balanse", {
+      x: 50,
+      y: height - y,
+      size: 14,
+      font: fontBold,
+    });
+    y = y + 24;
+
+    page.drawText("Penger ut: " + calculateMoneyOut(props.ledger) + " kr", {
+      x: 50,
+      y: height - y,
+      size: 12,
+      font: font,
+    });
+
+    y = y + 22;
+
+    page.drawText("Penger inn: " + calculateMoneyIn(props.ledger) + " kr", {
+      x: 50,
+      y: height - y,
+      size: 12,
+      font: font,
+    });
+
+    y = y + 24;
+
+    {
+      if (Savingspotential() > 0) {
+        page.drawText("Potensiell sparing: " + Savingspotential(), {
+          x: 50,
+          y: height - y,
+          size: 14,
+          font: fontBold,
+        });
+      }
+    }
+    {
+      if (Savingspotential() < 0) {
+        page.drawText("Underskudd: " + Savingspotential(), {
+          x: 50,
+          y: height - y,
+          size: 14,
+          font: fontBold,
+        });
+      }
+    }
+
+    y = y + 44;
+
+    page.drawLine({
+      start: { x: 80, y: height - y },
+      end: { x: 520, y: height - y },
+      thickness: 0.5,
+      color: rgb(0, 0, 0),
+      opacity: 0.75,
+    });
+    y = y + 44;
+
+    // page.drawText("5. Budsjett", {
+    //   x: 50,
+    //   y: height - y,
+    //   size: 20,
+    //   font: fontBold,
+    // });
+    // y = y + 26;
+
+    // page.drawText("Utgifter", {
+    //   x: 50,
+    //   y: height - y,
+    //   size: 14,
+    //   font: fontBold,
+    // });
+    // y = y + 24;
+
     console.log("vi har nå y på: ", y);
     y = y + 24;
 
