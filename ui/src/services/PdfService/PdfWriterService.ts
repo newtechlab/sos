@@ -71,7 +71,7 @@ export class PdfWriterService {
     let y = 80;
 
     const checkY = (y: number) => {
-      if (y > 300) {
+      if (y > 700) {
         return true;
       } else {
         return false;
