@@ -85,6 +85,18 @@ export class PdfWriterService {
       }
     };
 
+    const adjustedLedger = props.ledger.map((row) => {
+      if (props.adjustments.has(row.id)) {
+        const adjustment = parseInt(props.adjustments.get(row.id) || "100");
+        return {
+          ...row,
+          amount: Math.round((row.amount / 100) * adjustment),
+        };
+      } else {
+        return row;
+      }
+    });
+
     //TODO Create textfunction, and replace the drawtext
     page.drawText(
       "Denne PDFen inneholder oppsummeringen din. Derfor er det lurt å lagre den et sted du husker.",
@@ -516,21 +528,49 @@ export class PdfWriterService {
     });
     y = y + 44;
 
-    // page.drawText("5. Budsjett", {
-    //   x: 50,
-    //   y: height - y,
-    //   size: 20,
-    //   font: fontBold,
-    // });
-    // y = y + 26;
+    page.drawText("5. Budsjett", {
+      x: 50,
+      y: height - y,
+      size: 20,
+      font: fontBold,
+    });
+    y = y + 26;
 
-    // page.drawText("Utgifter", {
-    //   x: 50,
-    //   y: height - y,
-    //   size: 14,
-    //   font: fontBold,
-    // });
-    // y = y + 24;
+    page.drawText("Justerte utgifter", {
+      x: 50,
+      y: height - y,
+      size: 14,
+      font: fontBold,
+    });
+    y = y + 24;
+
+    adjustedLedger
+      .filter(
+        (item) =>
+          item.accountFrom === "user" &&
+          item.category !== TransactionCategory.Debt
+      )
+      .forEach((expense) => {
+        page.drawText("Kategori: " + expense.category, {
+          x: 50,
+          y: height - y,
+          size: 12,
+          font: font,
+        });
+        y = y + 22;
+        page.drawText("Beløp: " + expense.amount + "kr", {
+          x: 50,
+          y: height - y,
+          size: 12,
+          font: font,
+        });
+        y = y + 26;
+
+        if (checkY(y)) {
+          page = pdfDoc.addPage();
+          y = 80;
+        }
+      });
 
     console.log("vi har nå y på: ", y);
     y = y + 24;
