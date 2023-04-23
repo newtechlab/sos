@@ -25,9 +25,11 @@ export default function OpenHelpTextModal(props: AddHelpTextModalProps) {
 
   return (
     <Fragment>
-      <LabelButton onClick={() => setOpen(true)}>
-        Trenger du hjelp med å finne ut din samlede gjeld?
-      </LabelButton>
+      <StyledSpace>
+        <Button basic primary onClick={() => setOpen(true)}>
+          Trenger du hjelp med å finne ut din samlede gjeld?
+        </Button>
+      </StyledSpace>
       <TransitionablePortal
         onClose={() => setOpen(false)}
         open={open}
@@ -128,6 +130,11 @@ const StyledDiv = styled.div`
 
 const StyledParagraph = styled.p`
   padding-top: 1em;
+`;
+
+const StyledSpace = styled.p`
+  padding-top: 1em;
+  padding-bottom: 1em;
 `;
 
 export const StyledGaryBox = styled.div`
