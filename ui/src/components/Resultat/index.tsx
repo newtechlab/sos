@@ -33,7 +33,6 @@ interface ResultatProps {
 }
 
 const createPdf = async (props: CreatePdfProps) => {
-  console.log("whats up");
   const current = new Date();
   const date = `${current.getFullYear()}/${current.getMonth() + 1}`;
   const blob = await PdfWriterService.createPdf(props);
@@ -59,8 +58,6 @@ const createPdf = async (props: CreatePdfProps) => {
 }
 
 const createExamplePdf = async () => {
-  console.log("example pdf");
-  console.log("whats up");
   const current = new Date();
   const date = `${current.getFullYear()}/${current.getMonth() + 1}`;
   const ledger: LedgerRow[] = [
@@ -210,7 +207,22 @@ export default function Resultat(props: ResultatProps) {
 
         <LastPageBackForwardControls goBack={() => goBack()} />
 
-        <Button circular color="blue" onClick={() => createExamplePdf()}>
+        <Button
+          circular
+          color="blue"
+          onClick={() => {
+            createPdf({
+              ledger,
+              familyMembers,
+              adjustments,
+              pets,
+              userDetails,
+              previousData,
+              addImage: true,
+            });
+            ResetStep();
+          }}
+        >
           Fullfør og last ned rapport
         </Button>
       </Container>

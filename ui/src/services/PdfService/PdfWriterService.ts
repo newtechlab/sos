@@ -423,7 +423,6 @@ export class PdfWriterService {
           font: font,
         });
         y = y + 26;
-        console.log("our checked y is: ", y);
         if (checkY(y)) {
           page = pdfDoc.addPage();
           y = 80;
@@ -551,7 +550,7 @@ export class PdfWriterService {
           item.category !== TransactionCategory.Debt
       )
       .forEach((expense) => {
-        page.drawText("Kategori: " + expense.category, {
+        page.drawText("Kategori: " + expense.accountTo, {
           x: 50,
           y: height - y,
           size: 12,
@@ -572,7 +571,6 @@ export class PdfWriterService {
         }
       });
 
-    console.log("vi har nå y på: ", y);
     y = y + 24;
 
     const pdfBytes = await pdfDoc.save();
