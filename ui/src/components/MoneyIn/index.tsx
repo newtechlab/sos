@@ -282,6 +282,35 @@ export default function MoneyIn(props: MoneyInProps) {
     }
   };
 
+  const getValueCategory = (row: LedgerRow) => {
+    console.log("catrow: ", row);
+    if (row.category === TransactionCategory.Government_Income) {
+      return "NAV";
+    } else if (row.category === TransactionCategory.Income) {
+      return "Lønn";
+    } else if (row.category === TransactionCategory.Housing_Benefit) {
+      return "Husbanken";
+    } else {
+      return "";
+    }
+  };
+
+  const getSubcategories = (row: LedgerRow) => {
+    if (row.category === TransactionCategory.Government_Income) {
+      const items = incomeTypes.get(row.category);
+      if (items) {
+        setSubcategories(items);
+      }
+    }
+  };
+
+  useEffect(() => {
+    const items = incomeTypes.get(TransactionCategory.Government_Income);
+    if (items) {
+      setSubcategories(items);
+    }
+  }, []);
+
   console.log(filteredLedger);
 
   return (
@@ -331,7 +360,7 @@ export default function MoneyIn(props: MoneyInProps) {
                           onChange={(_, data) => {
                             setCategory(data.value?.toString(), row);
                           }}
-                          value={row.accountFrom}
+                          value={row.category}
                         />
                       </StyledGridColumn>
 
@@ -349,7 +378,7 @@ export default function MoneyIn(props: MoneyInProps) {
                                 accountFrom: data.value?.toString() as string,
                               });
                             }}
-                            value={row.accountTo}
+                            value={row.accountFrom}
                           />
                         ) : (
                           <div>-</div>
