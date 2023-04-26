@@ -36,3 +36,26 @@
     transform: rotate(360deg);
   }
 }
+
+
+@font-face {
+  font-family: "Regular";
+  src: local("DNB-Regular"), url("./data/fonts/DNB-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Light";
+  src: local("DNB-Light"), url("./data/fonts/DNB-Light.ttf") format("truetype");
+}
+
+
+@font-face {
+  font-family: "Medium";
+  src: local("DNB-Medium"), url("./data/fonts/DNB-Medium.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Bold";
+  src: local("DNB-Bold"), url("./data/fonts/DNB-Bold.ttf") format("truetype");
+}
+

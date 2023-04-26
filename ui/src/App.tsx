@@ -7,7 +7,6 @@ import { StepDefinition, StepsState } from "./components/Steps";
 import { useEffect, useState } from "react";
 import UserDetails from "./components/UserDetails";
 import MoneyIn from "./components/MoneyIn";
-import MoneyOut from "./components/MoneyOut";
 
 import {
   Chart as ChartJS,
@@ -20,7 +19,12 @@ import {
 } from "chart.js";
 import Resultat from "./components/Resultat";
 import styled from "styled-components";
-import { goBackStep, goToSpecificStep, progressStep, updateSteps } from "./data/StepProgressor";
+import {
+  goBackStep,
+  goToSpecificStep,
+  progressStep,
+  updateSteps,
+} from "./data/StepProgressor";
 import ResultatInteract, {
   AdjustmentAmountPercent,
   LedgerRowId,
@@ -28,7 +32,11 @@ import ResultatInteract, {
 import Home from "./components/Home";
 import MoneyOutDebt from "./components/MoneyOutDebt";
 import { Button, Icon } from "semantic-ui-react";
-import { DefaultStateSummary, InitialStepsWithPath, StateSummary } from "./data/StepsInitialState";
+import {
+  DefaultStateSummary,
+  InitialStepsWithPath,
+  StateSummary,
+} from "./data/StepsInitialState";
 import ResultatBalance from "./components/ResultatBalance";
 import ResultatDebt from "./components/ResultatDebt";
 import { calculateMoneyIn, calculateMoneyOut } from "./data/Ledger";
@@ -37,11 +45,13 @@ export interface FamilyMember {
   id: string;
   name: string;
   age: string;
+  sex?: string;
 }
 
 export interface Pet {
   id: string;
   name: string;
+  type: string;
 }
 
 export enum TransactionCategory {
@@ -173,13 +183,18 @@ function rehydrateSet<A>(name: string, ifEmpty: Set<A>): Set<A> {
 
 function App() {
   const navigate = useNavigate();
-  const [stateSummary, setStateSummary] = useState<StateSummary>(DefaultStateSummary);
+  const [stateSummary, setStateSummary] =
+    useState<StateSummary>(DefaultStateSummary);
   const [pets, setPets] = useState<Array<Pet>>(rehydrate("pets", []));
   const [previousData, setPreviousData] = useState<unknown[]>(
     rehydrate("previousData", [])
   );
   const [steps, setSteps] = useState<StepsState>(
-    InitialStepsWithPath(window.location.pathname, DefaultStateSummary, rehydrateSet("completedStepGroups", new Set()))
+    InitialStepsWithPath(
+      window.location.pathname,
+      DefaultStateSummary,
+      rehydrateSet("completedStepGroups", new Set())
+    )
   );
   const [familyMembers, setFamilyMembers] = useState<Array<FamilyMember>>(
     rehydrate("familyMembers", [])
@@ -203,8 +218,60 @@ function App() {
     setFamilyMembers(familyMembers.concat(familyMember));
   };
 
+  const editPurpleMonkeyDishWasher = (familyMember: FamilyMember) => {
+    const currentRow = familyMembers.find((item) => {
+      if (item.id === familyMember.id) {
+        return item;
+      }
+    });
+
+    const index = familyMembers.indexOf(currentRow as FamilyMember);
+    if (index > -1) {
+      // only splice array when item is found
+      familyMembers.splice(index, 1); // 2nd parameter means remove one item only
+    }
+
+    purpleMonkeyDishWasher(familyMember);
+  };
+
   const addLedgerRow = (ledgerRow: LedgerRow) => {
     setLedger(ledger.concat(ledgerRow));
+  };
+
+  const editLedgerRow = (ledgerRow: LedgerRow) => {
+    const currentRow = ledger.find((item) => {
+      if (item.id === ledgerRow.id) {
+        return item;
+      }
+    });
+
+    const index = ledger.indexOf(currentRow as LedgerRow);
+    if (index > -1) {
+      // only splice array when item is found
+      ledger.splice(index, 1); // 2nd parameter means remove one item only
+    }
+
+    addLedgerRow(ledgerRow);
+  };
+
+  const addPet = (pet: Pet) => {
+    setPets(pets.concat(pet));
+  };
+
+  const editPet = (pet: Pet) => {
+    const currentRow = pets.find((item) => {
+      if (item.id === pet.id) {
+        return item;
+      }
+    });
+
+    const index = pets.indexOf(currentRow as Pet);
+    if (index > -1) {
+      // only splice array when item is found
+      pets.splice(index, 1); // 2nd parameter means remove one item only
+    }
+
+    addPet(pet);
   };
 
   const deleteLedgerRow = (id: string) => {
@@ -237,7 +304,7 @@ function App() {
       JSON.stringify(Array.from(previousData))
     );
     localStorage.setItem(
-      "completedStepGroups", 
+      "completedStepGroups",
       JSON.stringify(Array.from(steps.completedGroups.keys()))
     );
     localStorage.setItem("familyMembers", JSON.stringify(familyMembers));
@@ -261,17 +328,18 @@ function App() {
   useEffect(() => {
     const moneyIn = calculateMoneyIn(ledger);
     const moneyOut = calculateMoneyOut(ledger);
-    
+
     setStateSummary({
-      familyMemberCount: familyMembers.length > 0 ? familyMembers.length : undefined,
+      familyMemberCount:
+        familyMembers.length > 0 ? familyMembers.length : undefined,
       moneyIn: moneyIn > 0 ? moneyIn.toString() : undefined,
       moneyOut: moneyOut > 0 ? moneyOut.toString() : undefined,
-    })
-  }, [ ledger, familyMembers ]);
+    });
+  }, [ledger, familyMembers]);
 
   useEffect(() => {
-    setSteps(updateSteps(steps, stateSummary))
-  }, [ stateSummary ]);
+    setSteps(updateSteps(steps, stateSummary));
+  }, [stateSummary]);
 
   const completeStep = () => {
     const newState = progressStep(steps, stateSummary);
@@ -292,26 +360,45 @@ function App() {
   };
 
   const openFeedbackForm = () => {
-    window.open('https://forms.gle/M6ou5EjrdY4tv8BJ8', '_blank')?.focus();
-  }
+    window.open("https://forms.gle/M6ou5EjrdY4tv8BJ8", "_blank")?.focus();
+  };
 
   const resetSession = () => {
     // clear previous sessions
-    localStorage.clear()
+    localStorage.clear();
     setPets([]);
-    setPreviousData([])
-    setSteps(InitialStepsWithPath(window.location.pathname, DefaultStateSummary, rehydrateSet("completedStepGroups", new Set())));
+    setPreviousData([]);
+    setSteps(
+      InitialStepsWithPath(
+        window.location.pathname,
+        DefaultStateSummary,
+        rehydrateSet("completedStepGroups", new Set())
+      )
+    );
     setFamilyMembers([]);
     setLedger([]);
-    setUserDetails(InitialUserInfo)
-    setAdjustments(new Map<LedgerRowId, AdjustmentAmountPercent>())
-  }
+    setUserDetails(InitialUserInfo);
+    setAdjustments(new Map<LedgerRowId, AdjustmentAmountPercent>());
+  };
 
   const activeStep = steps.steps.find((s) => s.id === steps.activeStepId);
 
+  useEffect(() => {
+    console.log(ledger);
+    console.log(adjustments);
+  }, [adjustments]);
+
   return (
     <StyledRootDiv className="App">
-      <FeedbackButton color='purple' circular onClick={() => openFeedbackForm()}> <Icon name='chat' />Send oss din tilbakemelding </FeedbackButton>
+      <FeedbackButton
+        color="purple"
+        circular
+        onClick={() => openFeedbackForm()}
+      >
+        {" "}
+        <Icon name="chat" />
+        Send oss din tilbakemelding{" "}
+      </FeedbackButton>
       <StyledOverridesDiv>
         <StyledBodyDiv>
           <Routes>
@@ -319,12 +406,12 @@ function App() {
               path="/"
               element={
                 <Home
-                  setPreviousData={setPreviousData}
-                  setFamilyMembers={setFamilyMembers}
-                  setLedger={setLedger}
-                  setUserDetails={setUserDetails}
-                  setAdjustments={setAdjustments}
-                  setPets={setPets}
+                  // setPreviousData={setPreviousData}
+                  // setFamilyMembers={setFamilyMembers}
+                  // setLedger={setLedger}
+                  // setUserDetails={setUserDetails}
+                  // setAdjustments={setAdjustments}
+                  // setPets={setPets}
                   resetSession={resetSession}
                 />
               }
@@ -333,19 +420,27 @@ function App() {
               path="/family"
               element={
                 <UserDetails
+                  setPreviousData={setPreviousData}
+                  setFamilyMembers={setFamilyMembers}
+                  setPets={setPets}
+                  setLedger={setLedger}
+                  setUserDetails={setUserDetails}
+                  setAdjustments={setAdjustments}
                   familyMembers={familyMembers}
                   addFamilyMember={purpleMonkeyDishWasher}
+                  editFamilyMember={editPurpleMonkeyDishWasher}
                   activeStep={activeStep}
                   steps={steps}
                   completeStep={completeStep}
                   goBack={goBack}
                   goToStep={goToStep}
-                  setUserDetails={setUserDetails}
                   userDetails={userDetails}
                   pets={pets}
-                  setPets={setPets}
+                  addPet={addPet}
+                  editPet={editPet}
                   deletePet={deletePet}
                   deleteFamilyMember={deleteFamilyMember}
+                  resetSession={resetSession}
                 />
               }
             />
@@ -356,49 +451,29 @@ function App() {
                 <MoneyIn
                   ledger={ledger}
                   addLedgerRow={addLedgerRow}
+                  editLedgerRow={editLedgerRow}
                   removeLedgerRow={deleteLedgerRow}
                   completeStep={completeStep}
                   goBack={goBack}
                   goToStep={goToStep}
                   steps={steps}
-                />
-              }
-            />
-            <Route
-              path="/gjeld"
-              element={
-                <MoneyOutDebt
-                  ledger={ledger}
-                  addLedgerRow={addLedgerRow}
-                  removeLedgerRow={deleteLedgerRow}
-                  completeStep={completeStep}
-                  goBack={goBack}
-                  goToStep={goToStep}
-                  activeStep={activeStep}
-                  steps={steps}
-                  categories={new Set([TransactionCategory.Debt])}
                 />
               }
             />
             <Route
               path="/penger-ut"
               element={
-                <MoneyOut
+                <MoneyOutDebt
                   ledger={ledger}
                   addLedgerRow={addLedgerRow}
+                  editLedgerRow={editLedgerRow}
                   removeLedgerRow={deleteLedgerRow}
                   completeStep={completeStep}
                   goBack={goBack}
                   goToStep={goToStep}
                   activeStep={activeStep}
                   steps={steps}
-                  categories={
-                    new Set(
-                      AllTransactionCategories.filter(
-                        (c) => c !== TransactionCategory.Debt.toString()
-                      )
-                    )
-                  }
+                  categories={new Set(AllTransactionCategories)}
                 />
               }
             />
@@ -406,37 +481,6 @@ function App() {
               path="/resultat1"
               element={
                 <ResultatBalance
-                  ledger={ledger}
-                  removeLedgerRow={deleteLedgerRow}
-                  completeStep={completeStep}
-                  goal={userDetails.goal}
-                  goBack={goBack}
-                  activeStep={activeStep}
-                  steps={steps}
-                  adjustments={adjustments}
-                  goToStep={goToStep}
-                />
-              }
-            />
-            <Route
-              path="/resultat2"
-              element={
-                <ResultatDebt
-                  ledger={ledger}
-                  removeLedgerRow={deleteLedgerRow}
-                  completeStep={completeStep}
-                  goal={userDetails.goal}
-                  goBack={goBack}
-                  activeStep={activeStep}
-                  steps={steps}
-                  goToStep={goToStep}
-                />
-              }
-            />
-            <Route
-              path="/resultat3"
-              element={
-                <ResultatInteract
                   ledger={ledger}
                   removeLedgerRow={deleteLedgerRow}
                   completeStep={completeStep}
@@ -477,14 +521,21 @@ function App() {
 export const StyledOverridesDiv = styled.div`
   div,
   p,
-  h1,
-  h2,
   h3,
   h4,
   button,
   table {
-    font-family: Montserrat !important;
-    font-weight: 300;
+    font-family: Regular;
+  }
+  h1 {
+    font-family: Regular;
+    font-size: 2.125rem;
+    line-height: 2.5rem;
+  }
+  h2 {
+    font-family: Regular;
+    font-size: 1.625 rem;
+    line-height: 2rem;
   }
 `;
 

@@ -29,7 +29,7 @@ interface ResultatDebtProps {
   removeLedgerRow: (id: string) => void;
   completeStep: () => void;
   goBack: () => void;
-  goToStep: (step: StepDefinition) => void
+  goToStep: (step: StepDefinition) => void;
   goal: Goal;
   activeStep: StepDefinition | undefined;
   steps: StepsState;
@@ -47,9 +47,11 @@ export default function ResultatDebt(props: ResultatDebtProps) {
   const { ledger, completeStep, activeStep, steps, goBack, goToStep } = props;
 
   useEffect(() => {
-    const debt = ledger.filter((i) => i.category === TransactionCategory.Debt && i.accountFrom === "user")
+    const debt = ledger.filter(
+      (i) => i.category === TransactionCategory.Debt && i.accountFrom === "user"
+    );
     const sortedDebt = _.orderBy(debt, ["amount"], ["desc"]);
-    
+
     setDebt(sortedDebt);
 
     const totalDebt = _.sumBy(sortedDebt, "amount");
@@ -58,54 +60,47 @@ export default function ResultatDebt(props: ResultatDebtProps) {
 
   useEffect(() => {
     const data = {
-      labels: debt.map((i) => { 
-        return i.accountTo 
+      labels: debt.map((i) => {
+        return i.accountTo;
       }),
-      datasets: debt.map((item, index) => { 
-        const data = Array(debt.length)
-        data[index] = item.amount
+      datasets: debt.map((item, index) => {
+        const data = Array(debt.length);
+        data[index] = item.amount;
         return {
           label: item.accountTo,
           data: data,
           backgroundColor: PengerUtColour,
-        }
-      }) 
+        };
+      }),
     };
     setGraphData(data);
   }, [debt]);
 
   return (
     <StyledBackgroundColour>
-      <StyledHeader>
-        <StepHeader steps={steps} goToStep={goToStep} />
-      </StyledHeader>
       <StyledContainer>
         <StyledContainerSpace>
-          <ResultSubSectionTab goToStep={goToStep} items={StepsInitialState.filter((i) => i.group === activeStep?.group)} selectedItem={activeStep} />
-
           <StyledBoxSection>
-            <h1>Gjeldsutgifter hver måned</h1>
-
+            <h1>Månedlig gjeldsoversikt</h1>
             <StyledGraphContainer>
               <Bar options={chartOptions} data={graphData} />
             </StyledGraphContainer>
 
             <DiffStyledDiv>
               <hr />
-                <Grid>
-                  <Grid.Column textAlign="left" width={14}><StyledTotalDiv className="heading">Total</StyledTotalDiv></Grid.Column>
-                  <Grid.Column textAlign="right" width={2}><StyledTotalDiv className="amountPositive">{totalDebt} kr</StyledTotalDiv></Grid.Column>
-                </Grid>
+              <Grid>
+                <Grid.Column textAlign="left" width={14}>
+                  <StyledTotalDiv className="heading">Total</StyledTotalDiv>
+                </Grid.Column>
+                <Grid.Column textAlign="right" width={2}>
+                  <StyledTotalDiv className="amountPositive">
+                    {totalDebt} kr
+                  </StyledTotalDiv>
+                </Grid.Column>
+              </Grid>
               <hr />
             </DiffStyledDiv>
-
           </StyledBoxSection>
-
-          <BackForwardControls
-                goBack={() => goBack()}
-                completeStep={completeStep}
-              />        
-
         </StyledContainerSpace>
       </StyledContainer>
     </StyledBackgroundColour>
@@ -113,7 +108,7 @@ export default function ResultatDebt(props: ResultatDebtProps) {
 }
 
 const StyledContainer = styled(Container)`
-  padding-bottom: 150px;
+  padding-bottom: 0px;
 `;
 
 const CenteredContentSection = styled.div`

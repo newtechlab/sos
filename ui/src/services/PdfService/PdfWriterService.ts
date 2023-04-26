@@ -1,10 +1,20 @@
-import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
-import { FamilyMember, LedgerRow, Pet, UserInformation } from "../../App";
+import { PDFDocument, PDFPage, StandardFonts, rgb } from "pdf-lib";
+import {
+  Car,
+  FamilyMember,
+  HouseSituation,
+  LedgerRow,
+  Pet,
+  TransactionCategory,
+  UserInformation,
+} from "../../App";
 import Pd from "frontpage.png";
 import {
   AdjustmentAmountPercent,
   LedgerRowId,
 } from "../../components/ResultatInteract";
+import { calculateMoneyIn } from "../../data/Ledger";
+import { calculateMoneyOut } from "../../data/Ledger";
 
 export interface CreatePdfProps {
   ledger: Array<LedgerRow>;
@@ -38,7 +48,14 @@ export class PdfWriterService {
       JSON.stringify(history)
     );
     pdfDoc.attach(uint8array, "sos_state");
-    const page = pdfDoc.addPage();
+    let page = pdfDoc.addPage();
+
+    const Savingspotential = (): number => {
+      const moneyOut = calculateMoneyOut(props.ledger);
+      const moneyIn = calculateMoneyIn(props.ledger);
+      const res = moneyIn - moneyOut;
+      return res;
+    };
 
     if (props.addImage) {
       const FrontPageBytes = await fetch("frontpage.png").then((res) =>
@@ -55,6 +72,30 @@ export class PdfWriterService {
         // opacity: 0.75,
       });
     }
+    const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+    const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+    const { height } = page.getSize();
+    let y = 80;
+
+    const checkY = (y: number) => {
+      if (y > 700) {
+        return true;
+      } else {
+        return false;
+      }
+    };
+
+    const adjustedLedger = props.ledger.map((row) => {
+      if (props.adjustments.has(row.id)) {
+        const adjustment = parseInt(props.adjustments.get(row.id) || "100");
+        return {
+          ...row,
+          amount: Math.round((row.amount / 100) * adjustment),
+        };
+      } else {
+        return row;
+      }
+    });
 
     //TODO Create textfunction, and replace the drawtext
     page.drawText(
@@ -63,7 +104,7 @@ export class PdfWriterService {
         x: 50,
         y: 254,
         size: 12,
-        font: await pdfDoc.embedFont(StandardFonts.Helvetica),
+        font: font,
       }
     );
     page.drawText(
@@ -72,7 +113,7 @@ export class PdfWriterService {
         x: 50,
         y: 230,
         size: 12,
-        font: await pdfDoc.embedFont(StandardFonts.Helvetica),
+        font: font,
       }
     );
     page.drawText(
@@ -81,7 +122,7 @@ export class PdfWriterService {
         x: 50,
         y: 206,
         size: 12,
-        font: await pdfDoc.embedFont(StandardFonts.Helvetica),
+        font: font,
       }
     );
     page.drawText(
@@ -90,9 +131,448 @@ export class PdfWriterService {
         x: 50,
         y: 182,
         size: 12,
-        font: await pdfDoc.embedFont(StandardFonts.Helvetica),
+        font: font,
       }
     );
+
+    page = pdfDoc.addPage();
+
+    page.drawText("1. Familie", {
+      x: 50,
+      y: height - y,
+      size: 20,
+      font: fontBold,
+    });
+    y = y + 26;
+
+    page.drawText("Familiemedlemmer", {
+      x: 50,
+      y: height - y,
+      size: 12,
+      font: fontBold,
+    });
+    y = y + 22;
+
+    props.familyMembers.forEach((member) => {
+      page.drawText(member.name + " " + member.age + "år", {
+        x: 50,
+        y: height - y,
+        size: 12,
+        font: font,
+      });
+      y = y + 22;
+    });
+
+    page.drawText("Eier familien bil eller andre kjøretøy?", {
+      x: 50,
+      y: height - y,
+      size: 12,
+      font: fontBold,
+    });
+    y = y + 22;
+
+    const hasCar = () => {
+      if (props.userDetails.car === Car.OWN) {
+        return "Eier";
+      } else if (props.userDetails.car === Car.NOTOWN) {
+        return "Leier";
+      } else {
+        return "Nei";
+      }
+    };
+    page.drawText(hasCar(), {
+      x: 50,
+      y: height - y,
+      size: 12,
+      font: font,
+    });
+    y = y + 22;
+
+    page.drawText("Boligsituasjon", {
+      x: 50,
+      y: height - y,
+      size: 12,
+      font: fontBold,
+    });
+    y = y + 22;
+
+    const hasHouse = () => {
+      if (props.userDetails.house === HouseSituation.OWN) {
+        return "Eier";
+      } else if (props.userDetails.house === HouseSituation.RENT) {
+        return "Leier";
+      } else {
+        return "Nei";
+      }
+    };
+    page.drawText(hasHouse(), {
+      x: 50,
+      y: height - y,
+      size: 12,
+      font: font,
+    });
+    y = y + 22;
+
+    page.drawText("Eier du noen dyr?", {
+      x: 50,
+      y: height - y,
+      size: 12,
+      font: fontBold,
+    });
+    y = y + 22;
+
+    props.pets.forEach((pet) => {
+      page.drawText(pet.name + " - " + pet.type, {
+        x: 50,
+        y: height - y,
+        size: 12,
+        font: font,
+      });
+      y = y + 22;
+    });
+
+    page.drawText("Har familien et sparemål?", {
+      x: 50,
+      y: height - y,
+      size: 12,
+      font: fontBold,
+    });
+    y = y + 22;
+
+    page.drawText(
+      props.userDetails.goal.name +
+        " - " +
+        props.userDetails.goal.amount +
+        "kr",
+      {
+        x: 50,
+        y: height - y,
+        size: 12,
+        font: font,
+      }
+    );
+    y = y + 44;
+
+    page.drawLine({
+      start: { x: 80, y: height - y },
+      end: { x: 520, y: height - y },
+      thickness: 0.5,
+      color: rgb(0, 0, 0),
+      opacity: 0.75,
+    });
+    y = y + 44;
+
+    page.drawText("2. Penger inn", {
+      x: 50,
+      y: height - y,
+      size: 20,
+      font: fontBold,
+    });
+    y = y + 26;
+
+    page.drawText("Inntekt og annen støtte", {
+      x: 50,
+      y: height - y,
+      size: 14,
+      font: fontBold,
+    });
+    y = y + 24;
+
+    props.ledger
+      .filter((item) => item.accountTo === "user")
+      .forEach((income) => {
+        page.drawText("Kategori: " + income.accountFrom, {
+          x: 50,
+          y: height - y,
+          size: 12,
+          font: font,
+        });
+        y = y + 22;
+        page.drawText("Ordning: " + income.accountFrom, {
+          x: 50,
+          y: height - y,
+          size: 12,
+          font: font,
+        });
+        y = y + 22;
+        page.drawText("Beløp: " + income.amount + "kr", {
+          x: 50,
+          y: height - y,
+          size: 12,
+          font: font,
+        });
+        y = y + 22;
+        page.drawText("Dato for utbetaling: " + income.dayOfMonth + ".", {
+          x: 50,
+          y: height - y,
+          size: 12,
+          font: font,
+        });
+        y = y + 26;
+      });
+
+    page.drawText(
+      "Totalt inntekter: " + calculateMoneyIn(props.ledger) + "kr pr. måned",
+      {
+        x: 50,
+        y: height - y,
+        size: 14,
+        font: fontBold,
+      }
+    );
+
+    y = y + 44;
+
+    page.drawLine({
+      start: { x: 80, y: height - y },
+      end: { x: 520, y: height - y },
+      thickness: 0.5,
+      color: rgb(0, 0, 0),
+      opacity: 0.75,
+    });
+    y = y + 44;
+
+    page = pdfDoc.addPage();
+    y = 80;
+
+    page.drawText("3. Penger ut", {
+      x: 50,
+      y: height - y,
+      size: 20,
+      font: fontBold,
+    });
+    y = y + 26;
+
+    page.drawText("Gjeld", {
+      x: 50,
+      y: height - y,
+      size: 14,
+      font: fontBold,
+    });
+    y = y + 24;
+
+    props.ledger
+      .filter((item) => item.category === TransactionCategory.Debt)
+      .forEach((debt) => {
+        page.drawText("Kategori: " + debt.accountTo, {
+          x: 50,
+          y: height - y,
+          size: 12,
+          font: font,
+        });
+        y = y + 22;
+        page.drawText("Beløp: " + debt.amount + "kr", {
+          x: 50,
+          y: height - y,
+          size: 12,
+          font: font,
+        });
+        y = y + 22;
+        page.drawText("Dato for utbetaling: " + debt.dayOfMonth + ".", {
+          x: 50,
+          y: height - y,
+          size: 12,
+          font: font,
+        });
+        y = y + 26;
+      });
+    y = y + 22;
+    page.drawText(
+      "Totalt gjeld: " +
+        calculateMoneyOut(
+          props.ledger.filter(
+            (item) => item.category === TransactionCategory.Debt
+          )
+        ) +
+        "kr pr. måned",
+      {
+        x: 50,
+        y: height - y,
+        size: 14,
+        font: fontBold,
+      }
+    );
+    y = y + 24;
+
+    page.drawText("Utgifter", {
+      x: 50,
+      y: height - y,
+      size: 14,
+      font: fontBold,
+    });
+    y = y + 24;
+
+    props.ledger
+      .filter(
+        (item) =>
+          item.accountFrom === "user" &&
+          item.category !== TransactionCategory.Debt
+      )
+      .forEach((expense) => {
+        page.drawText("Kategori: " + expense.accountTo, {
+          x: 50,
+          y: height - y,
+          size: 12,
+          font: font,
+        });
+        y = y + 22;
+        page.drawText("Beløp: " + expense.amount + "kr", {
+          x: 50,
+          y: height - y,
+          size: 12,
+          font: font,
+        });
+        y = y + 26;
+        if (checkY(y)) {
+          page = pdfDoc.addPage();
+          y = 80;
+        }
+      });
+
+    page.drawText(
+      "Totalt utgifter: " +
+        calculateMoneyOut(
+          props.ledger.filter(
+            (item) =>
+              item.accountFrom === "user" &&
+              item.category != TransactionCategory.Debt
+          )
+        ) +
+        "kr pr. måned",
+      {
+        x: 50,
+        y: height - y,
+        size: 14,
+        font: fontBold,
+      }
+    );
+
+    y = y + 44;
+
+    page.drawLine({
+      start: { x: 80, y: height - y },
+      end: { x: 520, y: height - y },
+      thickness: 0.5,
+      color: rgb(0, 0, 0),
+      opacity: 0.75,
+    });
+    y = y + 44;
+
+    page = pdfDoc.addPage();
+    y = 80;
+
+    page.drawText("4. Resultat", {
+      x: 50,
+      y: height - y,
+      size: 20,
+      font: fontBold,
+    });
+    y = y + 26;
+
+    page.drawText("Balanse", {
+      x: 50,
+      y: height - y,
+      size: 14,
+      font: fontBold,
+    });
+    y = y + 24;
+
+    page.drawText("Penger ut: " + calculateMoneyOut(props.ledger) + " kr", {
+      x: 50,
+      y: height - y,
+      size: 12,
+      font: font,
+    });
+
+    y = y + 22;
+
+    page.drawText("Penger inn: " + calculateMoneyIn(props.ledger) + " kr", {
+      x: 50,
+      y: height - y,
+      size: 12,
+      font: font,
+    });
+
+    y = y + 24;
+
+    {
+      if (Savingspotential() > 0) {
+        page.drawText("Potensiell sparing: " + Savingspotential(), {
+          x: 50,
+          y: height - y,
+          size: 14,
+          font: fontBold,
+        });
+      }
+    }
+    {
+      if (Savingspotential() < 0) {
+        page.drawText("Underskudd: " + Savingspotential(), {
+          x: 50,
+          y: height - y,
+          size: 14,
+          font: fontBold,
+        });
+      }
+    }
+
+    y = y + 44;
+
+    page.drawLine({
+      start: { x: 80, y: height - y },
+      end: { x: 520, y: height - y },
+      thickness: 0.5,
+      color: rgb(0, 0, 0),
+      opacity: 0.75,
+    });
+    y = y + 44;
+
+    page.drawText("5. Budsjett", {
+      x: 50,
+      y: height - y,
+      size: 20,
+      font: fontBold,
+    });
+    y = y + 26;
+
+    page.drawText("Justerte utgifter", {
+      x: 50,
+      y: height - y,
+      size: 14,
+      font: fontBold,
+    });
+    y = y + 24;
+
+    adjustedLedger
+      .filter(
+        (item) =>
+          item.accountFrom === "user" &&
+          item.category !== TransactionCategory.Debt
+      )
+      .forEach((expense) => {
+        page.drawText("Kategori: " + expense.accountTo, {
+          x: 50,
+          y: height - y,
+          size: 12,
+          font: font,
+        });
+        y = y + 22;
+        page.drawText("Beløp: " + expense.amount + "kr", {
+          x: 50,
+          y: height - y,
+          size: 12,
+          font: font,
+        });
+        y = y + 26;
+
+        if (checkY(y)) {
+          page = pdfDoc.addPage();
+          y = 80;
+        }
+      });
+
+    y = y + 24;
+
     const pdfBytes = await pdfDoc.save();
     const blob = new Blob([pdfBytes], { type: "application/pdf" }); // change resultByte to bytes
 

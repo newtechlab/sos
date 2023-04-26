@@ -1,5 +1,12 @@
 import { useEffect, useState } from "react";
-import { Button, Container, Grid, Icon } from "semantic-ui-react";
+import {
+  Button,
+  Container,
+  Dropdown,
+  Grid,
+  Icon,
+  Input,
+} from "semantic-ui-react";
 import { LedgerRow } from "../../App";
 
 import AddMoneyOutModal from "../AddMoneyOutModal";
@@ -12,20 +19,23 @@ import StepHeader from "../StepHeader";
 import styled from "styled-components";
 import MoneyTotal from "../MoneyTotal";
 import TrashIcon from "../TrashIcon";
+import ErrorBar from "../ErrorBar";
 
 interface MoneyOutProps {
   ledger: Array<LedgerRow>;
   addLedgerRow: (_: LedgerRow) => void;
+  editLedgerRow: (_: LedgerRow) => void;
   removeLedgerRow: (id: string) => void;
   completeStep: () => void;
   goBack: () => void;
-  goToStep: (step: StepDefinition) => void
+  goToStep: (step: StepDefinition) => void;
   activeStep: StepDefinition | undefined;
   steps: StepsState;
   categories: Set<string>;
 }
 
 export default function MoneyOut(props: MoneyOutProps) {
+  const [belopEndError, setBelopEndError] = useState<boolean>(false);
   const [addMoneyOutModalOpen, setAddMoneyOutModalOpen] =
     useState<boolean>(false);
   const [sortedLedger, setSortedLedger] = useState<LedgerRow[]>([]);
@@ -35,6 +45,7 @@ export default function MoneyOut(props: MoneyOutProps) {
     ledger,
     addLedgerRow,
     removeLedgerRow,
+    editLedgerRow,
     completeStep,
     goBack,
     goToStep,
@@ -57,6 +68,12 @@ export default function MoneyOut(props: MoneyOutProps) {
   useEffect(() => {
     setMoneyOut(calculateMoneyOut(filteredLedger));
   }, [filteredLedger]);
+
+  let belopError = false;
+  const validateInput = (inputvalue: string) => {
+    const validNumber = RegExp(/^[0-9\b]+$/);
+    validNumber.test(inputvalue) ? (belopError = false) : (belopError = true);
+  };
 
   return (
     <StyledBackgroundColour>
@@ -84,9 +101,6 @@ export default function MoneyOut(props: MoneyOutProps) {
                   <Grid.Column width={6}>
                     <strong>Artikkel</strong>
                   </Grid.Column>
-                  {/* <Grid.Column width={4}>
-                            Ordning
-                        </Grid.Column> */}
                   <Grid.Column width={6}>
                     <strong>Kategori</strong>
                   </Grid.Column>
@@ -99,19 +113,48 @@ export default function MoneyOut(props: MoneyOutProps) {
                 </Grid.Row>
               )}
               {filteredLedger.map((row) => {
-                if (
-                  categories.has(row.category) &&
-                  row.accountFrom === "user"
-                ) {
+                if (row.accountFrom === "user") {
                   return (
                     <StyledGridRow key={row.id}>
-                      <Grid.Column width={6}>{row.accountTo}</Grid.Column>
+                      <Grid.Column width={6}>
+                        {/*
+                        <Dropdown
+                          search
+                          selection
+                          placeholder="Kategori"
+                          options={Categories}
+                          onChange={(_, data) => {
+                            setCategory(data.value?.toString(), row);
+                          }}
+                        />
+                        */}
+                      </Grid.Column>
                       <Grid.Column width={6}>{row.category}</Grid.Column>
-                      <Grid.Column width={3}>{row.amount}</Grid.Column>
-                      {/* <Grid.Column width={3}>{row.dayOfMonth}</Grid.Column> */}
+                      <Grid.Column width={3}>
+                        <Input
+                          placeholder="f.eks 10 000"
+                          onChange={(_, data) => {
+                            validateInput(data.value);
+                            editLedgerRow({
+                              ...row,
+                              amount: parseInt(
+                                data.value?.toString() || "0",
+                                10
+                              ),
+                            });
+                          }}
+                          label={{ basic: true, content: "kr" }}
+                          labelPosition="right"
+                        />
+                        {belopError || belopEndError ? (
+                          <ErrorBar msg="Vennligst skriv inn et nummer" />
+                        ) : (
+                          ""
+                        )}
+                      </Grid.Column>
                       <Grid.Column width={1}>
                         <TrashIcon
-                          onClick={removeLedgerRow}                    
+                          onClick={removeLedgerRow}
                           color="blue"
                           itemId={row.id}
                         />

@@ -22,9 +22,11 @@ export default function OpenHelpTextModal(props: AddHelpTextModalProps) {
 
   return (
     <Fragment>
-      <LabelButton onClick={() => setOpen(true)}>
-        Hvorfor spør vi om dette?
-      </LabelButton>
+      <StyledParagraph>
+        <Button basic primary onClick={() => setOpen(true)}>
+          Hvorfor spør vi om dette?
+        </Button>
+      </StyledParagraph>
       <TransitionablePortal
         onClose={() => setOpen(false)}
         open={open}
@@ -81,7 +83,7 @@ export default function OpenHelpTextModal(props: AddHelpTextModalProps) {
   );
 }
 export const LabelButton = styled.button`
-  border: 1px solid #3d8eb1;
+  text-decoration: underline;
   padding: 5px;
   padding-left: 15px;
   padding-right: 15px;
@@ -89,10 +91,7 @@ export const LabelButton = styled.button`
   color: #3d8eb1;
   background-color: #f1f8f8;
   font-family: Montserrat !important;
-  font-weight: 300;
-  position: absolute;
-  top: 0px;
-  right: 0px;
+  font-weight: 500;
   &:hover {
     text-decoration: underline;
     cursor: pointer;

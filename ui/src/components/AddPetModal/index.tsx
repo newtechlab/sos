@@ -63,7 +63,7 @@ export default function AddPetModal(props: AddPetProps) {
                 color="blue"
                 onClick={() => {
                   if (pet) {
-                    setPets([...pets, { id: uuidv4(), name: pet }]);
+                    setPets([...pets, { id: uuidv4(), name: pet, type: pet }]);
                   }
                   setOpen(false);
                 }}

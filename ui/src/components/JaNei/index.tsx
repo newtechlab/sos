@@ -53,26 +53,3 @@ const ButtonDotted = styled.button<ButtonDottedProps>`
     cursor: pointer;
   }
 `;
-
-const ButtonDottedSelected = styled.button`
-  border: 2px dashed #a5c8d7;
-  height: 145px;
-  width: 100%;
-  align-items: center;
-  justify-content: center;
-  background-color: Green;
-`;
-
-// const baseToolbarButtonStyles = css`
-//   background: none;
-//   border: none;
-//   box-shadow: none;
-//   border-radius: 4px;
-// `;
-
-// export const PagingActionButton = styled.button`
-//   ${baseToolbarButtonStyles}
-//   color: ${(props) => (props. ? "#A9A9A9" : "#725bfe")};
-//   cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
-//   padding: 8px;
-// `;
