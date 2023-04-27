@@ -239,19 +239,9 @@ function App() {
   };
 
   const editLedgerRow = (ledgerRow: LedgerRow) => {
-    const currentRow = ledger.find((item) => {
-      if (item.id === ledgerRow.id) {
-        return item;
-      }
-    });
-
-    const index = ledger.indexOf(currentRow as LedgerRow);
-    if (index > -1) {
-      // only splice array when item is found
-      ledger.splice(index, 1); // 2nd parameter means remove one item only
-    }
-
-    addLedgerRow(ledgerRow);
+    setLedger(
+      ledger.map((item) => (item.id === ledgerRow.id ? ledgerRow : item))
+    );
   };
 
   const addPet = (pet: Pet) => {

@@ -68,7 +68,7 @@ export default function MoneyIn(props: MoneyInProps) {
   } = props;
 
   useEffect(() => {
-    setSortedLedger(sortLedger(ledger));
+    setSortedLedger(ledger);
   }, [ledger]);
 
   useEffect(() => {
@@ -335,15 +335,14 @@ export default function MoneyIn(props: MoneyInProps) {
             <StyledGrid>
               {filteredLedger.length > 0 && (
                 <Grid.Row>
-                  <StyledGridColumn width={3}>
+                  <StyledGridColumn width={5}>
                     <strong>Inntekt</strong>
                   </StyledGridColumn>
-                  <Grid.Column width={4}>Ordning</Grid.Column>
                   <Grid.Column width={4}>
-                    <strong>Beløp</strong>
+                    <strong>Dato for utbetaling</strong>
                   </Grid.Column>
                   <Grid.Column width={3}>
-                    <strong>Dato for utbetaling</strong>
+                    <strong>Beløp</strong>
                   </Grid.Column>
                 </Grid.Row>
               )}
@@ -351,7 +350,7 @@ export default function MoneyIn(props: MoneyInProps) {
                 if (row.accountTo === "user") {
                   return (
                     <StyledGridRow key={row.id}>
-                      <StyledGridColumn width={3}>
+                      <StyledGridColumn width={5}>
                         <Dropdown
                           search
                           selection
@@ -362,9 +361,6 @@ export default function MoneyIn(props: MoneyInProps) {
                           }}
                           value={row.category}
                         />
-                      </StyledGridColumn>
-
-                      <Grid.Column width={4}>
                         {row.category ===
                         TransactionCategory.Government_Income ? (
                           <Dropdown
@@ -381,11 +377,30 @@ export default function MoneyIn(props: MoneyInProps) {
                             value={row.accountFrom}
                           />
                         ) : (
-                          <div>-</div>
+                          <div></div>
                         )}
-                      </Grid.Column>
+                      </StyledGridColumn>
 
                       <Grid.Column width={4}>
+                        <Dropdown
+                          search
+                          selection
+                          placeholder="Dag"
+                          options={DayCategories}
+                          onChange={(_, data) => {
+                            editLedgerRow({
+                              ...row,
+                              dayOfMonth: parseInt(
+                                data.value?.toString() || "0",
+                                10
+                              ),
+                            });
+                          }}
+                          value={row.dayOfMonth}
+                        />
+                      </Grid.Column>
+
+                      <Grid.Column width={5}>
                         <Input
                           placeholder="f.eks 10 000"
                           onChange={(_, data) => {
@@ -408,24 +423,7 @@ export default function MoneyIn(props: MoneyInProps) {
                           ""
                         )}
                       </Grid.Column>
-                      <Grid.Column width={3}>
-                        <Dropdown
-                          search
-                          selection
-                          placeholder="Dag"
-                          options={DayCategories}
-                          onChange={(_, data) => {
-                            editLedgerRow({
-                              ...row,
-                              dayOfMonth: parseInt(
-                                data.value?.toString() || "0",
-                                10
-                              ),
-                            });
-                          }}
-                          value={row.dayOfMonth}
-                        />
-                      </Grid.Column>
+
                       <Grid.Column
                         verticalAlign="middle"
                         textAlign="center"
