@@ -369,9 +369,11 @@ export default function MoneyOut(props: MoneyOutProps) {
       <StyledContainer>
         <StyledContainerSpace>
           <StyledDiv>
-            <h2>
-              <strong>Utgifter</strong>
-            </h2>
+            <StyledSpace>
+              <h2>
+                <strong>Utgifter</strong>
+              </h2>
+            </StyledSpace>
           </StyledDiv>
           <StyledBoxSection>
             <StyledGrid>
@@ -506,4 +508,8 @@ const StyledContainer = styled(Container)`
 
 const StyledDiv = styled.div`
   position: relative;
+`;
+
+const StyledSpace = styled.p`
+  padding-bottom: 2em;
 `;
