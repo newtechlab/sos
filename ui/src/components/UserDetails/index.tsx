@@ -130,6 +130,11 @@ export default function UserDetails(props: UserDetailsProps) {
     };
     fileReader.readAsArrayBuffer(acceptedFiles[0]);
   }, []);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   return (

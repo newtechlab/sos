@@ -18,6 +18,7 @@ import {
 import { AdjustmentAmountPercent, LedgerRowId } from "../ResultatInteract";
 import { LastPageBackForwardControls } from "../BackForwardControls";
 import styled from "styled-components";
+import { useEffect } from "react";
 
 interface ResultatProps {
   ledger: Array<LedgerRow>;
@@ -194,6 +195,10 @@ export default function Resultat(props: ResultatProps) {
     resetSession();
     navigate("/");
   };
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
 
   console.log(props);
 
