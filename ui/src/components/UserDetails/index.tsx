@@ -135,6 +135,10 @@ export default function UserDetails(props: UserDetailsProps) {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   return (
@@ -144,13 +148,6 @@ export default function UserDetails(props: UserDetailsProps) {
       </StyledHeader>
       <Container>
         <StyledContainerSpace>
-          {addFamilyModalOpen && (
-            <AddFamilyMemberModal
-              addFamilyMember={addFamilyMember}
-              open={addFamilyModalOpen}
-              setOpen={setAddFamilyModalOpen}
-            />
-          )}
           {!pdfDropped ? (
             <StyledBoxSection {...getRootProps()}>
               <input {...getInputProps()} />
