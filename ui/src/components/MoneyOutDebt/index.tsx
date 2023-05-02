@@ -200,6 +200,10 @@ export default function MoneyOut(props: MoneyOutProps) {
     );
   }, [filteredLedger]);
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
   const getDateArray = () => {
     const arr = [];
     for (let i = 1; i <= 28; i++) {

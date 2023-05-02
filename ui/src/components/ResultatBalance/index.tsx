@@ -119,6 +119,10 @@ export default function ResultatBalance(props: ResultatBalanceProps) {
     computeInOutPercent();
   }, [adjustments]);
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
   const overspending = inTotal - outTotal;
 
   return (

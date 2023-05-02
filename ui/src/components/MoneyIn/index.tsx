@@ -81,6 +81,10 @@ export default function MoneyIn(props: MoneyInProps) {
     setMoneyIn(calculateMoneyIn(sortedLedger));
   }, [sortedLedger]);
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
   const Categories = [
     {
       key: TransactionCategory.Income,
