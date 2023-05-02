@@ -309,6 +309,10 @@ export class PdfWriterService {
           font: font,
         });
         y = y + 26;
+        if (checkY(y)) {
+          page = pdfDoc.addPage();
+          y = 80;
+        }
       });
 
     page.drawText(
