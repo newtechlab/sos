@@ -42,7 +42,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: "sosui.spoint.me"
+  - host: "sosui.spoint.tech"
     http:
       paths:
       - pathType: Prefix
@@ -54,5 +54,5 @@ spec:
               number: 80
   tls:
     - hosts:      
-        - sosui.spoint.me
+        - sosui.spoint.tech
       secretName: sosui
