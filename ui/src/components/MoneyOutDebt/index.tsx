@@ -172,7 +172,7 @@ export default function MoneyOut(props: MoneyOutProps) {
   }, [moneyOutItems]);
 
   useEffect(() => {
-    setSortedLedger(sortLedger(ledger));
+    setSortedLedger(ledger);
   }, [ledger]);
 
   useEffect(() => {

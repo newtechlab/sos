@@ -219,19 +219,11 @@ function App() {
   };
 
   const editPurpleMonkeyDishWasher = (familyMember: FamilyMember) => {
-    const currentRow = familyMembers.find((item) => {
-      if (item.id === familyMember.id) {
-        return item;
-      }
-    });
-
-    const index = familyMembers.indexOf(currentRow as FamilyMember);
-    if (index > -1) {
-      // only splice array when item is found
-      familyMembers.splice(index, 1); // 2nd parameter means remove one item only
-    }
-
-    purpleMonkeyDishWasher(familyMember);
+    setFamilyMembers(
+      familyMembers.map((item) =>
+        item.id === familyMember.id ? familyMember : item
+      )
+    );
   };
 
   const addLedgerRow = (ledgerRow: LedgerRow) => {
@@ -249,19 +241,7 @@ function App() {
   };
 
   const editPet = (pet: Pet) => {
-    const currentRow = pets.find((item) => {
-      if (item.id === pet.id) {
-        return item;
-      }
-    });
-
-    const index = pets.indexOf(currentRow as Pet);
-    if (index > -1) {
-      // only splice array when item is found
-      pets.splice(index, 1); // 2nd parameter means remove one item only
-    }
-
-    addPet(pet);
+    setPets(pets.map((item) => (item.id === pet.id ? pet : item)));
   };
 
   const deleteLedgerRow = (id: string) => {
