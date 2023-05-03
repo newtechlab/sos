@@ -346,10 +346,10 @@ export default function MoneyIn(props: MoneyInProps) {
                     <strong>Ordning</strong>
                   </Grid.Column>
                   <Grid.Column width={4}>
-                    <strong>Beløp</strong>
+                    <strong>Dato for utbetaling</strong>
                   </Grid.Column>
                   <Grid.Column width={3}>
-                    <strong>Dato for utbetaling</strong>
+                    <strong>Beløp</strong>
                   </Grid.Column>
                 </Grid.Row>
               )}
