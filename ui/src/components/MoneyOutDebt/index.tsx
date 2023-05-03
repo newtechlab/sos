@@ -249,7 +249,7 @@ export default function MoneyOut(props: MoneyOutProps) {
                 (item) => item.category === TransactionCategory.Debt
               ).length > 0 && (
                 <Grid.Row>
-                  <Grid.Column width={5}>
+                  <Grid.Column width={6}>
                     <strong>Gjeld</strong>
                   </Grid.Column>
                   {/* <Grid.Column width={4}>
@@ -258,7 +258,7 @@ export default function MoneyOut(props: MoneyOutProps) {
                   <Grid.Column width={4}>
                     <strong>Dato for forfall hver mnd.</strong>
                   </Grid.Column>
-                  <Grid.Column width={3}>
+                  <Grid.Column width={2}>
                     <strong>Beløp</strong>
                   </Grid.Column>
                   {/* <Grid.Column width={3}>
@@ -271,7 +271,7 @@ export default function MoneyOut(props: MoneyOutProps) {
                 .map((row) => {
                   return (
                     <StyledGridRow key={row.id}>
-                      <Grid.Column width={5}>
+                      <Grid.Column width={6}>
                         <Dropdown
                           fluid
                           search
@@ -291,6 +291,7 @@ export default function MoneyOut(props: MoneyOutProps) {
                         <Dropdown
                           search
                           selection
+                          fluid
                           placeholder="Dag"
                           options={DayCategories}
                           onChange={(_, data) => {
@@ -305,7 +306,7 @@ export default function MoneyOut(props: MoneyOutProps) {
                           value={row.dayOfMonth}
                         />
                       </Grid.Column>
-                      <Grid.Column width={6}>
+                      <Grid.Column width={5}>
                         <Input
                           fluid
                           placeholder="f.eks 10 000"
@@ -403,6 +404,7 @@ export default function MoneyOut(props: MoneyOutProps) {
                         <Dropdown
                           search
                           selection
+                          fluid
                           placeholder="Velg utgift"
                           options={dropDownItemsExpenses}
                           onChange={(_, data) => {
