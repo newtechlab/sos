@@ -291,6 +291,7 @@ export default function MoneyOut(props: MoneyOutProps) {
                         <Dropdown
                           search
                           selection
+                          fluid
                           placeholder="Dag"
                           options={DayCategories}
                           onChange={(_, data) => {
@@ -403,6 +404,7 @@ export default function MoneyOut(props: MoneyOutProps) {
                         <Dropdown
                           search
                           selection
+                          fluid
                           placeholder="Velg utgift"
                           options={dropDownItemsExpenses}
                           onChange={(_, data) => {
