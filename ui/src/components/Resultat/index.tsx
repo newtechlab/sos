@@ -8,7 +8,7 @@ import {
   TransactionCategory,
   UserInformation,
 } from "../../App";
-import congratulations from "./congratulations.png";
+import smiley from "./smiley.png";
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -16,9 +16,13 @@ import {
   PdfWriterService,
 } from "../../services/PdfService/PdfWriterService";
 import { AdjustmentAmountPercent, LedgerRowId } from "../ResultatInteract";
-import { LastPageBackForwardControls } from "../BackForwardControls";
+import BackForwardControls, {
+  LastPageBackForwardControls,
+} from "../BackForwardControls";
 import styled from "styled-components";
 import { useEffect } from "react";
+import { StyledBoxSection } from "../StyledBoxSection";
+import { StyledBackgroundColour, StyledContainerSpace } from "../UserDetails";
 
 interface ResultatProps {
   ledger: Array<LedgerRow>;
@@ -203,38 +207,51 @@ export default function Resultat(props: ResultatProps) {
   console.log(props);
 
   return (
-    <StyledFullScreenDiv>
-      <Container>
-        <h1>Resultat</h1>
-        <div>
-          <Image size="big" src={congratulations} wrapped />
-        </div>
-
-        <LastPageBackForwardControls goBack={() => goBack()} />
-
-        <Button
-          circular
-          color="blue"
-          onClick={() => {
-            createPdf({
-              ledger,
-              familyMembers,
-              adjustments,
-              pets,
-              userDetails,
-              previousData,
-              addImage: true,
-            });
-            ResetStep();
-          }}
-        >
-          Fullfør og last ned rapport
-        </Button>
-      </Container>
-    </StyledFullScreenDiv>
+    <StyledBackgroundColour>
+      <StyledContainer>
+        <StyledContainerSpace>
+          <StyledBoxSection>
+            <StyledPad>
+              <Image size="big" src={smiley} wrapped />
+            </StyledPad>
+            <h1>Gratulerer!</h1>
+            <p>
+              Du har tatt et viktig steg mot bedre oversikt over din økonomi!
+              Hvis du ønsker et sammendrag, kan du laste ned rapporten her.
+              Neste gang du bruker nettsiden kan den lastes opp igjen, slik at
+              du slipper å skrive inn alt på nytt. Lykke til videre!{" "}
+            </p>
+          </StyledBoxSection>
+          <BackForwardControls
+            text="Fullfør og last ned rapport"
+            goBack={() => goBack()}
+            completeStep={() => {
+              createPdf({
+                ledger,
+                familyMembers,
+                adjustments,
+                pets,
+                userDetails,
+                previousData,
+                addImage: true,
+              });
+              ResetStep();
+            }}
+          />
+        </StyledContainerSpace>
+      </StyledContainer>
+    </StyledBackgroundColour>
   );
 }
 
+export const StyledPad = styled.p`
+  padding-top: 3em;
+  padding-bottom: 2em;
+  padding-left: 3em;
+`;
+const StyledContainer = styled(Container)`
+  padding-top: 9.375rem;
+`;
 export const StyledFullScreenDiv = styled.div`
   background-color: white;
   text-align: center;

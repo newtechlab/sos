@@ -1,6 +1,7 @@
 import { Button } from "semantic-ui-react";
 
 interface NextButtonProps {
+  text?: string | null;
   completeStep: () => void;
 }
 
@@ -15,7 +16,7 @@ export default function NextButton(props: NextButtonProps) {
         completeStep();
       }}
     >
-      Neste
+      {props.text ? props.text : "Neste"}
     </Button>
   );
 }
