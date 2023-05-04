@@ -21,7 +21,7 @@ import TrashIcon from "../TrashIcon";
 import { TransactionCategory } from "../../App";
 import { v4 as uuidv4 } from "uuid";
 import ErrorBar from "../ErrorBar";
-
+import OpenHelpTextModal from "../HelpTextModalIncome";
 interface MoneyInProps {
   ledger: Array<LedgerRow>;
   addLedgerRow: (_: LedgerRow) => void;
@@ -45,6 +45,7 @@ interface DropDownItem {
 }
 
 export default function MoneyIn(props: MoneyInProps) {
+  const [helptextModalOpen, setHelpTextModalOpen] = useState<boolean>(false);
   const [belopEndError, setBelopEndError] = useState<boolean>(false);
   const [subcategories, setSubcategories] = useState<Array<DropDownItem>>([]);
   const [dropDownItems, setDropDownItems] = useState<DropDownItem[]>([]);
@@ -334,6 +335,10 @@ export default function MoneyIn(props: MoneyInProps) {
 
           <h1>Penger inn</h1>
           <h2>Inntekt og annen støtte</h2>
+          <OpenHelpTextModal
+            open={helptextModalOpen}
+            setOpen={setHelpTextModalOpen}
+          />
 
           <StyledBoxSection>
             <StyledGrid>
