@@ -21,6 +21,7 @@ import HelpTextModalDebt from "../HelpTextModalDebt";
 import TrashIcon from "../TrashIcon";
 import ErrorBar from "../ErrorBar";
 import { v4 as uuidv4 } from "uuid";
+import HelpTextModalExpenses from "../HelpTextModalExpenses";
 
 interface MoneyOutProps {
   ledger: Array<LedgerRow>;
@@ -395,6 +396,10 @@ export default function MoneyOut(props: MoneyOutProps) {
               <h2>
                 <strong>Utgifter</strong>
               </h2>
+              <HelpTextModalExpenses
+                open={addHelpTextDebtModalOpen}
+                setOpen={OpenHelpTextDebtModal}
+              />
             </StyledSpace>
           </StyledDiv>
           <StyledBoxSection>
