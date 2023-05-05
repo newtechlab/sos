@@ -89,37 +89,9 @@ export default function MoneyOut(props: MoneyOutProps) {
 
   useEffect(() => {
     const items = new Map<string, MoneyOutAndCategory>();
-    items.set("Abonnement (Netflix, HBO, Spill m.m)", {
-      name: "Abonnement (Netflix, HBO, Spill m.m)",
-      category: TransactionCategory.Media_and_Subscriptions,
-    });
-    items.set("Sport, trening og fritid", {
-      name: "Sport, trening og fritid",
-      category: TransactionCategory.Recreation,
-    });
-    items.set("Transport (trikk, tog, buss)", {
-      name: "Transport (trikk, tog, buss)",
-      category: TransactionCategory.Travel_Expenses,
-    });
-    items.set("Huslån", {
-      name: "Huslån",
-      category: TransactionCategory.Debt,
-    });
-    items.set("Husleie", {
-      name: "Husleie",
-      category: TransactionCategory.Rent,
-    });
-    items.set("Reise (Fly, hotell)", {
-      name: "Reise (Fly, hotell)",
-      category: TransactionCategory.Travel_Expenses,
-    });
     items.set("Mat og drikke", {
       name: "Mat og drikke",
       category: TransactionCategory.Food_and_Beverages,
-    });
-    items.set("Strøm", {
-      name: "Strøm",
-      category: TransactionCategory.Electricity,
     });
     items.set("Klær og sko", {
       name: "Klær og sko",
@@ -129,17 +101,61 @@ export default function MoneyOut(props: MoneyOutProps) {
       name: "Personlig pleie",
       category: TransactionCategory.Personal_Care,
     });
-    items.set("Forsikring", {
-      name: "Forsikring",
-      category: TransactionCategory.Insurance,
+    items.set("Lek, sport og mediebruk", {
+      name: "Lek, sport og mediebruk",
+      category: TransactionCategory.Games_and_Subscriptions,
     });
-    items.set("Andre bokostnader (kommunale avgifter m.m.)", {
-      name: "Andre bokostnader (kommunale avgifter m.m.)",
-      category: TransactionCategory.Household_Items,
+    items.set("Reisekostnader", {
+      name: "Reisekostnader",
+      category: TransactionCategory.Travel_Expenses,
+    });
+    items.set("Spedbarnsutstyr", {
+      name: "Spedbarnsutstyr",
+      category: TransactionCategory.Infant_Equipment,
+    });
+    items.set("Andre daglivarer", {
+      name: "Andre daglivarer",
+      category: TransactionCategory.Other_Groceries,
     });
     items.set("Husholdningsartikler", {
       name: "Husholdningsartikler",
       category: TransactionCategory.Household_Items,
+    });
+    items.set("Møbler", {
+      name: "Møbler",
+      category: TransactionCategory.Furniture,
+    });
+    items.set("Mediebruk og fritid", {
+      name: "Mediebruk og fritid",
+      category: TransactionCategory.Media_and_Recreation,
+    });
+    items.set("Bilkostnader", {
+      name: "Bilkostnader",
+      category: TransactionCategory.Car,
+    });
+    items.set("Barnehage", {
+      name: "Barnehage",
+      category: TransactionCategory.Kindergarden,
+    });
+    items.set("AKS/SFO", {
+      name: "AKS/SFO",
+      category: TransactionCategory.Childcare_other,
+    });
+    items.set("Huslån", {
+      name: "Huslån",
+      category: TransactionCategory.Debt,
+    });
+    items.set("Husleie og andre bokostnader", {
+      name: "Husleie og andre bokostnader",
+      category: TransactionCategory.Rent,
+    });
+    items.set("Strøm", {
+      name: "Strøm",
+      category: TransactionCategory.Electricity,
+    });
+    items.set("Forsikring", {
+      name: "Forsikring",
+      category: TransactionCategory.Insurance,
     });
     items.set("Annen gjeld", {
       name: "Annen gjeld",
@@ -149,10 +165,11 @@ export default function MoneyOut(props: MoneyOutProps) {
       name: "Billån",
       category: TransactionCategory.Debt,
     });
-    items.set("Faste donasjoner", {
-      name: "Faste donasjoner",
-      category: TransactionCategory.Personal_Care,
+    items.set("Forskuddsskatt", {
+      name: "Forskuddsskatt",
+      category: TransactionCategory.Tax,
     });
+
     setMoneyOutItems(items);
   }, []);
 

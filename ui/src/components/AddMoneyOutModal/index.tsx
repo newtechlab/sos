@@ -59,14 +59,7 @@ export default function AddMoneyOutModal(props: AddMoneyOutModalProps) {
 
   useEffect(() => {
     const items = new Map<string, MoneyOutAndCategory>();
-    items.set("Abonnement (Netflix, HBO, Spill m.m)", {
-      name: "Abonnement (Netflix, HBO, Spill m.m)",
-      category: TransactionCategory.Media_and_Subscriptions,
-    });
-    items.set("Sport, trening og fritid", {
-      name: "Sport, trening og fritid",
-      category: TransactionCategory.Recreation,
-    });
+
     items.set("Transport (trikk, tog, buss)", {
       name: "Transport (trikk, tog, buss)",
       category: TransactionCategory.Travel_Expenses,
