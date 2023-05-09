@@ -1,5 +1,5 @@
 import { CreatePdfProps } from "./PdfWriterService";
-import { HouseSituation, Car } from "../../App";
+import { HouseSituation, Car, Ages } from "../../App";
 import {
   AdjustmentAmountPercent,
   LedgerRowId,
@@ -21,7 +21,8 @@ describe("The PdfConverter", () => {
         {
           id: "id",
           name: "name",
-          age: "age",
+          gender: "",
+          age: Ages.unknown,
         },
       ],
       adjustments: new Map<LedgerRowId, AdjustmentAmountPercent>(),

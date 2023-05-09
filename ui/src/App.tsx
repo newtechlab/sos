@@ -44,8 +44,33 @@ import { calculateMoneyIn, calculateMoneyOut } from "./data/Ledger";
 export interface FamilyMember {
   id: string;
   name: string;
-  age: string;
-  sex?: string;
+  age: Ages;
+  gender: string;
+  pregnant?: boolean;
+  student?: boolean;
+  freeSfo?: boolean;
+  sfo?: string;
+  kindergarden?: boolean;
+}
+
+export enum Ages {
+  month0_5 = "0-5 måneder",
+  month6_11 = "6-11 måneder",
+  year1 = "1 år",
+  year2 = "2 år",
+  year3 = "3 år",
+  year4_5 = "4 til 5 år",
+  year6_9 = "6 til 9 år",
+  year10_13 = "10 til 13 år",
+  year14_17 = "14 til 17 år",
+  year18_19 = "18 til 19 år",
+  year20_30 = "20 til 30 år",
+  year31_50 = "31 til 50 år",
+  year51_60 = "51 til 60 år",
+  year61_66 = "61 til 66 år",
+  year67_73 = "67 til 73 år",
+  olderThan74 = "eldre enn 74 år",
+  unknown = "",
 }
 
 export interface Pet {

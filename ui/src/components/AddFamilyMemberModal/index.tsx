@@ -102,25 +102,7 @@ export default function AddFamilyMemberModal(props: AddFamilyMemberModalProps) {
               />
             </Grid.Column>
 
-            <Grid.Column textAlign="right">
-              <Button
-                circular
-                color="blue"
-                onClick={() => {
-                  if (name && age) {
-                    addFamilyMember({
-                      id: uuidv4(),
-                      name: name,
-                      age: age,
-                    });
-                    setOpen(false);
-                  }
-                }}
-              >
-                <Icon name="plus" />
-                Legg til
-              </Button>
-            </Grid.Column>
+            <Grid.Column textAlign="right"></Grid.Column>
           </Grid.Row>
         </StyledGrid>
       </Modal.Actions>
