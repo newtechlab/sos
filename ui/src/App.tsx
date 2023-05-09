@@ -143,10 +143,9 @@ export interface Goal {
   amount: number;
 }
 
-export enum Car {
-  OWN = "OWN",
-  NOTOWN = "RENT",
-  UNDEFINED = "UNDEFINED",
+export interface Car {
+  fossil: number;
+  electric: number;
 }
 
 ChartJS.register(
@@ -173,7 +172,7 @@ export interface UserInformation {
 
 export const InitialUserInfo: UserInformation = {
   goal: { name: "", amount: 0 },
-  car: Car.UNDEFINED,
+  car: { fossil: 0, electric: 0 },
   house: HouseSituation.UNDEFINED,
   otherAssets: "",
 };
@@ -237,11 +236,11 @@ function App() {
     )
   );
 
-  const purpleMonkeyDishWasher = (familyMember: FamilyMember) => {
+  const addFamilyMember = (familyMember: FamilyMember) => {
     setFamilyMembers(familyMembers.concat(familyMember));
   };
 
-  const editPurpleMonkeyDishWasher = (familyMember: FamilyMember) => {
+  const editFamilyMember = (familyMember: FamilyMember) => {
     setFamilyMembers(
       familyMembers.map((item) =>
         item.id === familyMember.id ? familyMember : item
@@ -420,8 +419,8 @@ function App() {
                   setUserDetails={setUserDetails}
                   setAdjustments={setAdjustments}
                   familyMembers={familyMembers}
-                  addFamilyMember={purpleMonkeyDishWasher}
-                  editFamilyMember={editPurpleMonkeyDishWasher}
+                  addFamilyMember={addFamilyMember}
+                  editFamilyMember={editFamilyMember}
                   activeStep={activeStep}
                   steps={steps}
                   completeStep={completeStep}
@@ -550,3 +549,6 @@ const StyledBodyDiv = styled.div`
 `;
 
 export default App;
+function uuidv4(): string {
+  throw new Error("Function not implemented.");
+}

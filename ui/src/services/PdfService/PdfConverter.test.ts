@@ -31,7 +31,7 @@ describe("The PdfConverter", () => {
           name: "name",
           amount: 123,
         },
-        car: Car.NOTOWN,
+        car: { fossil: 1, electric: 2 },
         house: HouseSituation.OWN,
         otherAssets: "",
       },

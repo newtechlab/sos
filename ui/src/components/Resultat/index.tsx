@@ -159,7 +159,7 @@ const createExamplePdf = async () => {
       name: "Ny bolig",
       amount: 4000000,
     },
-    car: Car.NOTOWN,
+    car: { fossil: 0, electric: 0 },
     house: HouseSituation.OWN,
     otherAssets: "",
   };

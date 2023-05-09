@@ -1,20 +1,16 @@
 import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { useNavigate } from "react-router-dom";
 import {
   Button,
-  Card,
   Container,
   Dropdown,
   Grid,
-  GridRow,
   Icon,
   Input,
 } from "semantic-ui-react";
 import styled from "styled-components";
 import {
   Ages,
-  Car,
   FamilyMember,
   HouseSituation,
   InitialUserInfo,
@@ -22,25 +18,18 @@ import {
   Pet,
   UserInformation,
 } from "../../App";
-import AddFamilyMemberCard from "../AddFamilyMemberCard";
-import AddFamilyMemberModal from "../AddFamilyMemberModal";
+
 import BackForwardControls from "../BackForwardControls";
-import FamilyMemberCard from "../FamilyMemberCard";
 import HelpTextModalGoal from "../HelpTextModalGoal";
 import { JaNei } from "../JaNei";
 import StepHeader from "../StepHeader";
 import { StepDefinition, StepsState } from "../Steps";
-import AddPetModal from "../AddPetModal";
-import { StyledCard } from "../StyledFamilyCard";
-import PetMemberCard from "../PetCard";
 import PdfConverter from "../../services/PdfService/PdfConverter";
 import { AdjustmentAmountPercent, LedgerRowId } from "../ResultatInteract";
 import { v4 as uuidv4 } from "uuid";
 import { StyledBoxSection } from "../StyledBoxSection";
 import { StyledGrid, StyledGridRow, StyledGridRowBottom } from "../MoneyIn";
 import TrashIcon from "../TrashIcon";
-import { add } from "lodash";
-import { getValue } from "@testing-library/user-event/dist/utils";
 
 export interface UserDetailsProps {
   familyMembers: Array<FamilyMember>;
@@ -467,26 +456,53 @@ export default function UserDetails(props: UserDetailsProps) {
           </StyledHeadingDiv>
 
           <StyledHeadingDiv>
-            <h1>Eier familien bil eller andre kjøretøy?</h1>
-
-            <JaNei
-              optionOneSelected={userDetails.car === Car.OWN}
-              optionOneText="Ja"
-              optionOneClick={() => {
-                setUserDetails({
-                  ...userDetails,
-                  car: Car.OWN,
-                });
-              }}
-              optionTwoSelected={userDetails.car === Car.NOTOWN}
-              optionTwoText="Nei"
-              optionTwoClick={() => {
-                setUserDetails({
-                  ...userDetails,
-                  car: Car.NOTOWN,
-                });
-              }}
-            />
+            <h1>Kjøretøy</h1>
+            <StyledBoxSection>
+              <StyledGrid>
+                <StyledGridRow>
+                  <Grid.Column width={8} textAlign="left">
+                    Antall fossilbiler i husstanden
+                    <Dropdown
+                      fluid
+                      search
+                      selection
+                      placeholder="Antall fossilbiler i husstanden"
+                      options={carOptions}
+                      onChange={(_, data) => {
+                        setUserDetails({
+                          ...userDetails,
+                          car: {
+                            ...userDetails.car,
+                            fossil: data?.value as number,
+                          },
+                        });
+                      }}
+                      value={userDetails?.car?.fossil}
+                    />
+                  </Grid.Column>
+                  <Grid.Column width={8} textAlign="left">
+                    Antall elbiler i husstanden
+                    <Dropdown
+                      fluid
+                      search
+                      selection
+                      placeholder="Antall elbiler i husstanden"
+                      options={carOptions}
+                      onChange={(_, data) => {
+                        setUserDetails({
+                          ...userDetails,
+                          car: {
+                            ...userDetails.car,
+                            electric: data?.value as number,
+                          },
+                        });
+                      }}
+                      value={userDetails?.car?.electric}
+                    />
+                  </Grid.Column>
+                </StyledGridRow>
+              </StyledGrid>
+            </StyledBoxSection>
           </StyledHeadingDiv>
 
           <StyledHeadingDiv>
