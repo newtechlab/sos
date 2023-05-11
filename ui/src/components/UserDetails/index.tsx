@@ -30,6 +30,7 @@ import { v4 as uuidv4 } from "uuid";
 import { StyledBoxSection } from "../StyledBoxSection";
 import { StyledGrid, StyledGridRow, StyledGridRowBottom } from "../MoneyIn";
 import TrashIcon from "../TrashIcon";
+import OpenHelpTextModalSalary from "../HelpTextModalSalary";
 
 export interface UserDetailsProps {
   familyMembers: Array<FamilyMember>;
@@ -78,9 +79,9 @@ const yesno: string[] = ["Ja", "Nei"];
 const sfo: string[] = ["Nei", "Heltid", "Deltid"];
 
 interface DropDownItem {
-  key: string;
-  text: string;
-  value: string;
+  key: string | number;
+  text: string | number;
+  value: string | number;
 }
 
 export enum Optionals {
@@ -125,11 +126,21 @@ const convertDropdownItem = (item: string): DropDownItem => {
   };
 };
 
+const convertDropdownItemNumber = (item: number): DropDownItem => {
+  return {
+    key: item,
+    text: item,
+    value: item,
+  };
+};
+
 export const firstStep = "/family";
 
 export default function UserDetails(props: UserDetailsProps) {
   const [addHelpTextGoalModalOpen, OpenHelpTextGoalModal] =
     useState<boolean>(false);
+  const [helptextModalOpen, setHelpTextModalOpen] = useState<boolean>(false);
+
   const [pdfDropped, setPdfDropped] = useState<boolean>(false);
 
   const ageOptions: DropDownItem[] = Object.values(Ages).map((item) => {
@@ -141,7 +152,7 @@ export default function UserDetails(props: UserDetailsProps) {
   });
 
   const carOptions: DropDownItem[] = cars.map((item) => {
-    return convertDropdownItem(item.toString());
+    return convertDropdownItemNumber(item);
   });
 
   const yesnoOptions: DropDownItem[] = yesno.map((item) => {
@@ -456,7 +467,11 @@ export default function UserDetails(props: UserDetailsProps) {
           </StyledHeadingDiv>
 
           <StyledHeadingDiv>
-            <h1>Kjøretøy</h1>
+            <h1>Annen familieinformasjon</h1>
+            <OpenHelpTextModalSalary
+              open={helptextModalOpen}
+              setOpen={setHelpTextModalOpen}
+            />
             <StyledBoxSection>
               <StyledGrid>
                 <StyledGridRow>
@@ -479,6 +494,22 @@ export default function UserDetails(props: UserDetailsProps) {
                       }}
                       value={userDetails?.car?.fossil}
                     />
+                    <StyledPadding>
+                      Brutto årsinntekt
+                      <Input
+                        fluid
+                        type="number"
+                        placeholder="Brutto årsinntekt"
+                        onChange={(_, data) => {
+                          setUserDetails({
+                            ...userDetails,
+                            salary: parseInt(data?.value),
+                          });
+                        }}
+                        labelPosition="right"
+                        value={userDetails.salary}
+                      />
+                    </StyledPadding>
                   </Grid.Column>
                   <Grid.Column width={8} textAlign="left">
                     Antall elbiler i husstanden

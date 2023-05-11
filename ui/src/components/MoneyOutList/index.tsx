@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Slider } from "../Slider";
+import { SliderComp } from "../Slider";
 import { LedgerRow } from "../../App";
 import { AdjustmentAmountPercent } from "../ResultatInteract";
 import { Label } from "semantic-ui-react";
@@ -7,7 +7,7 @@ import { Label } from "semantic-ui-react";
 export interface MoneyOutListProps {
   moneyOut: LedgerRow[];
   adjustments: Map<string, AdjustmentAmountPercent>;
-  onUpdateValue: (id: string, value: string) => void
+  onUpdateValue: (id: string, value: string) => void;
 }
 
 export function MoneyOutList(props: MoneyOutListProps) {
@@ -20,20 +20,22 @@ export function MoneyOutList(props: MoneyOutListProps) {
   return (
     <OuterBox>
       {moneyOut.map((row) => {
-
         const adhustmentStr = adjustments.get(row.id) || "100";
-        const adjustment = parseInt(adhustmentStr)
+        const adjustment = parseInt(adhustmentStr);
 
         return (
           <div key={`moneyout_${row.id}`}>
             <MoneyOutItemBox>
-              <AmountDiv>{ Math.round(row.amount / 100 * adjustment ) } <Label size="mini">KR.</Label></AmountDiv>
+              <AmountDiv>
+                {Math.round((row.amount / 100) * adjustment)}{" "}
+                <Label size="mini">KR.</Label>
+              </AmountDiv>
               <TitleDiv>{row.accountTo}</TitleDiv>
               <SliderDiv>
-                <Slider 
-                  id={row.id} 
-                  onUpdateValue={onUpdateValue} 
-                  maxPercent={"120"} 
+                <SliderComp
+                  id={row.id}
+                  onUpdateValue={onUpdateValue}
+                  maxPercent={"120"}
                   value={adhustmentStr}
                 />
               </SliderDiv>
@@ -52,7 +54,7 @@ const OuterBox = styled.div`
 `;
 
 const MoneyOutItemBox = styled.div`
-  height: 80px;
+  height: 8rem;
   margin: 5px;
   background: #f1f8f8;
   border: 1px dashed #cfe3e3;

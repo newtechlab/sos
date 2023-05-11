@@ -40,6 +40,22 @@ import {
 import ResultatBalance from "./components/ResultatBalance";
 import ResultatDebt from "./components/ResultatDebt";
 import { calculateMoneyIn, calculateMoneyOut } from "./data/Ledger";
+import {
+  getCarExpenses,
+  getClothesAndFootwear,
+  getFoodAndBeverages,
+  getFurniture,
+  getGamesAndSubscriptions,
+  getHouseholdItems,
+  getInfantEquipment,
+  getKindergarden,
+  getMediaAndRecreation,
+  getOtherGrocieries,
+  getPersonalCare,
+  getSFO,
+  getStordrift,
+  getTravelExpenses,
+} from "./components/SifoData";
 
 export interface FamilyMember {
   id: string;
@@ -157,6 +173,76 @@ ChartJS.register(
   Legend
 );
 
+const calculateSifoNumbers = (
+  familyMembers: FamilyMember[],
+  userDetails: UserInformation
+) => {
+  let sifoNumbers = {
+    Food_and_Beverages: 0,
+    Clothing_and_Footwear: 0,
+    Personal_Care: 0,
+    Games_and_Subscriptions: 0,
+    Travel_Expenses: 0,
+    Infant_Equipment: 0,
+    Other_Groceries: 0,
+    Household_Item: 0,
+    Furniture: 0,
+    Media_and_Recreation: 0,
+    Car: 0,
+    Kindergarden: 0,
+    Childcare_other: 0,
+  };
+
+  familyMembers.map((member) => {
+    const { age, gender, pregnant, student, sfo, freeSfo } = member;
+    sifoNumbers = {
+      ...sifoNumbers,
+      Food_and_Beverages:
+        sifoNumbers.Food_and_Beverages +
+        (getFoodAndBeverages(age, gender, pregnant) as number) *
+          (getStordrift(familyMembers) ? 0.88 : 1),
+      Clothing_and_Footwear:
+        sifoNumbers.Clothing_and_Footwear +
+        (getClothesAndFootwear(age, gender) as number),
+      Personal_Care:
+        sifoNumbers.Personal_Care + (getPersonalCare(age, gender) as number),
+      Games_and_Subscriptions:
+        sifoNumbers.Games_and_Subscriptions +
+        (getGamesAndSubscriptions(age) as number),
+      Travel_Expenses:
+        sifoNumbers.Travel_Expenses +
+        (getTravelExpenses(age, student) as number),
+      Infant_Equipment:
+        sifoNumbers.Infant_Equipment +
+        (getInfantEquipment(age, pregnant) as number),
+      Childcare_other:
+        sifoNumbers.Childcare_other +
+        (getSFO(freeSfo, userDetails.salary, sfo) as number),
+    };
+  });
+
+  sifoNumbers = {
+    ...sifoNumbers,
+    Other_Groceries:
+      sifoNumbers.Other_Groceries +
+      (getOtherGrocieries(familyMembers) as number),
+    Household_Item:
+      sifoNumbers.Household_Item + (getHouseholdItems(familyMembers) as number),
+    Furniture: sifoNumbers.Furniture + (getFurniture(familyMembers) as number),
+    Media_and_Recreation:
+      sifoNumbers.Media_and_Recreation +
+      (getMediaAndRecreation(familyMembers) as number),
+    Car:
+      sifoNumbers.Car +
+      (getCarExpenses(userDetails.car, familyMembers) as number),
+    Kindergarden:
+      sifoNumbers.Kindergarden +
+      (getKindergarden(familyMembers, userDetails.salary) as number),
+  };
+
+  return sifoNumbers;
+};
+
 export enum HouseSituation {
   OWN = "OWN",
   RENT = "RENT",
@@ -167,6 +253,7 @@ export interface UserInformation {
   goal: Goal;
   car: Car;
   house: HouseSituation;
+  salary?: number;
   otherAssets: string;
 }
 
@@ -379,6 +466,13 @@ function App() {
     console.log(ledger);
     console.log(adjustments);
   }, [adjustments]);
+
+  console.log("Family members: ", familyMembers);
+  console.log("User details: ", userDetails);
+  console.log(
+    "Calculate sifo: ",
+    calculateSifoNumbers(familyMembers, userDetails)
+  );
 
   return (
     <StyledRootDiv className="App">
