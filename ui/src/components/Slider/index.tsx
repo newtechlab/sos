@@ -1,37 +1,43 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Grid } from "semantic-ui-react";
 import styled from "styled-components";
 import minus from "./minus.png";
 import plus from "./plus.png";
+import { Slider } from "antd";
+import type { SliderMarks } from "antd/es/slider";
 
 interface SliderProps {
   id: string;
   maxPercent: string;
   onUpdateValue: (id: string, value: string) => void;
   value: string;
+  sifoValue: number;
+  originalValue: number;
 }
 
-export const Slider = (props: SliderProps) => {
-  const { id, onUpdateValue, value, maxPercent } = props;
+export const SliderComp = (props: SliderProps) => {
+  const { id, onUpdateValue, maxPercent, sifoValue, value, originalValue } =
+    props;
   const [slider, setSlider] = useState<string>("100");
+
+  const marks: SliderMarks = {
+    [sifoValue]: {
+      style: {
+        color: "#3D8EB1",
+      },
+      label: <strong>Sifo</strong>,
+    },
+  };
+  const valueInt = parseInt(value);
+
+  console.log("value: ", value);
+  const max = (parseInt(maxPercent) * originalValue) / 100;
 
   return (
     <div className="slidecontainer">
       <Grid>
-        <Grid.Column width={1} verticalAlign="middle" textAlign="center">
-          <StyledButton>
-            <StyledImage
-              src={minus}
-              alt="minus"
-              onClick={() => {
-                const newValue = (parseInt(slider) - 1).toString();
-                onUpdateValue(id, newValue);
-                setSlider(newValue);
-              }}
-            />
-          </StyledButton>
-        </Grid.Column>
-        <Grid.Column width={14}>
+        <Grid.Column width={15}>
+          {/* 
           <StyledSlider
             type="range"
             min="1"
@@ -49,23 +55,32 @@ export const Slider = (props: SliderProps) => {
               }%, #CEE0E0 0px`,
             }}
           />
-        </Grid.Column>
-        <Grid.Column width={1} verticalAlign="middle" textAlign="center">
-          <StyledButton>
-            <StyledImage
-              src={plus}
-              alt="plus"
-              onClick={() => {
-                const newValue = (parseInt(slider) + 1).toString();
-                onUpdateValue(id, newValue);
-                setSlider(newValue);
-              }}
-            />
-          </StyledButton>
+          */}
+          <Slider
+            trackStyle={trackStyle}
+            handleStyle={handleStyle}
+            marks={marks}
+            value={valueInt}
+            onChange={(e) => {
+              setSlider(e.toString());
+              onUpdateValue(id, e.toString());
+            }}
+            min={0}
+            max={Math.max(max, sifoValue)}
+          />
         </Grid.Column>
       </Grid>
     </div>
   );
+};
+
+const trackStyle: React.CSSProperties = {
+  backgroundColor: "#3D8EB1",
+};
+
+const handleStyle: React.CSSProperties = {
+  backgroundColor: "#ff",
+  borderTopColor: "#3D8EB1",
 };
 
 const upperColor = "#3d8eb1";

@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import { Button, Container, Icon } from "semantic-ui-react";
-import { Goal, LedgerRow, TransactionCategory } from "../../App";
+import {
+  Goal,
+  LedgerRow,
+  SifoCategories,
+  TransactionCategory,
+} from "../../App";
 import styled from "styled-components";
 
 import { ChartData } from "chart.js";
@@ -43,6 +48,7 @@ interface ResultatInteractProps {
   steps: StepsState;
   adjustments: Map<LedgerRowId, AdjustmentAmountPercent>;
   setAdjustments: (_: Map<LedgerRowId, AdjustmentAmountPercent>) => void;
+  sifoNumbers: SifoCategories;
 }
 
 export type LedgerRowId = string;
@@ -67,6 +73,7 @@ export default function ResultatInteract(props: ResultatInteractProps) {
     adjustments,
     setAdjustments,
     goToStep,
+    sifoNumbers,
   } = props;
 
   const computeInOutPercent = () => {
@@ -75,7 +82,7 @@ export default function ResultatInteract(props: ResultatInteractProps) {
         const adjustment = parseInt(adjustments.get(row.id) || "100");
         return {
           ...row,
-          amount: Math.round((row.amount / 100) * adjustment),
+          amount: adjustment,
         };
       } else {
         return row;
@@ -181,6 +188,7 @@ export default function ResultatInteract(props: ResultatInteractProps) {
                     moneyOut={moneyOut}
                     onUpdateValue={onUpdateSlider}
                     adjustments={adjustments}
+                    sifoNumbers={sifoNumbers}
                   />
                 </StyledColumn>
               </StyledRow>

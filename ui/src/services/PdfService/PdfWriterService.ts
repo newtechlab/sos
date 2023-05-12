@@ -87,10 +87,12 @@ export class PdfWriterService {
 
     const adjustedLedger = props.ledger.map((row) => {
       if (props.adjustments.has(row.id)) {
-        const adjustment = parseInt(props.adjustments.get(row.id) || "100");
+        const adjustment = parseInt(
+          props.adjustments.get(row.id) || row.amount.toString()
+        );
         return {
           ...row,
-          amount: Math.round((row.amount / 100) * adjustment),
+          amount: adjustment,
         };
       } else {
         return row;

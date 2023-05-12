@@ -173,70 +173,104 @@ ChartJS.register(
   Legend
 );
 
-const calculateSifoNumbers = (
+export interface SifoCategories {
+  "Mat og drikke": number;
+  "Klær og sko": number;
+  "Personlig pleie": number;
+  "Lek, sport og mediebruk": number;
+  Reisekostnader: number;
+  Spedbarnsutstyr: number;
+  "Andre daglivarer": number;
+  Husholdningsartikler: number;
+  Møbler: number;
+  "Mediebruk og fritid": number;
+  Bilkostnader: number;
+  Barnehage: number;
+  "AKS/SFO": number;
+}
+
+export const calculateSifoNumbers = (
   familyMembers: FamilyMember[],
   userDetails: UserInformation
 ) => {
-  let sifoNumbers = {
-    Food_and_Beverages: 0,
-    Clothing_and_Footwear: 0,
-    Personal_Care: 0,
-    Games_and_Subscriptions: 0,
-    Travel_Expenses: 0,
-    Infant_Equipment: 0,
-    Other_Groceries: 0,
-    Household_Item: 0,
-    Furniture: 0,
-    Media_and_Recreation: 0,
-    Car: 0,
-    Kindergarden: 0,
-    Childcare_other: 0,
+  /*
+    Food_and_Beverages = "Mat og drikke",
+  Clothing_and_Footwear = "Klær og sko",
+  Personal_Care = "Personlig pleie",
+  Games_and_Subscriptions = "Lek, sport og mediebruk",
+  Travel_Expenses = "Reisekostnader",
+  Infant_Equipment = "Spedbarnsutstyr",
+  Other_Groceries = "Andre daglivarer",
+  Household_Items = "Husholdningsartikler",
+  Furniture = "Møbler",
+  Media_and_Recreation = "Mediebruk og fritid",
+  Car = "Bilkostnader",
+  Kindergarden = "Barnehage",
+  Childcare_other = "AKS/SFO",
+
+  */
+  let sifoNumbers: SifoCategories = {
+    "Mat og drikke": 0,
+    "Klær og sko": 0,
+    "Personlig pleie": 0,
+    "Lek, sport og mediebruk": 0,
+    Reisekostnader: 0,
+    Spedbarnsutstyr: 0,
+    "Andre daglivarer": 0,
+    Husholdningsartikler: 0,
+    Møbler: 0,
+    "Mediebruk og fritid": 0,
+    Bilkostnader: 0,
+    Barnehage: 0,
+    "AKS/SFO": 0,
   };
 
   familyMembers.map((member) => {
     const { age, gender, pregnant, student, sfo, freeSfo } = member;
     sifoNumbers = {
       ...sifoNumbers,
-      Food_and_Beverages:
-        sifoNumbers.Food_and_Beverages +
+      "Mat og drikke":
+        sifoNumbers["Mat og drikke"] +
         (getFoodAndBeverages(age, gender, pregnant) as number) *
           (getStordrift(familyMembers) ? 0.88 : 1),
-      Clothing_and_Footwear:
-        sifoNumbers.Clothing_and_Footwear +
+      "Klær og sko":
+        sifoNumbers["Klær og sko"] +
         (getClothesAndFootwear(age, gender) as number),
-      Personal_Care:
-        sifoNumbers.Personal_Care + (getPersonalCare(age, gender) as number),
-      Games_and_Subscriptions:
-        sifoNumbers.Games_and_Subscriptions +
+      "Personlig pleie":
+        sifoNumbers["Personlig pleie"] +
+        (getPersonalCare(age, gender) as number),
+      "Lek, sport og mediebruk":
+        sifoNumbers["Lek, sport og mediebruk"] +
         (getGamesAndSubscriptions(age) as number),
-      Travel_Expenses:
-        sifoNumbers.Travel_Expenses +
+      Reisekostnader:
+        sifoNumbers["Reisekostnader"] +
         (getTravelExpenses(age, student) as number),
-      Infant_Equipment:
-        sifoNumbers.Infant_Equipment +
+      Spedbarnsutstyr:
+        sifoNumbers["Spedbarnsutstyr"] +
         (getInfantEquipment(age, pregnant) as number),
-      Childcare_other:
-        sifoNumbers.Childcare_other +
+      "AKS/SFO":
+        sifoNumbers["AKS/SFO"] +
         (getSFO(freeSfo, userDetails.salary, sfo) as number),
     };
   });
 
   sifoNumbers = {
     ...sifoNumbers,
-    Other_Groceries:
-      sifoNumbers.Other_Groceries +
+    "Andre daglivarer":
+      sifoNumbers["Andre daglivarer"] +
       (getOtherGrocieries(familyMembers) as number),
-    Household_Item:
-      sifoNumbers.Household_Item + (getHouseholdItems(familyMembers) as number),
-    Furniture: sifoNumbers.Furniture + (getFurniture(familyMembers) as number),
-    Media_and_Recreation:
-      sifoNumbers.Media_and_Recreation +
+    Husholdningsartikler:
+      sifoNumbers["Husholdningsartikler"] +
+      (getHouseholdItems(familyMembers) as number),
+    Møbler: sifoNumbers["Møbler"] + (getFurniture(familyMembers) as number),
+    "Mediebruk og fritid":
+      sifoNumbers["Mediebruk og fritid"] +
       (getMediaAndRecreation(familyMembers) as number),
-    Car:
-      sifoNumbers.Car +
+    Bilkostnader:
+      sifoNumbers["Bilkostnader"] +
       (getCarExpenses(userDetails.car, familyMembers) as number),
-    Kindergarden:
-      sifoNumbers.Kindergarden +
+    Barnehage:
+      sifoNumbers["Barnehage"] +
       (getKindergarden(familyMembers, userDetails.salary) as number),
   };
 
@@ -467,13 +501,6 @@ function App() {
     console.log(adjustments);
   }, [adjustments]);
 
-  console.log("Family members: ", familyMembers);
-  console.log("User details: ", userDetails);
-  console.log(
-    "Calculate sifo: ",
-    calculateSifoNumbers(familyMembers, userDetails)
-  );
-
   return (
     <StyledRootDiv className="App">
       <FeedbackButton
@@ -577,6 +604,7 @@ function App() {
                   adjustments={adjustments}
                   setAdjustments={setAdjustments}
                   goToStep={goToStep}
+                  sifoNumbers={calculateSifoNumbers(familyMembers, userDetails)}
                 />
               }
             />

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { SliderComp } from "../Slider";
-import { LedgerRow } from "../../App";
+import { LedgerRow, SifoCategories, TransactionCategory } from "../../App";
 import { AdjustmentAmountPercent } from "../ResultatInteract";
 import { Label } from "semantic-ui-react";
 
@@ -8,10 +8,46 @@ export interface MoneyOutListProps {
   moneyOut: LedgerRow[];
   adjustments: Map<string, AdjustmentAmountPercent>;
   onUpdateValue: (id: string, value: string) => void;
+  sifoNumbers: SifoCategories;
 }
 
+const getSifoValue = (accountTo: string, sifoNumbers: SifoCategories) => {
+  if (accountTo === "Klær og sko") {
+    return sifoNumbers["Klær og sko"];
+  } else if (accountTo === "AKS/SFO") {
+    return sifoNumbers["AKS/SFO"];
+  } else if (accountTo === "Mat og drikke") {
+    return sifoNumbers["Mat og drikke"];
+  } else if (accountTo === "Personlig pleie") {
+    return sifoNumbers["Personlig pleie"];
+  } else if (accountTo === "Lek, sport og mediebruk") {
+    return sifoNumbers["Lek, sport og mediebruk"];
+  } else if (accountTo === "Reisekostnader") {
+    return sifoNumbers["Reisekostnader"];
+  } else if (accountTo === "Spedbarnsutstyr") {
+    return sifoNumbers["Spedbarnsutstyr"];
+  } else if (accountTo === "Andre daglivarer") {
+    return sifoNumbers["Andre daglivarer"];
+  } else if (accountTo === "Husholdningsartikler") {
+    return sifoNumbers["Husholdningsartikler"];
+  } else if (accountTo === "Møbler") {
+    return sifoNumbers["Møbler"];
+  } else if (accountTo === "Mediebruk og fritid") {
+    return sifoNumbers["Mediebruk og fritid"];
+  } else if (accountTo === "Bilkostnader") {
+    return sifoNumbers["Bilkostnader"];
+  } else if (accountTo === "Barnehage") {
+    return sifoNumbers["Barnehage"];
+  } else {
+    return 0;
+  }
+};
+
 export function MoneyOutList(props: MoneyOutListProps) {
-  const { moneyOut, onUpdateValue, adjustments } = props;
+  const { moneyOut, onUpdateValue, adjustments, sifoNumbers } = props;
+  console.log(sifoNumbers);
+  console.log("adjusts: ", adjustments);
+  console.log("money out ", moneyOut);
 
   if (moneyOut.length === 0) {
     return <div>Vennligst legg til noen utgifter</div>;
@@ -20,15 +56,14 @@ export function MoneyOutList(props: MoneyOutListProps) {
   return (
     <OuterBox>
       {moneyOut.map((row) => {
-        const adhustmentStr = adjustments.get(row.id) || "100";
+        const adhustmentStr = adjustments.get(row.id) || row.amount.toString();
         const adjustment = parseInt(adhustmentStr);
 
         return (
           <div key={`moneyout_${row.id}`}>
             <MoneyOutItemBox>
               <AmountDiv>
-                {Math.round((row.amount / 100) * adjustment)}{" "}
-                <Label size="mini">KR.</Label>
+                {adjustment} <Label size="mini">KR.</Label>
               </AmountDiv>
               <TitleDiv>{row.accountTo}</TitleDiv>
               <SliderDiv>
@@ -36,7 +71,9 @@ export function MoneyOutList(props: MoneyOutListProps) {
                   id={row.id}
                   onUpdateValue={onUpdateValue}
                   maxPercent={"120"}
+                  originalValue={row.amount}
                   value={adhustmentStr}
+                  sifoValue={getSifoValue(row.accountTo, sifoNumbers)}
                 />
               </SliderDiv>
             </MoneyOutItemBox>
