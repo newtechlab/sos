@@ -62,9 +62,7 @@ export function MoneyOutList(props: MoneyOutListProps) {
         return (
           <div key={`moneyout_${row.id}`}>
             <MoneyOutItemBox>
-              <AmountDiv>
-                {adjustment} <Label size="mini">KR.</Label>
-              </AmountDiv>
+              <AmountDiv>{adjustment} kr</AmountDiv>
               <TitleDiv>{row.accountTo}</TitleDiv>
               <SliderDiv>
                 <SliderComp
@@ -101,6 +99,7 @@ const AmountDiv = styled.div`
   float: right;
   position: relative;
   margin: 5px;
+  padding-right: 0.5rem;
 `;
 
 const TitleDiv = styled.div`

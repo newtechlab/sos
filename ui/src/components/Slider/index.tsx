@@ -3,7 +3,7 @@ import { Grid } from "semantic-ui-react";
 import styled from "styled-components";
 import minus from "./minus.png";
 import plus from "./plus.png";
-import { Slider } from "antd";
+import { Col, Row, Slider } from "antd";
 import type { SliderMarks } from "antd/es/slider";
 
 interface SliderProps {
@@ -23,9 +23,9 @@ export const SliderComp = (props: SliderProps) => {
   const marks: SliderMarks = {
     [sifoValue]: {
       style: {
-        color: "#3D8EB1",
+        color: "#000000",
       },
-      label: <strong>Sifo</strong>,
+      label: <>Sifo</>,
     },
   };
   const valueInt = parseInt(value);
@@ -35,8 +35,21 @@ export const SliderComp = (props: SliderProps) => {
 
   return (
     <div className="slidecontainer">
-      <Grid>
-        <Grid.Column width={15}>
+      <Row justify={"center"} align={"stretch"}>
+        <Col span={1}>
+          <StyledButton>
+            <StyledImage
+              src={minus}
+              alt="minus"
+              onClick={() => {
+                const newValue = (parseInt(slider) - 1).toString();
+                onUpdateValue(id, newValue);
+                setSlider(newValue);
+              }}
+            />
+          </StyledButton>
+        </Col>
+        <Col span={20}>
           {/* 
           <StyledSlider
             type="range"
@@ -56,6 +69,7 @@ export const SliderComp = (props: SliderProps) => {
             }}
           />
           */}
+
           <Slider
             trackStyle={trackStyle}
             handleStyle={handleStyle}
@@ -68,8 +82,21 @@ export const SliderComp = (props: SliderProps) => {
             min={0}
             max={Math.max(max, sifoValue)}
           />
-        </Grid.Column>
-      </Grid>
+        </Col>
+        <Col span={1}>
+          <StyledButton>
+            <StyledImage
+              src={plus}
+              alt="plus"
+              onClick={() => {
+                const newValue = (parseInt(slider) + 1).toString();
+                onUpdateValue(id, newValue);
+                setSlider(newValue);
+              }}
+            />
+          </StyledButton>
+        </Col>
+      </Row>
     </div>
   );
 };
@@ -85,6 +112,10 @@ const handleStyle: React.CSSProperties = {
 
 const upperColor = "#3d8eb1";
 const lowerColor = "#d5e7ee";
+
+const FlexRow = styled.div`
+  display: flex;
+`;
 
 const StyledSlider = styled.input`
   -webkit-appearance: none;
@@ -131,7 +162,7 @@ const StyledButton = styled.button`
   background: none;
   cursor: pointer;
   margin: 0;
-  padding: 0;
+  padding-top: 0.7rem;
 `;
 
 const StyledImage = styled.img`
