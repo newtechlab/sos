@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Grid } from "semantic-ui-react";
 import styled from "styled-components";
-import minus from "./minus.png";
-import plus from "./plus.png";
+import minus from "./actions/remove_circled.svg";
+import plus from "./actions/add_circled.svg";
 import { Col, Row, Slider } from "antd";
 import type { SliderMarks } from "antd/es/slider";
 
@@ -18,7 +18,7 @@ interface SliderProps {
 export const SliderComp = (props: SliderProps) => {
   const { id, onUpdateValue, maxPercent, sifoValue, value, originalValue } =
     props;
-  const [slider, setSlider] = useState<string>("100");
+  const [slider, setSlider] = useState<string>(value.toString());
 
   const marks: SliderMarks = {
     [sifoValue]: {
@@ -27,10 +27,12 @@ export const SliderComp = (props: SliderProps) => {
       },
       label: <>Sifo</>,
     },
+    0: {
+      label: <>0 kr</>,
+    },
   };
   const valueInt = parseInt(value);
 
-  console.log("value: ", value);
   const max = (parseInt(maxPercent) * originalValue) / 100;
 
   return (
@@ -42,7 +44,7 @@ export const SliderComp = (props: SliderProps) => {
               src={minus}
               alt="minus"
               onClick={() => {
-                const newValue = (parseInt(slider) - 1).toString();
+                const newValue = (parseInt(value) - 1).toString();
                 onUpdateValue(id, newValue);
                 setSlider(newValue);
               }}
@@ -89,7 +91,7 @@ export const SliderComp = (props: SliderProps) => {
               src={plus}
               alt="plus"
               onClick={() => {
-                const newValue = (parseInt(slider) + 1).toString();
+                const newValue = (parseInt(value) + 1).toString();
                 onUpdateValue(id, newValue);
                 setSlider(newValue);
               }}
