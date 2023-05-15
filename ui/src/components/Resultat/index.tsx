@@ -1,5 +1,6 @@
 import { Button, Container, Image } from "semantic-ui-react";
 import {
+  Ages,
   Car,
   FamilyMember,
   HouseSituation,
@@ -143,12 +144,14 @@ const createExamplePdf = async () => {
     {
       id: "614d9e84-c616-4721-bda5-c53cda3ecbef",
       name: "Ada",
-      age: "25+",
+      age: Ages.year20_30,
+      gender: "",
     },
     {
       id: "614d9e84-c616-4721-bda5-c53cda4ecbef",
       name: "Fredrik",
-      age: "28",
+      age: Ages.year20_30,
+      gender: "",
     },
   ];
   const userDetails: UserInformation = {
@@ -156,7 +159,7 @@ const createExamplePdf = async () => {
       name: "Ny bolig",
       amount: 4000000,
     },
-    car: Car.NOTOWN,
+    car: { fossil: 0, electric: 0 },
     house: HouseSituation.OWN,
     otherAssets: "",
   };

@@ -40,12 +40,53 @@ import {
 import ResultatBalance from "./components/ResultatBalance";
 import ResultatDebt from "./components/ResultatDebt";
 import { calculateMoneyIn, calculateMoneyOut } from "./data/Ledger";
+import {
+  getCarExpenses,
+  getClothesAndFootwear,
+  getFoodAndBeverages,
+  getFurniture,
+  getGamesAndSubscriptions,
+  getHouseholdItems,
+  getInfantEquipment,
+  getKindergarden,
+  getMediaAndRecreation,
+  getOtherGrocieries,
+  getPersonalCare,
+  getSFO,
+  getStordrift,
+  getTravelExpenses,
+} from "./components/SifoData";
 
 export interface FamilyMember {
   id: string;
   name: string;
-  age: string;
-  sex?: string;
+  age: Ages;
+  gender: string;
+  pregnant?: boolean;
+  student?: boolean;
+  freeSfo?: boolean;
+  sfo?: string;
+  kindergarden?: boolean;
+}
+
+export enum Ages {
+  month0_5 = "0-5 måneder",
+  month6_11 = "6-11 måneder",
+  year1 = "1 år",
+  year2 = "2 år",
+  year3 = "3 år",
+  year4_5 = "4 til 5 år",
+  year6_9 = "6 til 9 år",
+  year10_13 = "10 til 13 år",
+  year14_17 = "14 til 17 år",
+  year18_19 = "18 til 19 år",
+  year20_30 = "20 til 30 år",
+  year31_50 = "31 til 50 år",
+  year51_60 = "51 til 60 år",
+  year61_66 = "61 til 66 år",
+  year67_73 = "67 til 73 år",
+  olderThan74 = "eldre enn 74 år",
+  unknown = "",
 }
 
 export interface Pet {
@@ -118,10 +159,9 @@ export interface Goal {
   amount: number;
 }
 
-export enum Car {
-  OWN = "OWN",
-  NOTOWN = "RENT",
-  UNDEFINED = "UNDEFINED",
+export interface Car {
+  fossil: number;
+  electric: number;
 }
 
 ChartJS.register(
@@ -133,6 +173,110 @@ ChartJS.register(
   Legend
 );
 
+export interface SifoCategories {
+  "Mat og drikke": number;
+  "Klær og sko": number;
+  "Personlig pleie": number;
+  "Lek, sport og mediebruk": number;
+  Reisekostnader: number;
+  Spedbarnsutstyr: number;
+  "Andre daglivarer": number;
+  Husholdningsartikler: number;
+  Møbler: number;
+  "Mediebruk og fritid": number;
+  Bilkostnader: number;
+  Barnehage: number;
+  "AKS/SFO": number;
+}
+
+export const calculateSifoNumbers = (
+  familyMembers: FamilyMember[],
+  userDetails: UserInformation
+) => {
+  /*
+    Food_and_Beverages = "Mat og drikke",
+  Clothing_and_Footwear = "Klær og sko",
+  Personal_Care = "Personlig pleie",
+  Games_and_Subscriptions = "Lek, sport og mediebruk",
+  Travel_Expenses = "Reisekostnader",
+  Infant_Equipment = "Spedbarnsutstyr",
+  Other_Groceries = "Andre daglivarer",
+  Household_Items = "Husholdningsartikler",
+  Furniture = "Møbler",
+  Media_and_Recreation = "Mediebruk og fritid",
+  Car = "Bilkostnader",
+  Kindergarden = "Barnehage",
+  Childcare_other = "AKS/SFO",
+
+  */
+  let sifoNumbers: SifoCategories = {
+    "Mat og drikke": 0,
+    "Klær og sko": 0,
+    "Personlig pleie": 0,
+    "Lek, sport og mediebruk": 0,
+    Reisekostnader: 0,
+    Spedbarnsutstyr: 0,
+    "Andre daglivarer": 0,
+    Husholdningsartikler: 0,
+    Møbler: 0,
+    "Mediebruk og fritid": 0,
+    Bilkostnader: 0,
+    Barnehage: 0,
+    "AKS/SFO": 0,
+  };
+
+  familyMembers.map((member) => {
+    const { age, gender, pregnant, student, sfo, freeSfo } = member;
+    sifoNumbers = {
+      ...sifoNumbers,
+      "Mat og drikke":
+        sifoNumbers["Mat og drikke"] +
+        (getFoodAndBeverages(age, gender, pregnant) as number) *
+          (getStordrift(familyMembers) ? 0.88 : 1),
+      "Klær og sko":
+        sifoNumbers["Klær og sko"] +
+        (getClothesAndFootwear(age, gender) as number),
+      "Personlig pleie":
+        sifoNumbers["Personlig pleie"] +
+        (getPersonalCare(age, gender) as number),
+      "Lek, sport og mediebruk":
+        sifoNumbers["Lek, sport og mediebruk"] +
+        (getGamesAndSubscriptions(age) as number),
+      Reisekostnader:
+        sifoNumbers["Reisekostnader"] +
+        (getTravelExpenses(age, student) as number),
+      Spedbarnsutstyr:
+        sifoNumbers["Spedbarnsutstyr"] +
+        (getInfantEquipment(age, pregnant) as number),
+      "AKS/SFO":
+        sifoNumbers["AKS/SFO"] +
+        (getSFO(freeSfo, userDetails.salary, sfo) as number),
+    };
+  });
+
+  sifoNumbers = {
+    ...sifoNumbers,
+    "Andre daglivarer":
+      sifoNumbers["Andre daglivarer"] +
+      (getOtherGrocieries(familyMembers) as number),
+    Husholdningsartikler:
+      sifoNumbers["Husholdningsartikler"] +
+      (getHouseholdItems(familyMembers) as number),
+    Møbler: sifoNumbers["Møbler"] + (getFurniture(familyMembers) as number),
+    "Mediebruk og fritid":
+      sifoNumbers["Mediebruk og fritid"] +
+      (getMediaAndRecreation(familyMembers) as number),
+    Bilkostnader:
+      sifoNumbers["Bilkostnader"] +
+      (getCarExpenses(userDetails.car, familyMembers) as number),
+    Barnehage:
+      sifoNumbers["Barnehage"] +
+      (getKindergarden(familyMembers, userDetails.salary) as number),
+  };
+
+  return sifoNumbers;
+};
+
 export enum HouseSituation {
   OWN = "OWN",
   RENT = "RENT",
@@ -143,12 +287,13 @@ export interface UserInformation {
   goal: Goal;
   car: Car;
   house: HouseSituation;
+  salary?: number;
   otherAssets: string;
 }
 
 export const InitialUserInfo: UserInformation = {
   goal: { name: "", amount: 0 },
-  car: Car.UNDEFINED,
+  car: { fossil: 0, electric: 0 },
   house: HouseSituation.UNDEFINED,
   otherAssets: "",
 };
@@ -212,11 +357,11 @@ function App() {
     )
   );
 
-  const purpleMonkeyDishWasher = (familyMember: FamilyMember) => {
+  const addFamilyMember = (familyMember: FamilyMember) => {
     setFamilyMembers(familyMembers.concat(familyMember));
   };
 
-  const editPurpleMonkeyDishWasher = (familyMember: FamilyMember) => {
+  const editFamilyMember = (familyMember: FamilyMember) => {
     setFamilyMembers(
       familyMembers.map((item) =>
         item.id === familyMember.id ? familyMember : item
@@ -395,8 +540,8 @@ function App() {
                   setUserDetails={setUserDetails}
                   setAdjustments={setAdjustments}
                   familyMembers={familyMembers}
-                  addFamilyMember={purpleMonkeyDishWasher}
-                  editFamilyMember={editPurpleMonkeyDishWasher}
+                  addFamilyMember={addFamilyMember}
+                  editFamilyMember={editFamilyMember}
                   activeStep={activeStep}
                   steps={steps}
                   completeStep={completeStep}
@@ -459,6 +604,7 @@ function App() {
                   adjustments={adjustments}
                   setAdjustments={setAdjustments}
                   goToStep={goToStep}
+                  sifoNumbers={calculateSifoNumbers(familyMembers, userDetails)}
                 />
               }
             />
@@ -525,3 +671,6 @@ const StyledBodyDiv = styled.div`
 `;
 
 export default App;
+function uuidv4(): string {
+  throw new Error("Function not implemented.");
+}
