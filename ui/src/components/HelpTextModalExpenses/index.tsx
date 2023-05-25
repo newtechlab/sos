@@ -15,7 +15,7 @@ interface AddHelpTextModalProps {
   setOpen: (_: boolean) => void;
 }
 
-export default function OpenHelpTextModal(props: AddHelpTextModalProps) {
+export default function HelpTextModalExpenses(props: AddHelpTextModalProps) {
   const { open, setOpen } = props;
   const transition = {
     animation: "fly left",
