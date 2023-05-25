@@ -114,8 +114,8 @@ export default function MoneyOut(props: MoneyOutProps) {
       name: "Spedbarnsutstyr",
       category: TransactionCategory.Infant_Equipment,
     });
-    items.set("Andre daglivarer", {
-      name: "Andre daglivarer",
+    items.set("Andre dagligvarer", {
+      name: "Andre dagligvarer",
       category: TransactionCategory.Other_Groceries,
     });
     items.set("Husholdningsartikler", {
@@ -538,6 +538,6 @@ const StyledDiv = styled.div`
   position: relative;
 `;
 
-const StyledSpace = styled.p`
+const StyledSpace = styled.div`
   padding-bottom: 2em;
 `;

@@ -36,6 +36,7 @@ import ComparisonGraph from "../ComparisonGraph";
 import BackForwardControls from "../BackForwardControls";
 import ResultSubSectionTab from "../ResultSubSectionTab";
 import { StepsInitialState } from "../../data/StepsInitialState";
+import HelpTextModalSifo from "../HelpTextModalSifo";
 
 interface ResultatInteractProps {
   ledger: Array<LedgerRow>;
@@ -75,6 +76,7 @@ export default function ResultatInteract(props: ResultatInteractProps) {
     goToStep,
     sifoNumbers,
   } = props;
+  const [addHelpTextModalOpen, OpenHelpTextModal] = useState<boolean>(false);
 
   const computeInOutPercent = () => {
     const adjustedLedger = sortedLedger.map((row) => {
@@ -156,34 +158,40 @@ export default function ResultatInteract(props: ResultatInteractProps) {
             </StyledGraphContainer>
 
             <PaddedSection>
-              {moneyOut.length > 0 ? (
-                <ResetDialsDiv>
-                  <Button
-                    circular
-                    basic
-                    onClick={() =>
-                      setAdjustments(
-                        new Map<LedgerRowId, AdjustmentAmountPercent>()
-                      )
-                    }
-                  >
-                    <Icon name="undo" />
-                    Tilbakestill
-                  </Button>
-                </ResetDialsDiv>
-              ) : (
-                <></>
-              )}
-
               <StyledRow>
                 <StyledColumn>
                   <h2>Løpende utgifter</h2>
+
                   <StyledParagraph>
-                    Under kan du se dine månedlige utgifter. Du kan bruke
-                    tabellen til å tilpasse den økonomiske balansen for å sette
-                    et mål for neste måneds pengebruk. Prøve å justere utgiftene
-                    til et beløp som gir deg rom til å spare penger.
+                    Under kan du se dine månedlige utgifter sammen med estimert
+                    SIFO referansebudsjett. Du kan bruke tabellen til å tilpasse
+                    den økonomiske balansen for å sette et mål for neste måneds
+                    pengebruk. Prøv å justere utgiftene til et beløp som gir deg
+                    rom til å spare penger.
+                    <HelpTextModalSifo
+                      open={addHelpTextModalOpen}
+                      setOpen={OpenHelpTextModal}
+                    />
                   </StyledParagraph>
+                  {moneyOut.length > 0 ? (
+                    <ResetDialsDiv>
+                      <Button
+                        circular
+                        basic
+                        onClick={() =>
+                          setAdjustments(
+                            new Map<LedgerRowId, AdjustmentAmountPercent>()
+                          )
+                        }
+                      >
+                        <Icon name="undo" />
+                        Tilbakestill
+                      </Button>
+                    </ResetDialsDiv>
+                  ) : (
+                    <></>
+                  )}
+
                   <MoneyOutList
                     moneyOut={moneyOut}
                     onUpdateValue={onUpdateSlider}
@@ -221,6 +229,7 @@ const ResetDialsDiv = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-bottom: 1.5rem;
 `;
 
 const CenteredContentSection = styled.div`
@@ -257,5 +266,5 @@ const StyledGraphContainer = styled.div`
 `;
 
 const StyledParagraph = styled.p`
-  margin-bottom: 3em;
+  margin-bottom: 2em;
 `;
