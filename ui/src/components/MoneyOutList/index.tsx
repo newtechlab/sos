@@ -26,8 +26,8 @@ const getSifoValue = (accountTo: string, sifoNumbers: SifoCategories) => {
     return sifoNumbers["Reisekostnader"];
   } else if (accountTo === "Spedbarnsutstyr") {
     return sifoNumbers["Spedbarnsutstyr"];
-  } else if (accountTo === "Andre daglivarer") {
-    return sifoNumbers["Andre daglivarer"];
+  } else if (accountTo === "Andre dagligvarer") {
+    return sifoNumbers["Andre dagligvarer"];
   } else if (accountTo === "Husholdningsartikler") {
     return sifoNumbers["Husholdningsartikler"];
   } else if (accountTo === "Møbler") {

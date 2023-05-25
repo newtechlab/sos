@@ -118,7 +118,7 @@ export enum TransactionCategory {
   Games_and_Subscriptions = "Lek, sport og mediebruk",
   Travel_Expenses = "Reisekostnader",
   Infant_Equipment = "Spedbarnsutstyr",
-  Other_Groceries = "Andre daglivarer",
+  Other_Groceries = "Andre dagligvarer",
   Household_Items = "Husholdningsartikler",
   Furniture = "Møbler",
   Media_and_Recreation = "Mediebruk og fritid",
@@ -180,7 +180,7 @@ export interface SifoCategories {
   "Lek, sport og mediebruk": number;
   Reisekostnader: number;
   Spedbarnsutstyr: number;
-  "Andre daglivarer": number;
+  "Andre dagligvarer": number;
   Husholdningsartikler: number;
   Møbler: number;
   "Mediebruk og fritid": number;
@@ -200,7 +200,7 @@ export const calculateSifoNumbers = (
   Games_and_Subscriptions = "Lek, sport og mediebruk",
   Travel_Expenses = "Reisekostnader",
   Infant_Equipment = "Spedbarnsutstyr",
-  Other_Groceries = "Andre daglivarer",
+  Other_Groceries = "Andre dagligvarer",
   Household_Items = "Husholdningsartikler",
   Furniture = "Møbler",
   Media_and_Recreation = "Mediebruk og fritid",
@@ -216,7 +216,7 @@ export const calculateSifoNumbers = (
     "Lek, sport og mediebruk": 0,
     Reisekostnader: 0,
     Spedbarnsutstyr: 0,
-    "Andre daglivarer": 0,
+    "Andre dagligvarer": 0,
     Husholdningsartikler: 0,
     Møbler: 0,
     "Mediebruk og fritid": 0,
@@ -256,8 +256,8 @@ export const calculateSifoNumbers = (
 
   sifoNumbers = {
     ...sifoNumbers,
-    "Andre daglivarer":
-      sifoNumbers["Andre daglivarer"] +
+    "Andre dagligvarer":
+      sifoNumbers["Andre dagligvarer"] +
       (getOtherGrocieries(familyMembers) as number),
     Husholdningsartikler:
       sifoNumbers["Husholdningsartikler"] +

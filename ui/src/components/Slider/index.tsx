@@ -25,7 +25,7 @@ export const SliderComp = (props: SliderProps) => {
       style: {
         color: "#000000",
       },
-      label: <>Sifo</>,
+      label: <>SIFO</>,
     },
     0: {
       label: <>0 kr</>,
@@ -73,7 +73,9 @@ export const SliderComp = (props: SliderProps) => {
           */}
 
           <Slider
-            trackStyle={trackStyle}
+            trackStyle={
+              parseInt(value) <= sifoValue ? trackStyleGreen : trackStyleRed
+            }
             handleStyle={handleStyle}
             marks={marks}
             value={valueInt}
@@ -103,8 +105,12 @@ export const SliderComp = (props: SliderProps) => {
   );
 };
 
-const trackStyle: React.CSSProperties = {
-  backgroundColor: "#3D8EB1",
+const trackStyleRed: React.CSSProperties = {
+  backgroundColor: "red",
+};
+
+const trackStyleGreen: React.CSSProperties = {
+  backgroundColor: "green",
 };
 
 const handleStyle: React.CSSProperties = {

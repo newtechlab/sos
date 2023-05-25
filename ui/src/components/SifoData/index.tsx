@@ -42,45 +42,45 @@ export const getFoodAndBeverages = (
   pregnant?: boolean
 ) => {
   if (pregnant) {
-    return 3980;
+    return 4270;
   }
   const dataW = [
     { key: Ages.month0_5, value: 0 },
-    { key: Ages.month6_11, value: 1090 },
-    { key: Ages.year1, value: 1370 },
-    { key: Ages.year2, value: 1870 },
-    { key: Ages.year3, value: 1870 },
-    { key: Ages.year4_5, value: 1870 },
-    { key: Ages.year6_9, value: 2390 },
-    { key: Ages.year10_13, value: 2870 },
-    { key: Ages.year14_17, value: 3310 },
+    { key: Ages.month6_11, value: 1080 },
+    { key: Ages.year1, value: 1480 },
+    { key: Ages.year2, value: 1970 },
+    { key: Ages.year3, value: 1970 },
+    { key: Ages.year4_5, value: 1970 },
+    { key: Ages.year6_9, value: 2530 },
+    { key: Ages.year10_13, value: 3060 },
+    { key: Ages.year14_17, value: 3480 },
     { key: Ages.year18_19, value: 3570 },
     { key: Ages.year20_30, value: 3570 },
-    { key: Ages.year31_50, value: 3370 },
-    { key: Ages.year51_60, value: 3370 },
-    { key: Ages.year61_66, value: 3100 },
-    { key: Ages.year67_73, value: 3100 },
-    { key: Ages.olderThan74, value: 2800 },
+    { key: Ages.year31_50, value: 3620 },
+    { key: Ages.year51_60, value: 3620 },
+    { key: Ages.year61_66, value: 3330 },
+    { key: Ages.year67_73, value: 3330 },
+    { key: Ages.olderThan74, value: 3010 },
     { key: Ages.unknown, value: 0 },
   ];
 
   const dataM = [
     { key: Ages.month0_5, value: 0 },
-    { key: Ages.month6_11, value: 1090 },
-    { key: Ages.year1, value: 1370 },
-    { key: Ages.year2, value: 1870 },
-    { key: Ages.year3, value: 1870 },
-    { key: Ages.year4_5, value: 1870 },
-    { key: Ages.year6_9, value: 2390 },
-    { key: Ages.year10_13, value: 2990 },
-    { key: Ages.year14_17, value: 3780 },
-    { key: Ages.year18_19, value: 4240 },
-    { key: Ages.year20_30, value: 4240 },
-    { key: Ages.year31_50, value: 3980 },
-    { key: Ages.year51_60, value: 3980 },
-    { key: Ages.year61_66, value: 3500 },
-    { key: Ages.year67_73, value: 3500 },
-    { key: Ages.olderThan74, value: 3250 },
+    { key: Ages.month6_11, value: 1080 },
+    { key: Ages.year1, value: 1480 },
+    { key: Ages.year2, value: 1970 },
+    { key: Ages.year3, value: 1970 },
+    { key: Ages.year4_5, value: 1970 },
+    { key: Ages.year6_9, value: 2530 },
+    { key: Ages.year10_13, value: 3140 },
+    { key: Ages.year14_17, value: 3970 },
+    { key: Ages.year18_19, value: 4540 },
+    { key: Ages.year20_30, value: 4540 },
+    { key: Ages.year31_50, value: 4270 },
+    { key: Ages.year51_60, value: 4270 },
+    { key: Ages.year61_66, value: 3760 },
+    { key: Ages.year67_73, value: 3760 },
+    { key: Ages.olderThan74, value: 3490 },
     { key: Ages.unknown, value: 0 },
   ];
 
@@ -93,42 +93,42 @@ export const getFoodAndBeverages = (
 
 export const getClothesAndFootwear = (age: Ages, gender: string) => {
   const dataW = [
-    { key: Ages.month0_5, value: 420 },
-    { key: Ages.month6_11, value: 420 },
+    { key: Ages.month0_5, value: 430 },
+    { key: Ages.month6_11, value: 430 },
     { key: Ages.year1, value: 500 },
-    { key: Ages.year2, value: 640 },
-    { key: Ages.year3, value: 640 },
-    { key: Ages.year4_5, value: 640 },
-    { key: Ages.year6_9, value: 690 },
-    { key: Ages.year10_13, value: 650 },
-    { key: Ages.year14_17, value: 900 },
-    { key: Ages.year18_19, value: 950 },
-    { key: Ages.year20_30, value: 950 },
-    { key: Ages.year31_50, value: 950 },
-    { key: Ages.year51_60, value: 950 },
-    { key: Ages.year61_66, value: 950 },
-    { key: Ages.year67_73, value: 950 },
-    { key: Ages.olderThan74, value: 950 },
+    { key: Ages.year2, value: 650 },
+    { key: Ages.year3, value: 650 },
+    { key: Ages.year4_5, value: 650 },
+    { key: Ages.year6_9, value: 700 },
+    { key: Ages.year10_13, value: 460 },
+    { key: Ages.year14_17, value: 920 },
+    { key: Ages.year18_19, value: 970 },
+    { key: Ages.year20_30, value: 970 },
+    { key: Ages.year31_50, value: 970 },
+    { key: Ages.year51_60, value: 970 },
+    { key: Ages.year61_66, value: 970 },
+    { key: Ages.year67_73, value: 970 },
+    { key: Ages.olderThan74, value: 970 },
     { key: Ages.unknown, value: 0 },
   ];
 
   const dataM = [
-    { key: Ages.month0_5, value: 420 },
-    { key: Ages.month6_11, value: 420 },
+    { key: Ages.month0_5, value: 430 },
+    { key: Ages.month6_11, value: 430 },
     { key: Ages.year1, value: 500 },
-    { key: Ages.year2, value: 640 },
-    { key: Ages.year3, value: 640 },
-    { key: Ages.year4_5, value: 640 },
-    { key: Ages.year6_9, value: 690 },
-    { key: Ages.year10_13, value: 630 },
-    { key: Ages.year14_17, value: 760 },
-    { key: Ages.year18_19, value: 880 },
-    { key: Ages.year20_30, value: 880 },
-    { key: Ages.year31_50, value: 880 },
-    { key: Ages.year51_60, value: 880 },
-    { key: Ages.year61_66, value: 880 },
-    { key: Ages.year67_73, value: 880 },
-    { key: Ages.olderThan74, value: 880 },
+    { key: Ages.year2, value: 650 },
+    { key: Ages.year3, value: 650 },
+    { key: Ages.year4_5, value: 650 },
+    { key: Ages.year6_9, value: 700 },
+    { key: Ages.year10_13, value: 640 },
+    { key: Ages.year14_17, value: 770 },
+    { key: Ages.year18_19, value: 900 },
+    { key: Ages.year20_30, value: 900 },
+    { key: Ages.year31_50, value: 900 },
+    { key: Ages.year51_60, value: 900 },
+    { key: Ages.year61_66, value: 900 },
+    { key: Ages.year67_73, value: 900 },
+    { key: Ages.olderThan74, value: 900 },
     { key: Ages.unknown, value: 0 },
   ];
 
@@ -141,42 +141,42 @@ export const getClothesAndFootwear = (age: Ages, gender: string) => {
 
 export const getPersonalCare = (age: Ages, gender: string) => {
   const dataW = [
-    { key: Ages.month0_5, value: 590 },
-    { key: Ages.month6_11, value: 590 },
-    { key: Ages.year1, value: 510 },
-    { key: Ages.year2, value: 510 },
-    { key: Ages.year3, value: 310 },
-    { key: Ages.year4_5, value: 200 },
-    { key: Ages.year6_9, value: 230 },
-    { key: Ages.year10_13, value: 430 },
-    { key: Ages.year14_17, value: 590 },
-    { key: Ages.year18_19, value: 910 },
-    { key: Ages.year20_30, value: 910 },
-    { key: Ages.year31_50, value: 910 },
-    { key: Ages.year51_60, value: 870 },
-    { key: Ages.year61_66, value: 870 },
-    { key: Ages.year67_73, value: 870 },
-    { key: Ages.olderThan74, value: 870 },
+    { key: Ages.month0_5, value: 470 },
+    { key: Ages.month6_11, value: 470 },
+    { key: Ages.year1, value: 560 },
+    { key: Ages.year2, value: 560 },
+    { key: Ages.year3, value: 330 },
+    { key: Ages.year4_5, value: 210 },
+    { key: Ages.year6_9, value: 240 },
+    { key: Ages.year10_13, value: 460 },
+    { key: Ages.year14_17, value: 560 },
+    { key: Ages.year18_19, value: 920 },
+    { key: Ages.year20_30, value: 920 },
+    { key: Ages.year31_50, value: 920 },
+    { key: Ages.year51_60, value: 880 },
+    { key: Ages.year61_66, value: 880 },
+    { key: Ages.year67_73, value: 880 },
+    { key: Ages.olderThan74, value: 880 },
     { key: Ages.unknown, value: 0 },
   ];
 
   const dataM = [
-    { key: Ages.month0_5, value: 590 },
-    { key: Ages.month6_11, value: 590 },
-    { key: Ages.year1, value: 510 },
-    { key: Ages.year2, value: 510 },
-    { key: Ages.year3, value: 310 },
-    { key: Ages.year4_5, value: 200 },
-    { key: Ages.year6_9, value: 230 },
+    { key: Ages.month0_5, value: 470 },
+    { key: Ages.month6_11, value: 470 },
+    { key: Ages.year1, value: 560 },
+    { key: Ages.year2, value: 560 },
+    { key: Ages.year3, value: 330 },
+    { key: Ages.year4_5, value: 210 },
+    { key: Ages.year6_9, value: 240 },
     { key: Ages.year10_13, value: 340 },
-    { key: Ages.year14_17, value: 460 },
-    { key: Ages.year18_19, value: 720 },
-    { key: Ages.year20_30, value: 720 },
-    { key: Ages.year31_50, value: 720 },
-    { key: Ages.year51_60, value: 720 },
-    { key: Ages.year61_66, value: 720 },
-    { key: Ages.year67_73, value: 720 },
-    { key: Ages.olderThan74, value: 720 },
+    { key: Ages.year14_17, value: 450 },
+    { key: Ages.year18_19, value: 740 },
+    { key: Ages.year20_30, value: 740 },
+    { key: Ages.year31_50, value: 740 },
+    { key: Ages.year51_60, value: 740 },
+    { key: Ages.year61_66, value: 740 },
+    { key: Ages.year67_73, value: 740 },
+    { key: Ages.olderThan74, value: 740 },
     { key: Ages.unknown, value: 0 },
   ];
 
@@ -189,22 +189,22 @@ export const getPersonalCare = (age: Ages, gender: string) => {
 
 export const getGamesAndSubscriptions = (age: Ages) => {
   const data = [
-    { key: Ages.month0_5, value: 150 },
-    { key: Ages.month6_11, value: 150 },
-    { key: Ages.year1, value: 410 },
-    { key: Ages.year2, value: 410 },
-    { key: Ages.year3, value: 680 },
-    { key: Ages.year4_5, value: 680 },
-    { key: Ages.year6_9, value: 800 },
-    { key: Ages.year10_13, value: 1300 },
-    { key: Ages.year14_17, value: 1450 },
-    { key: Ages.year18_19, value: 1590 },
-    { key: Ages.year20_30, value: 1590 },
-    { key: Ages.year31_50, value: 1590 },
-    { key: Ages.year51_60, value: 1590 },
-    { key: Ages.year61_66, value: 1590 },
-    { key: Ages.year67_73, value: 1590 },
-    { key: Ages.olderThan74, value: 1590 },
+    { key: Ages.month0_5, value: 160 },
+    { key: Ages.month6_11, value: 160 },
+    { key: Ages.year1, value: 430 },
+    { key: Ages.year2, value: 430 },
+    { key: Ages.year3, value: 710 },
+    { key: Ages.year4_5, value: 710 },
+    { key: Ages.year6_9, value: 830 },
+    { key: Ages.year10_13, value: 1350 },
+    { key: Ages.year14_17, value: 1500 },
+    { key: Ages.year18_19, value: 1650 },
+    { key: Ages.year20_30, value: 1650 },
+    { key: Ages.year31_50, value: 1650 },
+    { key: Ages.year51_60, value: 1650 },
+    { key: Ages.year61_66, value: 1650 },
+    { key: Ages.year67_73, value: 1650 },
+    { key: Ages.olderThan74, value: 1650 },
     { key: Ages.unknown, value: 0 },
   ];
 
@@ -213,7 +213,7 @@ export const getGamesAndSubscriptions = (age: Ages) => {
 
 export const getTravelExpenses = (age: Ages, student?: boolean) => {
   if (student) {
-    return 488;
+    return 511;
   }
   const data = [
     { key: Ages.month0_5, value: 0 },
@@ -222,16 +222,16 @@ export const getTravelExpenses = (age: Ages, student?: boolean) => {
     { key: Ages.year2, value: 0 },
     { key: Ages.year3, value: 0 },
     { key: Ages.year4_5, value: 0 },
-    { key: Ages.year6_9, value: 407 },
-    { key: Ages.year10_13, value: 407 },
-    { key: Ages.year14_17, value: 407 },
-    { key: Ages.year18_19, value: 407 },
-    { key: Ages.year20_30, value: 814 },
-    { key: Ages.year31_50, value: 814 },
-    { key: Ages.year51_60, value: 814 },
-    { key: Ages.year61_66, value: 814 },
-    { key: Ages.year67_73, value: 407 },
-    { key: Ages.olderThan74, value: 407 },
+    { key: Ages.year6_9, value: 427 },
+    { key: Ages.year10_13, value: 427 },
+    { key: Ages.year14_17, value: 427 },
+    { key: Ages.year18_19, value: 427 },
+    { key: Ages.year20_30, value: 853 },
+    { key: Ages.year31_50, value: 853 },
+    { key: Ages.year51_60, value: 853 },
+    { key: Ages.year61_66, value: 853 },
+    { key: Ages.year67_73, value: 427 },
+    { key: Ages.olderThan74, value: 427 },
     { key: Ages.unknown, value: 0 },
   ];
 
@@ -240,11 +240,11 @@ export const getTravelExpenses = (age: Ages, student?: boolean) => {
 
 export const getInfantEquipment = (age: Ages, pregnant?: boolean) => {
   if (pregnant) {
-    return 3390;
+    return 3880;
   }
   const data = [
-    { key: Ages.month0_5, value: 420 },
-    { key: Ages.month6_11, value: 420 },
+    { key: Ages.month0_5, value: 520 },
+    { key: Ages.month6_11, value: 520 },
     { key: Ages.year1, value: 0 },
     { key: Ages.year2, value: 0 },
     { key: Ages.year3, value: 0 },
@@ -267,32 +267,32 @@ export const getInfantEquipment = (age: Ages, pregnant?: boolean) => {
 
 export const getOtherGrocieries = (familyMembers: FamilyMember[]) => {
   if (familyMembers.length > 7) {
-    return 1070;
+    return 950;
   }
   const data = [
-    { key: 1, value: 450 },
-    { key: 2, value: 490 },
-    { key: 3, value: 620 },
-    { key: 4, value: 760 },
-    { key: 5, value: 890 },
-    { key: 6, value: 990 },
-    { key: 7, value: 1070 },
+    { key: 1, value: 380 },
+    { key: 2, value: 430 },
+    { key: 3, value: 570 },
+    { key: 4, value: 680 },
+    { key: 5, value: 780 },
+    { key: 6, value: 880 },
+    { key: 7, value: 950 },
   ];
   return data.find((item) => item.key === familyMembers.length)?.value;
 };
 
 export const getHouseholdItems = (familyMembers: FamilyMember[]) => {
   if (nonToddlerCount(familyMembers) > 7) {
-    return 870;
+    return 1060;
   }
   const data = [
-    { key: 1, value: 410 },
-    { key: 2, value: 440 },
-    { key: 3, value: 530 },
-    { key: 4, value: 680 },
-    { key: 5, value: 750 },
-    { key: 6, value: 840 },
-    { key: 7, value: 870 },
+    { key: 1, value: 550 },
+    { key: 2, value: 600 },
+    { key: 3, value: 670 },
+    { key: 4, value: 860 },
+    { key: 5, value: 930 },
+    { key: 6, value: 1000 },
+    { key: 7, value: 1060 },
   ];
   return data.find((item) => item.key === nonToddlerCount(familyMembers))
     ?.value;
@@ -300,16 +300,16 @@ export const getHouseholdItems = (familyMembers: FamilyMember[]) => {
 
 export const getFurniture = (familyMembers: FamilyMember[]) => {
   if (nonToddlerCount(familyMembers) > 7) {
-    return 1390;
+    return 1460;
   }
   const data = [
-    { key: 1, value: 500 },
-    { key: 2, value: 550 },
-    { key: 3, value: 670 },
-    { key: 4, value: 870 },
-    { key: 5, value: 1020 },
-    { key: 6, value: 1220 },
-    { key: 7, value: 1390 },
+    { key: 1, value: 520 },
+    { key: 2, value: 580 },
+    { key: 3, value: 700 },
+    { key: 4, value: 910 },
+    { key: 5, value: 1070 },
+    { key: 6, value: 1270 },
+    { key: 7, value: 1460 },
   ];
   return data.find((item) => item.key === nonToddlerCount(familyMembers))
     ?.value;
@@ -317,48 +317,53 @@ export const getFurniture = (familyMembers: FamilyMember[]) => {
 
 export const getMediaAndRecreation = (familyMembers: FamilyMember[]) => {
   if (familyMembers.length > 7) {
-    return 2320;
+    return 2410;
   }
   const data = [
-    { key: 1, value: 2090 },
-    { key: 2, value: 2090 },
-    { key: 3, value: 2090 },
-    { key: 4, value: 2210 },
-    { key: 5, value: 2210 },
-    { key: 6, value: 2320 },
-    { key: 7, value: 2320 },
+    { key: 1, value: 2160 },
+    { key: 2, value: 2160 },
+    { key: 3, value: 2160 },
+    { key: 4, value: 2300 },
+    { key: 5, value: 2300 },
+    { key: 6, value: 2410 },
+    { key: 7, value: 2410 },
   ];
   return data.find((item) => item.key === familyMembers.length)?.value;
 };
 
 export const getCarExpenses = (car: Car, familyMembers: FamilyMember[]) => {
+  let sum = 0;
   if (car.fossil) {
     if (familyMembers.length > 4) {
       const data = [
-        { key: 1, value: 4330 },
-        { key: 2, value: 7297 },
-        { key: 3, value: 10264 },
-        { key: 4, value: 13231 },
+        { key: 1, value: 4638 },
+        { key: 2, value: 7713 },
+        { key: 3, value: 10788 },
+        { key: 4, value: 13863 },
       ];
-      return data.find((item) => item.key === car.fossil)?.value;
+      sum =
+        sum + (data.find((item) => item.key === car.fossil)?.value as number);
     } else {
       const data = [
-        { key: 1, value: 2976 },
-        { key: 2, value: 5934 },
-        { key: 3, value: 8901 },
-        { key: 4, value: 11868 },
+        { key: 1, value: 3075 },
+        { key: 2, value: 6150 },
+        { key: 3, value: 9225 },
+        { key: 4, value: 12300 },
       ];
-      return data.find((item) => item.key === car.fossil)?.value;
+      sum =
+        sum + (data.find((item) => item.key === car.fossil)?.value as number);
     }
-  } else {
+  }
+  if (car.electric) {
     if (familyMembers.length > 4) {
       const data = [
-        { key: 1, value: 2550 },
-        { key: 2, value: 4525 },
-        { key: 3, value: 6500 },
-        { key: 4, value: 8475 },
+        { key: 1, value: 2700 },
+        { key: 2, value: 4675 },
+        { key: 3, value: 6650 },
+        { key: 4, value: 8625 },
       ];
-      return data.find((item) => item.key === car.electric)?.value;
+      sum =
+        sum + (data.find((item) => item.key === car.electric)?.value as number);
     } else {
       const data = [
         { key: 1, value: 1975 },
@@ -366,44 +371,98 @@ export const getCarExpenses = (car: Car, familyMembers: FamilyMember[]) => {
         { key: 3, value: 5925 },
         { key: 4, value: 7900 },
       ];
-      return data.find((item) => item.key === car.electric)?.value;
+      sum =
+        sum + (data.find((item) => item.key === car.electric)?.value as number);
     }
   }
-  return 0;
+  return sum;
 };
 
 export const getKindergarden = (
   familyMembers: FamilyMember[],
   salary?: number
 ) => {
-  const data = [
-    { key: 0, value: 0 },
-    { key: 1, value: 3050 },
-    { key: 2, value: 2135 + 3050 },
-    { key: 3, value: 1525 + 2135 + 3050 },
-  ];
+  let sum = 0;
   let count = 0;
-  familyMembers.map((item) => {
-    if (item.kindergarden) {
-      count = count + 1;
+  let youngerChild = false;
+  const ageOrder = Object.values(Ages);
+  const sortedFamilyMembers = familyMembers
+    .filter((item) => item.kindergarden === true)
+    .sort((a, b) => ageOrder.indexOf(b.age) - ageOrder.indexOf(a.age));
+
+  sortedFamilyMembers.map((item) => {
+    count = count + 1;
+    if (item.age === Ages.year1) {
+      youngerChild = true;
+    }
+    if (salary) {
+      const data = [
+        { key: 0, value: 0 },
+        { key: 1, value: 3000 },
+        { key: 2, value: 2100 },
+        { key: 3, value: 1500 },
+      ];
+
+      if (salary > 598825) {
+        if (count >= 3) {
+          sum = sum + 1500;
+        } else {
+          sum =
+            sum + (data.find((item) => item.key === count)?.value as number);
+        }
+      } else if (salary >= 550000) {
+        const dataFreeCore = [
+          { key: 0, value: 0 },
+          { key: 1, value: 1666 },
+          { key: 2, value: 1166 },
+          { key: 3, value: 833 },
+        ];
+        if (youngerChild) {
+          sum =
+            count < 4
+              ? sum + (data.find((item) => item.key === count)?.value as number)
+              : sum + 833;
+        } else if (count > 3) {
+          sum = sum + 833;
+        } else {
+          sum =
+            sum +
+            (dataFreeCore.find((item) => item.key === count)?.value as number);
+        }
+      } else {
+        const dataLowIncome = [
+          { key: 0, value: 0 },
+          { key: 1, value: (salary * 0.06) / 11 },
+          { key: 2, value: ((salary * 0.06) / 11) * 0.7 },
+          { key: 3, value: ((salary * 0.06) / 11) * 0.5 },
+        ];
+        if (youngerChild) {
+          sum =
+            count < 4
+              ? sum +
+                (dataLowIncome.find((item) => item.key === count)
+                  ?.value as number)
+              : sum + ((salary * 0.06) / 11) * 0.5;
+        } else if (count > 3) {
+          sum =
+            sum +
+            ((salary * 0.06) / 11) * 0.5 -
+            ((salary * 0.06) / 11) * 0.5 * 0.4434713376;
+        } else {
+          sum =
+            sum +
+            (dataLowIncome.find((item) => item.key === count)
+              ?.value as number) -
+            (dataLowIncome.find((item) => item.key === count)
+              ?.value as number) *
+              0.4434713376;
+        }
+      }
     }
   });
-  if (salary) {
-    if (salary > 559167) {
-      if (count > 3) {
-        return (
-          (data.find((item) => item.key === 3)?.value as number) +
-          1525 * (count - 3)
-        );
-      } else {
-        return data.find((item) => item.key === count)?.value;
-      }
-    } else {
-      return count * salary * 0.06;
-    }
-  }
+  return sum;
 };
-// , furniture, household item,
+// , lek og mediebruk (20kr feil), bilkostnader,
 
 export const getSFO = (
   freeSfo?: boolean,
@@ -416,25 +475,25 @@ export const getSFO = (
   if (salary) {
     if (salary >= 445921) {
       if (freeSfo) {
-        return 1069;
+        return 1180;
       } else if (sfo === "Heltid") {
-        return 3299;
+        return 3421;
       } else if (sfo === "Deltid") {
-        return 2230;
+        return 2313;
       }
-    } else if (salary <= 250830) {
+    } else if (salary <= 250832) {
       if (freeSfo) {
-        return 252;
+        return 261;
       } else if (sfo === "Heltid") {
-        return 704;
+        return 730;
       } else if (sfo === "Deltid") {
         return 452;
       }
     } else {
       if (freeSfo) {
-        return 462;
+        return 479;
       } else if (sfo === "Heltid") {
-        return 1294;
+        return 1342;
       } else if (sfo === "Deltid") {
         return 832;
       }
