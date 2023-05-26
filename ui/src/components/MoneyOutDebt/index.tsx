@@ -65,7 +65,8 @@ export default function MoneyOut(props: MoneyOutProps) {
   // const [graphData, setGraphData] = useState<ChartData<"bar", number[], unknown>>(graphDataInitialState);
   const [addHelpTextDebtModalOpen, OpenHelpTextDebtModal] =
     useState<boolean>(false);
-
+  const [addHelpTextExpensesModalOpen, OpenHelpTextExpensesModal] =
+    useState<boolean>(false);
   const [dropDownItemsDebt, setDropDownItemsDebt] = useState<DropDownItem[]>(
     []
   );
@@ -397,8 +398,8 @@ export default function MoneyOut(props: MoneyOutProps) {
                 <strong>Utgifter</strong>
               </h2>
               <HelpTextModalExpenses
-                open={addHelpTextDebtModalOpen}
-                setOpen={OpenHelpTextDebtModal}
+                open={addHelpTextExpensesModalOpen}
+                setOpen={OpenHelpTextExpensesModal}
               />
             </StyledSpace>
           </StyledDiv>
