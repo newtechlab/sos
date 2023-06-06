@@ -52,9 +52,9 @@ export default function OpenHelpTextModal(props: AddHelpTextModalProps) {
               <Header>Usikker på din egen gjeldssituasjon?</Header>
               <StyledParagraph>
                 Under finner du de vanligste tjenestene for å finne ut hvilken
-                gjeld du har. Husk å sjekke med din egen bank også.
+                gjeld du har. En god start er også å se etter regninger i
+                posten. Husk å sjekke med din egen bank også.
               </StyledParagraph>
-
               <StyledParagraph>
                 Gjeld er penger du skylder som du har lånt, f.eks. huslån,
                 billån eller private lån. Noen glemmer at kredittkortgjeld også
@@ -66,39 +66,47 @@ export default function OpenHelpTextModal(props: AddHelpTextModalProps) {
                 <StyledParagraph>
                   Dersom du ikke har oversikt over din gjeld kan du bruke listen
                   under for å logge deg på de forskjellige tjenestene for å få
-                  oversikt. NB. Krever BankID
+                  oversikt. NB! Krever BankID.
                 </StyledParagraph>
                 <StyledParagraph>
                   <StyledImage src={BankID} wrapped ui={false} />
                 </StyledParagraph>
               </StyledGaryBox>
-
-              <StyledLinkButton
-                onClick={() => window.open("https://www.altinn.no")}
-              >
-                Altinn
-                <IconDiv>
-                  <Icon name="external" />
-                </IconDiv>
-              </StyledLinkButton>
-
-              <StyledLinkButton
-                onClick={() => window.open("https://www.sismo.no/en/pub/")}
-              >
-                Statens innkrevingssentral
-                <IconDiv>
-                  <Icon name="external" />
-                </IconDiv>
-              </StyledLinkButton>
-
               <StyledLinkButton
                 onClick={() =>
                   window.open(
-                    "https://www.nav.no/no/person/flere-tema/innkreving-og-innbetaling"
+                    "https://www.altinn.no/skjemaoversikt/skatteetaten/mine-krav-og-betalinger/"
                   )
                 }
               >
-                Nav Innkreving
+                Altinn - krav og betalinger fra Skatteetaten
+                <IconDiv>
+                  <Icon name="external" />
+                </IconDiv>
+              </StyledLinkButton>
+              <StyledLinkButton
+                onClick={() => window.open("https://www.sismo.no/en/pub/")}
+              >
+                Statens innkrevingssentral - krav og betalinger fra staten
+                <IconDiv>
+                  <Icon name="external" />
+                </IconDiv>
+              </StyledLinkButton>
+              <StyledLinkButton
+                onClick={() => window.open("https://www.norskgjeld.no/")}
+              >
+                Norsk Gjeld - sjekk din forbruksgjeld
+                <IconDiv>
+                  <Icon name="external" />
+                </IconDiv>
+              </StyledLinkButton>
+              <StyledLinkButton
+                onClick={() =>
+                  window.open("https://www.inkassoregisteret.com/")
+                }
+              >
+                Inkassoregisteret - inkassoregisteret tar kontakt med
+                inkassoselskapene på dine vegne og lager en oversikt.
                 <IconDiv>
                   <Icon name="external" />
                 </IconDiv>
@@ -107,7 +115,16 @@ export default function OpenHelpTextModal(props: AddHelpTextModalProps) {
               <StyledLinkButton
                 onClick={() => window.open("https://www.lanekassen.no")}
               >
-                Lånekassen{" "}
+                Digipost - noen ganger sendes regninger digitalt, som kan være
+                vanskelig å fange opp
+                <IconDiv>
+                  <Icon name="external" />
+                </IconDiv>
+              </StyledLinkButton>
+              <StyledLinkButton
+                onClick={() => window.open("https://www.lanekassen.no")}
+              >
+                Lånekassen - Studielån
                 <IconDiv>
                   <Icon name="external" />
                 </IconDiv>
