@@ -39,11 +39,15 @@ git push -u origin main
 ## Pre requisites
 Create a root domain or subdomain for your project. You can use any domain provider for this. We suggest you use a subdomain for your project. For example if your domain is example.com you can use the subdomain project.example.com for your project. This will be used later to configure your project website.
 
-Create a gh-pages branch. This branch will be used to host your project website. You can create a gh-pages branch using the following commands:
+# Setup github repositories
+
+## Setup public repository
+On your public repository. Create a gh-pages branch. This branch will be used to host your project website. You can create a gh-pages branch using the following commands:
 ```
 git checkout -b gh-pages
 git push origin gh-pages
 ```
+## Setup private repository
 Checkout the code from your private source reopository. You can do this using the following command:
 ```
 git checkout main
@@ -54,8 +58,9 @@ yarn install
 yarn test
 yarn build
 ```
-This will generate a build folder. Copy the files from your build folder to the root of your gh-pages branch.
+This will generate a build folder. Copy the files from your build folder to the root of your gh-pages branch on your public repository.
 
+## Back on the public repository
 From your public repository you can now push the changes to the gh-pages branch using the following command:
 ```
 git add .
