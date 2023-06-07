@@ -689,6 +689,7 @@ export default function UserDetails(props: UserDetailsProps) {
           <BackForwardControls
             goBack={() => goBack()}
             completeStep={completeStep}
+            noBack={true}
           />
 
           {/* </StyledBControlsDiv> */}
