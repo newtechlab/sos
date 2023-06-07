@@ -225,7 +225,7 @@ export default function MoneyOut(props: MoneyOutProps) {
 
   const getDateArray = () => {
     const arr = [];
-    for (let i = 1; i <= 28; i++) {
+    for (let i = 1; i <= 31; i++) {
       arr.push({
         key: i,
         text: i.toString(),
