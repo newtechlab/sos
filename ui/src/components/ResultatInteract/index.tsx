@@ -206,6 +206,7 @@ export default function ResultatInteract(props: ResultatInteractProps) {
           <BackForwardControls
             goBack={() => goBack()}
             completeStep={completeStep}
+            text="Fullfør"
           />
         </StyledContainerSpace>
       </StyledContainer>

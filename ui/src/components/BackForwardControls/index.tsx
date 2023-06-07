@@ -4,6 +4,7 @@ import NextButton from "../NextButton";
 
 interface BackForwardControlsProps {
   text?: string;
+  noBack?: boolean;
   completeStep: () => void;
   goBack: () => void;
 }
@@ -13,13 +14,14 @@ interface LastPageBackForwardControlsProps {
 }
 
 export default function BackForwardControls(props: BackForwardControlsProps) {
-  const { completeStep, goBack } = props;
+  const { completeStep, goBack, noBack } = props;
 
   return (
     <Grid columns={2}>
       <Grid.Column>
-        <BackButton goBack={() => goBack()} />
+        {noBack ? null : <BackButton goBack={() => goBack()} />}
       </Grid.Column>
+
       <Grid.Column textAlign="right">
         <NextButton
           text={props.text ? props.text : null}
