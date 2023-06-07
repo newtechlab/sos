@@ -497,11 +497,6 @@ function App() {
 
   const activeStep = steps.steps.find((s) => s.id === steps.activeStepId);
 
-  useEffect(() => {
-    console.log(ledger);
-    console.log(adjustments);
-  }, [adjustments]);
-
   return (
     <StyledRootDiv className="App">
       <FeedbackButton

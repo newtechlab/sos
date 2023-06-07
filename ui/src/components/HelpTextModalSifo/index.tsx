@@ -126,7 +126,7 @@ const StyledParagraph = styled.p`
   padding-top: 1em;
 `;
 
-const StyledSpace = styled.p`
+const StyledSpace = styled.div`
   padding-top: 1em;
   padding-bottom: 1em;
 `;

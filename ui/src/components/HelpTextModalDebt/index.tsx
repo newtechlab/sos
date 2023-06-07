@@ -145,7 +145,7 @@ const StyledDiv = styled.div`
   width: 40em;
 `;
 
-const StyledParagraph = styled.p`
+const StyledParagraph = styled.div`
   padding-top: 1em;
 `;
 

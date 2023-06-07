@@ -45,9 +45,6 @@ const getSifoValue = (accountTo: string, sifoNumbers: SifoCategories) => {
 
 export function MoneyOutList(props: MoneyOutListProps) {
   const { moneyOut, onUpdateValue, adjustments, sifoNumbers } = props;
-  console.log(sifoNumbers);
-  console.log("adjusts: ", adjustments);
-  console.log("money out ", moneyOut);
 
   if (moneyOut.length === 0) {
     return <div>Vennligst legg til noen utgifter</div>;
