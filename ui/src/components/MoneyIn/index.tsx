@@ -491,7 +491,7 @@ export default function MoneyIn(props: MoneyInProps) {
                 </Grid.Column>
               </StyledGridRowBottom>
 
-              <MoneyTotal text="Inntekter" total={moneyIn} />
+              <MoneyTotal text="Totalt inntekter" total={moneyIn} />
             </StyledGrid>
           </StyledBoxSection>
 
