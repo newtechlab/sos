@@ -266,6 +266,6 @@ const StyledGraphContainer = styled.div`
   height: 150px;
 `;
 
-const StyledParagraph = styled.p`
+const StyledParagraph = styled.div`
   margin-bottom: 2em;
 `;

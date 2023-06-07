@@ -207,8 +207,6 @@ export default function Resultat(props: ResultatProps) {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
-  console.log(props);
-
   return (
     <StyledBackgroundColour>
       <StyledContainer>
@@ -247,7 +245,7 @@ export default function Resultat(props: ResultatProps) {
   );
 }
 
-export const StyledPad = styled.p`
+export const StyledPad = styled.div`
   padding-top: 3em;
   padding-bottom: 2em;
   padding-left: 3em;
