@@ -140,6 +140,7 @@ export enum TransactionCategory {
   Tax = "Forskuddsskatt",
   Private_Funding = "Privat bidrag",
   Undefined = "UNDEFINED",
+  Other_Income = "Other_Income",
 }
 
 export const AllTransactionCategories: Array<string> =
