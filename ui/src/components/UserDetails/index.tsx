@@ -68,10 +68,8 @@ export interface PdfFormat {
 const genders: string[] = [
   "Mann",
   "Kvinne",
-  "Trans",
-  "Transperson",
-  "Intersex",
-  "Interkjønn",
+  "Ikke-binær",
+  "Ønsker ikke å oppgi",
 ];
 
 const cars: number[] = [0, 1, 2, 3, 4];
