@@ -19,7 +19,7 @@ The application can be hosted on any kind of web server as long as it can serve 
 yarn install
 yarn build
 ```
-This will generate a build folder. Copy the files from your build folder to your web server.
+This will generate a build folder with static files. Copy the files from your build folder to your web server.
 
 ## GitHub pages option
 You can easily host your application on GitHub pages.
