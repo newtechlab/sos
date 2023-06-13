@@ -2,7 +2,7 @@
 
 ## Pre requisites
 Install yarn
-https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable
+https://classic.yarnpkg.com/lang/en/docs/install/
 
 ## Running development environment
 Checkout the repository and run the following commands:
