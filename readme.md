@@ -7,6 +7,7 @@ https://classic.yarnpkg.com/lang/en/docs/install/
 ## Running development environment
 Checkout the repository and run the following commands:
 ```
+cd ui
 yarn install
 yarn test
 yarn start
@@ -16,10 +17,17 @@ This will start the application on http://localhost:3000
 # Production deployment
 The application can be hosted on any kind of web server as long as it can serve static files. The application is built using React and can be built using the following command:
 ```
+cd ui
 yarn install
 yarn build
 ```
 This will generate a build folder with static files. Copy the files from your build folder to your web server.
+
+```
+❯ ls build
+asset-manifest.json frontpage.png       logo192.png         manifest.json       static
+favicon.ico         index.html          logo512.png         robots.txt
+```
 
 ## GitHub pages option
 You can easily host your application on GitHub pages.
