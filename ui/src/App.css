@@ -1,0 +1,61 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+@font-face {
+  font-family: "Regular";
+  src: local("DNB-Regular"), url("./data/fonts/DNB-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Light";
+  src: local("DNB-Light"), url("./data/fonts/DNB-Light.ttf") format("truetype");
+}
+
+
+@font-face {
+  font-family: "Medium";
+  src: local("DNB-Medium"), url("./data/fonts/DNB-Medium.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Bold";
+  src: local("DNB-Bold"), url("./data/fonts/DNB-Bold.ttf") format("truetype");
+}
+
