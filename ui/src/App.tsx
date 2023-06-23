@@ -25,10 +25,7 @@ import {
   progressStep,
   updateSteps,
 } from "./data/StepProgressor";
-import ResultatInteract, {
-  AdjustmentAmountPercent,
-  LedgerRowId,
-} from "./components/ResultatInteract";
+
 import Home from "./components/Home";
 import MoneyOutDebt from "./components/MoneyOutDebt";
 import { Button, Icon } from "semantic-ui-react";
@@ -38,7 +35,6 @@ import {
   StateSummary,
 } from "./data/StepsInitialState";
 import ResultatBalance from "./components/ResultatBalance";
-import ResultatDebt from "./components/ResultatDebt";
 import { calculateMoneyIn, calculateMoneyOut } from "./data/Ledger";
 
 export interface FamilyMember {
