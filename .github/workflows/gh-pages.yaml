@@ -4,11 +4,11 @@ name: Build main branch and deploy to GitHub Pages
 on:
   # Runs on pushes targeting the default branch
   push:
-    paths: [ ui/**, .github/workflows/gh-pages.yml ]
+    paths: [ ui/**, .github/workflows/gh-pages.yaml ]
     branches: ["main"]
 
   pull_request:
-    paths: [ ui/**, .github/workflows/gh-pages.yml ]
+    paths: [ ui/**, .github/workflows/gh-pages.yaml ]
     branches: [ main ]    
 
   # Allows you to run this workflow manually from the Actions tab
