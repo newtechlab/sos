@@ -87,12 +87,10 @@ export class PdfWriterService {
 
     const adjustedLedger = props.ledger.map((row) => {
       if (props.adjustments.has(row.id)) {
-        const adjustment = parseInt(
-          props.adjustments.get(row.id) || row.amount.toString()
-        );
+        const adjustment = parseInt(props.adjustments.get(row.id) || "100");
         return {
           ...row,
-          amount: adjustment,
+          amount: Math.round((row.amount / 100) * adjustment),
         };
       } else {
         return row;
@@ -165,7 +163,7 @@ export class PdfWriterService {
       y = y + 22;
     });
 
-    page.drawText("Kjøretøy:", {
+    page.drawText("Eier familien bil eller andre kjøretøy?", {
       x: 50,
       y: height - y,
       size: 12,
@@ -173,15 +171,16 @@ export class PdfWriterService {
     });
     y = y + 22;
 
-    page.drawText("Antall elbil: " + props.userDetails.car.electric, {
-      x: 50,
-      y: height - y,
-      size: 12,
-      font: font,
-    });
-    y = y + 22;
-
-    page.drawText("Antall fossilbil: " + props.userDetails.car.fossil, {
+    const hasCar = () => {
+      if (props.userDetails.car === Car.OWN) {
+        return "Eier";
+      } else if (props.userDetails.car === Car.NOTOWN) {
+        return "Leier";
+      } else {
+        return "Nei";
+      }
+    };
+    page.drawText(hasCar(), {
       x: 50,
       y: height - y,
       size: 12,

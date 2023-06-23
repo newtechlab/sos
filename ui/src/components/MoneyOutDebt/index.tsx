@@ -67,6 +67,7 @@ export default function MoneyOut(props: MoneyOutProps) {
     useState<boolean>(false);
   const [addHelpTextExpensesModalOpen, OpenHelpTextExpensesModal] =
     useState<boolean>(false);
+
   const [dropDownItemsDebt, setDropDownItemsDebt] = useState<DropDownItem[]>(
     []
   );
@@ -115,8 +116,8 @@ export default function MoneyOut(props: MoneyOutProps) {
       name: "Spedbarnsutstyr",
       category: TransactionCategory.Infant_Equipment,
     });
-    items.set("Andre dagligvarer", {
-      name: "Andre dagligvarer",
+    items.set("Andre daglivarer", {
+      name: "Andre daglivarer",
       category: TransactionCategory.Other_Groceries,
     });
     items.set("Husholdningsartikler", {
@@ -225,7 +226,7 @@ export default function MoneyOut(props: MoneyOutProps) {
 
   const getDateArray = () => {
     const arr = [];
-    for (let i = 1; i <= 31; i++) {
+    for (let i = 1; i <= 28; i++) {
       arr.push({
         key: i,
         text: i.toString(),
@@ -539,6 +540,6 @@ const StyledDiv = styled.div`
   position: relative;
 `;
 
-const StyledSpace = styled.div`
+const StyledSpace = styled.p`
   padding-bottom: 2em;
 `;

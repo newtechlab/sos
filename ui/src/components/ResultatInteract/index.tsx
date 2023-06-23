@@ -1,11 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button, Container, Icon } from "semantic-ui-react";
-import {
-  Goal,
-  LedgerRow,
-  SifoCategories,
-  TransactionCategory,
-} from "../../App";
+import { Goal, LedgerRow, TransactionCategory } from "../../App";
 import styled from "styled-components";
 
 import { ChartData } from "chart.js";
@@ -36,7 +31,6 @@ import ComparisonGraph from "../ComparisonGraph";
 import BackForwardControls from "../BackForwardControls";
 import ResultSubSectionTab from "../ResultSubSectionTab";
 import { StepsInitialState } from "../../data/StepsInitialState";
-import HelpTextModalSifo from "../HelpTextModalSifo";
 
 interface ResultatInteractProps {
   ledger: Array<LedgerRow>;
@@ -49,7 +43,6 @@ interface ResultatInteractProps {
   steps: StepsState;
   adjustments: Map<LedgerRowId, AdjustmentAmountPercent>;
   setAdjustments: (_: Map<LedgerRowId, AdjustmentAmountPercent>) => void;
-  sifoNumbers: SifoCategories;
 }
 
 export type LedgerRowId = string;
@@ -74,9 +67,7 @@ export default function ResultatInteract(props: ResultatInteractProps) {
     adjustments,
     setAdjustments,
     goToStep,
-    sifoNumbers,
   } = props;
-  const [addHelpTextModalOpen, OpenHelpTextModal] = useState<boolean>(false);
 
   const computeInOutPercent = () => {
     const adjustedLedger = sortedLedger.map((row) => {
@@ -84,7 +75,7 @@ export default function ResultatInteract(props: ResultatInteractProps) {
         const adjustment = parseInt(adjustments.get(row.id) || "100");
         return {
           ...row,
-          amount: adjustment,
+          amount: Math.round((row.amount / 100) * adjustment),
         };
       } else {
         return row;
@@ -158,45 +149,38 @@ export default function ResultatInteract(props: ResultatInteractProps) {
             </StyledGraphContainer>
 
             <PaddedSection>
+              {moneyOut.length > 0 ? (
+                <ResetDialsDiv>
+                  <Button
+                    circular
+                    basic
+                    onClick={() =>
+                      setAdjustments(
+                        new Map<LedgerRowId, AdjustmentAmountPercent>()
+                      )
+                    }
+                  >
+                    <Icon name="undo" />
+                    Tilbakestill
+                  </Button>
+                </ResetDialsDiv>
+              ) : (
+                <></>
+              )}
+
               <StyledRow>
                 <StyledColumn>
                   <h2>Løpende utgifter</h2>
-
                   <StyledParagraph>
-                    Under kan du se dine månedlige utgifter sammen med estimert
-                    SIFO referansebudsjett. Du kan bruke tabellen til å tilpasse
-                    den økonomiske balansen for å sette et mål for neste måneds
-                    pengebruk. Prøv å justere utgiftene til et beløp som gir deg
-                    rom til å spare penger.
-                    <HelpTextModalSifo
-                      open={addHelpTextModalOpen}
-                      setOpen={OpenHelpTextModal}
-                    />
+                    Under kan du se dine månedlige utgifter. Du kan bruke
+                    tabellen til å tilpasse den økonomiske balansen for å sette
+                    et mål for neste måneds pengebruk. Prøve å justere utgiftene
+                    til et beløp som gir deg rom til å spare penger.
                   </StyledParagraph>
-                  {moneyOut.length > 0 ? (
-                    <ResetDialsDiv>
-                      <Button
-                        circular
-                        basic
-                        onClick={() =>
-                          setAdjustments(
-                            new Map<LedgerRowId, AdjustmentAmountPercent>()
-                          )
-                        }
-                      >
-                        <Icon name="undo" />
-                        Tilbakestill
-                      </Button>
-                    </ResetDialsDiv>
-                  ) : (
-                    <></>
-                  )}
-
                   <MoneyOutList
                     moneyOut={moneyOut}
                     onUpdateValue={onUpdateSlider}
                     adjustments={adjustments}
-                    sifoNumbers={sifoNumbers}
                   />
                 </StyledColumn>
               </StyledRow>
@@ -206,7 +190,6 @@ export default function ResultatInteract(props: ResultatInteractProps) {
           <BackForwardControls
             goBack={() => goBack()}
             completeStep={completeStep}
-            text="Fullfør"
           />
         </StyledContainerSpace>
       </StyledContainer>
@@ -230,7 +213,6 @@ const ResetDialsDiv = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-bottom: 1.5rem;
 `;
 
 const CenteredContentSection = styled.div`
@@ -266,6 +248,6 @@ const StyledGraphContainer = styled.div`
   height: 150px;
 `;
 
-const StyledParagraph = styled.div`
-  margin-bottom: 2em;
+const StyledParagraph = styled.p`
+  margin-bottom: 3em;
 `;

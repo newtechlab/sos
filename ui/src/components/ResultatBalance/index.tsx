@@ -1,12 +1,6 @@
 import { useEffect, useState } from "react";
 import { Container, Grid } from "semantic-ui-react";
-import {
-  FamilyMember,
-  Goal,
-  LedgerRow,
-  SifoCategories,
-  UserInformation,
-} from "../../App";
+import { Goal, LedgerRow } from "../../App";
 import styled from "styled-components";
 
 import { ChartData } from "chart.js";
@@ -48,7 +42,6 @@ interface ResultatBalanceProps {
   steps: StepsState;
   adjustments: Map<LedgerRowId, AdjustmentAmountPercent>;
   setAdjustments: (_: Map<LedgerRowId, AdjustmentAmountPercent>) => void;
-  sifoNumbers: SifoCategories;
 }
 
 export type LedgerRowId = string;
@@ -72,7 +65,6 @@ export default function ResultatBalance(props: ResultatBalanceProps) {
     goToStep,
     removeLedgerRow,
     goal,
-    sifoNumbers,
   } = props;
 
   const labels = ["Penger Inn", "Penger Ut"];
@@ -192,7 +184,6 @@ export default function ResultatBalance(props: ResultatBalanceProps) {
         steps={steps}
         adjustments={adjustments}
         setAdjustments={setAdjustments}
-        sifoNumbers={sifoNumbers}
       />
     </StyledBackgroundColour>
   );
