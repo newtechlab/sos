@@ -37,6 +37,8 @@ jobs:
             node-version: '16.x'
       - name: Build
         working-directory: ./ui
+        env:
+            CI: false
         run: |
           yarn install
           yarn build
