@@ -15,7 +15,7 @@ interface AddHelpTextModalProps {
   setOpen: (_: boolean) => void;
 }
 
-export default function OpenHelpTextModal(props: AddHelpTextModalProps) {
+export default function HelpTextModalExpenses(props: AddHelpTextModalProps) {
   const { open, setOpen } = props;
   const transition = {
     animation: "fly left",
@@ -115,35 +115,6 @@ export default function OpenHelpTextModal(props: AddHelpTextModalProps) {
               gjerne anskaffes når barnet har blitt større som for eks.
               barnestol, barnebestikk, trille, bæremeis og ustyr til
               barnesikring av hjemmet.
-              <StyledParagraph>
-                <strong>Barnehage</strong>
-              </StyledParagraph>
-              Månedlig total barnehageutgift.
-              <StyledParagraph>
-                <strong>SFO/AKS</strong>
-              </StyledParagraph>
-              Månedlig total utgift for aktivitetsskole/skolefritidsordning.
-              <StyledParagraph>
-                <strong>Husleie og andre bokostnader</strong>
-              </StyledParagraph>
-              Utgifter som leie og fellesutgifter.
-              <StyledParagraph>
-                <strong>Strøm</strong>
-              </StyledParagraph>
-              Siste månedlige strømregning og nettleie for husstanden.
-              <StyledParagraph>
-                <strong>Forsikring</strong>
-              </StyledParagraph>
-              Denne posten gjelder alle forsikringer som betales månedlig, som
-              for eksempel reiseforsikring, husforsikring, innboforsikring og
-              uføreforsikring.
-              <StyledParagraph>
-                <strong>Forskuddsskatt</strong>
-              </StyledParagraph>
-              Denne utgiftsposten gjelder de som har skattepliktig inntekt eller
-              formue som det ikke blir trukket skatt av, og som det dermed
-              betales forskuddsskatt på. Dette gjelder for eksempel mennesker
-              med enkeltmannsforetak.
             </StyledDiv>
           </StyledModalSidebar>
         </StyledSegment>

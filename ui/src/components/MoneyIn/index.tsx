@@ -22,7 +22,6 @@ import { TransactionCategory } from "../../App";
 import { v4 as uuidv4 } from "uuid";
 import ErrorBar from "../ErrorBar";
 import OpenHelpTextModal from "../HelpTextModalIncome";
-import OpenHelpTextModalSalary from "../HelpTextModalSalary";
 interface MoneyInProps {
   ledger: Array<LedgerRow>;
   addLedgerRow: (_: LedgerRow) => void;
@@ -103,11 +102,6 @@ export default function MoneyIn(props: MoneyInProps) {
       text: "NAV",
       value: TransactionCategory.Government_Income,
     },
-    {
-      key: TransactionCategory.Other_Income,
-      text: "Annen inntekt",
-      value: TransactionCategory.Other_Income,
-    },
   ];
 
   const incomeTypes: Map<string, Array<DropDownItem>> = new Map<
@@ -126,13 +120,6 @@ export default function MoneyIn(props: MoneyInProps) {
       key: "Lønn",
       text: "Lønn",
       value: "Lønn",
-    },
-  ]);
-  incomeTypes.set("Other_Income", [
-    {
-      key: "Annen inntekt",
-      text: "Annen inntekt",
-      value: "Annen inntekt",
     },
   ]);
 
@@ -241,7 +228,7 @@ export default function MoneyIn(props: MoneyInProps) {
 
   const getDateArray = () => {
     const arr = [];
-    for (let i = 1; i <= 31; i++) {
+    for (let i = 1; i <= 28; i++) {
       arr.push({
         key: i,
         text: i.toString(),
@@ -287,8 +274,6 @@ export default function MoneyIn(props: MoneyInProps) {
             category:
               category === "Income"
                 ? TransactionCategory.Income
-                : category === "Other_Income"
-                ? TransactionCategory.Other_Income
                 : TransactionCategory.Housing_Benefit,
           });
         } else {
@@ -303,12 +288,11 @@ export default function MoneyIn(props: MoneyInProps) {
   };
 
   const getValueCategory = (row: LedgerRow) => {
+    console.log("catrow: ", row);
     if (row.category === TransactionCategory.Government_Income) {
       return "NAV";
     } else if (row.category === TransactionCategory.Income) {
       return "Lønn";
-    } else if (row.category === TransactionCategory.Other_Income) {
-      return "Annen inntekt";
     } else if (row.category === TransactionCategory.Housing_Benefit) {
       return "Husbanken";
     } else {
@@ -331,6 +315,8 @@ export default function MoneyIn(props: MoneyInProps) {
       setSubcategories(items);
     }
   }, []);
+
+  console.log(filteredLedger);
 
   return (
     <StyledBackgroundColour>
@@ -491,7 +477,7 @@ export default function MoneyIn(props: MoneyInProps) {
                 </Grid.Column>
               </StyledGridRowBottom>
 
-              <MoneyTotal text="Totalt inntekter" total={moneyIn} />
+              <MoneyTotal text="Inntekter" total={moneyIn} />
             </StyledGrid>
           </StyledBoxSection>
 

@@ -1,6 +1,5 @@
 import { Button, Container, Image } from "semantic-ui-react";
 import {
-  Ages,
   Car,
   FamilyMember,
   HouseSituation,
@@ -144,14 +143,12 @@ const createExamplePdf = async () => {
     {
       id: "614d9e84-c616-4721-bda5-c53cda3ecbef",
       name: "Ada",
-      age: Ages.year20_30,
-      gender: "",
+      age: "25+",
     },
     {
       id: "614d9e84-c616-4721-bda5-c53cda4ecbef",
       name: "Fredrik",
-      age: Ages.year20_30,
-      gender: "",
+      age: "28",
     },
   ];
   const userDetails: UserInformation = {
@@ -159,7 +156,7 @@ const createExamplePdf = async () => {
       name: "Ny bolig",
       amount: 4000000,
     },
-    car: { fossil: 0, electric: 0 },
+    car: Car.NOTOWN,
     house: HouseSituation.OWN,
     otherAssets: "",
   };
@@ -207,6 +204,8 @@ export default function Resultat(props: ResultatProps) {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
+  console.log(props);
+
   return (
     <StyledBackgroundColour>
       <StyledContainer>
@@ -245,7 +244,7 @@ export default function Resultat(props: ResultatProps) {
   );
 }
 
-export const StyledPad = styled.div`
+export const StyledPad = styled.p`
   padding-top: 3em;
   padding-bottom: 2em;
   padding-left: 3em;

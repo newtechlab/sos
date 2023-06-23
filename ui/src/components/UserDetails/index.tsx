@@ -1,16 +1,18 @@
 import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
+import { useNavigate } from "react-router-dom";
 import {
   Button,
+  Card,
   Container,
-  Dropdown,
   Grid,
+  GridRow,
   Icon,
   Input,
 } from "semantic-ui-react";
 import styled from "styled-components";
 import {
-  Ages,
+  Car,
   FamilyMember,
   HouseSituation,
   InitialUserInfo,
@@ -18,19 +20,25 @@ import {
   Pet,
   UserInformation,
 } from "../../App";
-
+import AddFamilyMemberCard from "../AddFamilyMemberCard";
+import AddFamilyMemberModal from "../AddFamilyMemberModal";
 import BackForwardControls from "../BackForwardControls";
+import FamilyMemberCard from "../FamilyMemberCard";
 import HelpTextModalGoal from "../HelpTextModalGoal";
 import { JaNei } from "../JaNei";
 import StepHeader from "../StepHeader";
 import { StepDefinition, StepsState } from "../Steps";
+import AddPetModal from "../AddPetModal";
+import { StyledCard } from "../StyledFamilyCard";
+import PetMemberCard from "../PetCard";
 import PdfConverter from "../../services/PdfService/PdfConverter";
 import { AdjustmentAmountPercent, LedgerRowId } from "../ResultatInteract";
 import { v4 as uuidv4 } from "uuid";
 import { StyledBoxSection } from "../StyledBoxSection";
 import { StyledGrid, StyledGridRow, StyledGridRowBottom } from "../MoneyIn";
 import TrashIcon from "../TrashIcon";
-import OpenHelpTextModalSalary from "../HelpTextModalSalary";
+import { add } from "lodash";
+import { getValue } from "@testing-library/user-event/dist/utils";
 
 export interface UserDetailsProps {
   familyMembers: Array<FamilyMember>;
@@ -65,102 +73,16 @@ export interface PdfFormat {
   pets: Array<Pet>;
 }
 
-const genders: string[] = [
-  "Mann",
-  "Kvinne",
-  "Ikke-binær",
-  "Ønsker ikke å oppgi",
-];
-
-const cars: number[] = [0, 1, 2, 3, 4];
-const yesno: string[] = ["Ja", "Nei"];
-const sfo: string[] = ["Nei", "Heltid", "Deltid"];
-
-interface DropDownItem {
-  key: string | number;
-  text: string | number;
-  value: string | number;
-}
-
-export enum Optionals {
-  Pregnant = "Gravid",
-  Sfo = "SFO",
-  Student = "Student",
-  Kindergarden = "Barnehage",
-  FreeSfo = "Gratis kjernetid SFO",
-}
-
-const mapToOptionals = (familyMember: FamilyMember) => {
-  const optionals: string[] = [];
-  if (familyMember.gender != "Mann") {
-    if (
-      [Ages.year14_17, Ages.year18_19, Ages.year20_30, Ages.year31_50].includes(
-        familyMember.age
-      )
-    ) {
-      optionals.push(Optionals.Pregnant);
-    }
-  }
-  if (
-    [Ages.year1, Ages.year2, Ages.year3, Ages.year4_5].includes(
-      familyMember.age
-    )
-  ) {
-    optionals.push(Optionals.Kindergarden);
-  } else if ([Ages.year6_9, Ages.year10_13].includes(familyMember.age)) {
-    optionals.push(Optionals.Sfo);
-    optionals.push(Optionals.FreeSfo);
-  } else if ([Ages.year20_30].includes(familyMember.age)) {
-    optionals.push(Optionals.Student);
-  }
-  return optionals;
-};
-
-const convertDropdownItem = (item: string): DropDownItem => {
-  return {
-    key: item,
-    text: item,
-    value: item,
-  };
-};
-
-const convertDropdownItemNumber = (item: number): DropDownItem => {
-  return {
-    key: item,
-    text: item,
-    value: item,
-  };
-};
-
 export const firstStep = "/family";
 
 export default function UserDetails(props: UserDetailsProps) {
+  const [addFamilyModalOpen, setAddFamilyModalOpen] = useState<boolean>(false);
+  const [addPetModalOpen, setAddPetModalOpen] = useState<boolean>(false);
   const [addHelpTextGoalModalOpen, OpenHelpTextGoalModal] =
     useState<boolean>(false);
-  const [helptextModalOpen, setHelpTextModalOpen] = useState<boolean>(false);
-
   const [pdfDropped, setPdfDropped] = useState<boolean>(false);
-
-  const ageOptions: DropDownItem[] = Object.values(Ages).map((item) => {
-    return convertDropdownItem(item);
-  });
-
-  const genderOptions: DropDownItem[] = genders.map((item) => {
-    return convertDropdownItem(item);
-  });
-
-  const carOptions: DropDownItem[] = cars.map((item) => {
-    return convertDropdownItemNumber(item);
-  });
-
-  const yesnoOptions: DropDownItem[] = yesno.map((item) => {
-    return convertDropdownItem(item.toString());
-  });
-
-  const sfoOptions: DropDownItem[] = sfo.map((item) => {
-    return convertDropdownItem(item.toString());
-  });
-
+  const [newName, setNewName] = useState("");
+  const [newAge, setNewAge] = useState("");
   const {
     setFamilyMembers,
     editFamilyMember,
@@ -182,6 +104,7 @@ export default function UserDetails(props: UserDetailsProps) {
     deletePet,
     deleteFamilyMember,
   } = props;
+  const navigate = useNavigate();
   const onDrop = useCallback((acceptedFiles) => {
     const fileReader = new FileReader();
     fileReader.onload = async (event) => {
@@ -212,107 +135,11 @@ export default function UserDetails(props: UserDetailsProps) {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
-
-  const getPregnant = (fm: FamilyMember) => (
-    <StyledPadding>
-      Gravid
-      <Dropdown
-        fluid
-        search
-        selection
-        placeholder="Gravid"
-        options={yesnoOptions}
-        onChange={(_, data) => {
-          editFamilyMember({
-            ...fm,
-            pregnant: data.value?.toString() === "Ja" ? true : false,
-          });
-        }}
-        value={fm.pregnant ? "Ja" : "Nei"}
-      />
-    </StyledPadding>
-  );
-
-  const getStudent = (fm: FamilyMember) => (
-    <StyledPadding>
-      Student
-      <Dropdown
-        fluid
-        search
-        selection
-        placeholder="Student"
-        options={yesnoOptions}
-        onChange={(_, data) => {
-          editFamilyMember({
-            ...fm,
-            student: data.value?.toString() === "Ja" ? true : false,
-          });
-        }}
-        value={fm.student ? "Ja" : "Nei"}
-      />
-    </StyledPadding>
-  );
-
-  const getFreeSfo = (fm: FamilyMember) => (
-    <StyledPadding>
-      Gratis kjernetid SFO
-      <Dropdown
-        fluid
-        search
-        selection
-        placeholder="Gratis kjernetid SFO"
-        options={yesnoOptions}
-        onChange={(_, data) => {
-          editFamilyMember({
-            ...fm,
-            freeSfo: data.value?.toString() === "Ja" ? true : false,
-          });
-        }}
-        value={fm.freeSfo ? "Ja" : "Nei"}
-      />
-    </StyledPadding>
-  );
-
-  const getKindergarden = (fm: FamilyMember) => (
-    <StyledPadding>
-      Barnehage
-      <Dropdown
-        fluid
-        search
-        selection
-        placeholder="Barnehage"
-        options={yesnoOptions}
-        onChange={(_, data) => {
-          editFamilyMember({
-            ...fm,
-            kindergarden: data.value?.toString() === "Ja" ? true : false,
-          });
-        }}
-        value={fm.kindergarden ? "Ja" : "Nei"}
-      />
-    </StyledPadding>
-  );
-
-  const getSfo = (fm: FamilyMember) => (
-    <StyledPadding>
-      AKS/SFO
-      <Dropdown
-        fluid
-        search
-        selection
-        placeholder="AKS/SFO"
-        options={sfoOptions}
-        onChange={(_, data) => {
-          editFamilyMember({
-            ...fm,
-            sfo: data.value?.toString() as string,
-          });
-        }}
-        value={fm.sfo}
-      />
-    </StyledPadding>
-  );
 
   return (
     <StyledBackgroundColour>
@@ -353,12 +180,22 @@ export default function UserDetails(props: UserDetailsProps) {
             <h3>Hvem består familien av?</h3>
             <StyledBoxSection>
               <StyledGrid>
+                {familyMembers.length ? (
+                  <Grid.Row>
+                    <Grid.Column width={9}>
+                      <strong>Navn</strong>
+                    </Grid.Column>
+                    <Grid.Column width={5} textAlign="left">
+                      <strong>Alder</strong>
+                    </Grid.Column>
+                  </Grid.Row>
+                ) : null}
+
                 {familyMembers
                   ? familyMembers.map((fm) => {
                       return (
                         <StyledGridRow key={fm.id}>
-                          <Grid.Column width={5}>
-                            Navn
+                          <Grid.Column width={9}>
                             <Input
                               fluid
                               placeholder="Navn"
@@ -372,64 +209,24 @@ export default function UserDetails(props: UserDetailsProps) {
                               value={fm.name}
                             />
                           </Grid.Column>
-                          <Grid.Column width={5} textAlign="left">
-                            Kjønn
-                            <Dropdown
+                          <Grid.Column width={5} textAlign="right">
+                            <Input
                               fluid
-                              search
-                              selection
-                              placeholder="Kjønn"
-                              options={genderOptions}
-                              onChange={(_, data) => {
-                                editFamilyMember({
-                                  ...fm,
-                                  gender: data.value?.toString() as string,
-                                });
-                              }}
-                              value={fm.gender}
-                            />
-                            {mapToOptionals(fm).includes(Optionals.Pregnant)
-                              ? getPregnant(fm)
-                              : null}
-                            {mapToOptionals(fm).includes(Optionals.Sfo)
-                              ? getSfo(fm)
-                              : null}
-                            {mapToOptionals(fm).includes(Optionals.Kindergarden)
-                              ? getKindergarden(fm)
-                              : null}
-                            {mapToOptionals(fm).includes(Optionals.Student) &&
-                            !mapToOptionals(fm).includes(Optionals.Pregnant)
-                              ? getStudent(fm)
-                              : null}
-                          </Grid.Column>
-                          <Grid.Column width={5} textAlign="left">
-                            Alder
-                            <Dropdown
-                              fluid
-                              search
-                              selection
                               placeholder="Alder"
-                              options={ageOptions}
                               onChange={(_, data) => {
                                 editFamilyMember({
                                   ...fm,
-                                  age: data.value?.toString() as Ages,
+                                  age: data.value?.toString(),
                                 });
                               }}
+                              labelPosition="right"
                               value={fm.age}
                             />
-                            {mapToOptionals(fm).includes(Optionals.FreeSfo)
-                              ? getFreeSfo(fm)
-                              : null}
-                            {mapToOptionals(fm).includes(Optionals.Student) &&
-                            mapToOptionals(fm).includes(Optionals.Pregnant)
-                              ? getStudent(fm)
-                              : null}
                           </Grid.Column>
                           <Grid.Column
-                            width={1}
-                            verticalAlign="top"
-                            textAlign="right"
+                            width={2}
+                            verticalAlign="middle"
+                            textAlign="center"
                           >
                             <TrashIcon
                               color="blue"
@@ -450,8 +247,7 @@ export default function UserDetails(props: UserDetailsProps) {
                         addFamilyMember({
                           id: uuidv4(),
                           name: "",
-                          age: Ages.unknown,
-                          gender: "",
+                          age: "",
                         });
                       }}
                     >
@@ -465,73 +261,26 @@ export default function UserDetails(props: UserDetailsProps) {
           </StyledHeadingDiv>
 
           <StyledHeadingDiv>
-            <h1>Annen familieinformasjon</h1>
-            <OpenHelpTextModalSalary
-              open={helptextModalOpen}
-              setOpen={setHelpTextModalOpen}
+            <h1>Eier familien bil eller andre kjøretøy?</h1>
+
+            <JaNei
+              optionOneSelected={userDetails.car === Car.OWN}
+              optionOneText="Ja"
+              optionOneClick={() => {
+                setUserDetails({
+                  ...userDetails,
+                  car: Car.OWN,
+                });
+              }}
+              optionTwoSelected={userDetails.car === Car.NOTOWN}
+              optionTwoText="Nei"
+              optionTwoClick={() => {
+                setUserDetails({
+                  ...userDetails,
+                  car: Car.NOTOWN,
+                });
+              }}
             />
-            <StyledBoxSection>
-              <StyledGrid>
-                <StyledGridRow>
-                  <Grid.Column width={8} textAlign="left">
-                    Antall fossilbiler i husstanden
-                    <Dropdown
-                      fluid
-                      search
-                      selection
-                      placeholder="Antall fossilbiler i husstanden"
-                      options={carOptions}
-                      onChange={(_, data) => {
-                        setUserDetails({
-                          ...userDetails,
-                          car: {
-                            ...userDetails.car,
-                            fossil: data?.value as number,
-                          },
-                        });
-                      }}
-                      value={userDetails?.car?.fossil}
-                    />
-                    <StyledPadding>
-                      Brutto årsinntekt
-                      <Input
-                        fluid
-                        type="number"
-                        placeholder="Brutto årsinntekt"
-                        onChange={(_, data) => {
-                          setUserDetails({
-                            ...userDetails,
-                            salary: parseInt(data?.value),
-                          });
-                        }}
-                        labelPosition="right"
-                        value={userDetails.salary}
-                      />
-                    </StyledPadding>
-                  </Grid.Column>
-                  <Grid.Column width={8} textAlign="left">
-                    Antall elbiler i husstanden
-                    <Dropdown
-                      fluid
-                      search
-                      selection
-                      placeholder="Antall elbiler i husstanden"
-                      options={carOptions}
-                      onChange={(_, data) => {
-                        setUserDetails({
-                          ...userDetails,
-                          car: {
-                            ...userDetails.car,
-                            electric: data?.value as number,
-                          },
-                        });
-                      }}
-                      value={userDetails?.car?.electric}
-                    />
-                  </Grid.Column>
-                </StyledGridRow>
-              </StyledGrid>
-            </StyledBoxSection>
           </StyledHeadingDiv>
 
           <StyledHeadingDiv>
@@ -687,7 +436,6 @@ export default function UserDetails(props: UserDetailsProps) {
           <BackForwardControls
             goBack={() => goBack()}
             completeStep={completeStep}
-            noBack={true}
           />
 
           {/* </StyledBControlsDiv> */}
@@ -746,8 +494,4 @@ export const StyledIcon = styled(Icon)`
   &:hover {
     cursor: pointer;
   }
-`;
-
-const StyledPadding = styled.div`
-  padding-top: 1rem;
 `;
