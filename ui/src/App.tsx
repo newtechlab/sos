@@ -25,7 +25,10 @@ import {
   progressStep,
   updateSteps,
 } from "./data/StepProgressor";
-
+import {
+  AdjustmentAmountPercent,
+  LedgerRowId,
+} from "./components/ResultatInteract";
 import Home from "./components/Home";
 import MoneyOutDebt from "./components/MoneyOutDebt";
 import { Button, Icon } from "semantic-ui-react";
